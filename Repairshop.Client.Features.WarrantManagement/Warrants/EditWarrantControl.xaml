@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="Repairshop.Client.Features.WarrantManagement.Warrants.EditWarrantControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Warrants"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="editWarrantControl">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" 
+               Content="Subjekt" />
+        
+        <TextBox Grid.Row="0" Grid.Column="1" 
+                 Text="{Binding ElementName=editWarrantControl, Path=ViewModel.Subject}" />
+
+        <Label Grid.Row="1" Grid.Column="0" 
+               Content="Rok" />
+        
+        <xctk:DateTimePicker Grid.Row="1" Grid.Column="1" 
+                             Value="{Binding ElementName=editWarrantControl, Path=ViewModel.Deadline}" 
+                             Format="Custom" 
+                             FormatString="dd/MM/yyyy HH:mm"/>
+
+        <Label Grid.Row="2" Grid.Column="0" 
+               Content="Hitni nalog" />
+        
+        <CheckBox Grid.Row="2" Grid.Column="1" 
+                  IsChecked="{Binding ElementName=editWarrantControl, Path=ViewModel.IsUrgent}" />
+
+        <Label Grid.Row="3" Grid.Column="0" 
+               Content="Tok naloga" />
+
+        <StackPanel Grid.Row="3" Grid.Column="1"
+                    Orientation="Horizontal">
+            <local:WarrantStepSequencePreviewControl Procedures="{Binding ElementName=editWarrantControl, Path=ViewModel.SequenceProcedures}" />
+
+            <Button Content="Uredi" 
+                    Command="{Binding ElementName=editWarrantControl, Path=ViewModel.EditWarrantSequenceCommand}"/>
+        </StackPanel>
+
+        <Label Grid.Row="4" Grid.Column="0" 
+               Content="Trenutačni korak" 
+               Visibility="Collapsed"/>
+
+        <ComboBox Grid.Row="4" Grid.Column="1"  
+                  HorizontalContentAlignment="Stretch"
+                  Visibility="Collapsed">
+        </ComboBox>
+
+    </Grid>
+</UserControl>

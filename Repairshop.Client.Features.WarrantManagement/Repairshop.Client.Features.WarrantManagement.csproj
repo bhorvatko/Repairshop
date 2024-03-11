@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Client\Repairshop.Client.Common\Repairshop.Client.Common.csproj" />
+    <ProjectReference Include="..\src\Shared\Features\Repairshop.Shared.Features.WarrantManagement\Repairshop.Shared.Features.WarrantManagement.csproj" />
+  </ItemGroup>
+
+</Project>

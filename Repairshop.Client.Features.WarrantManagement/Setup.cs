@@ -19,6 +19,5 @@ public static class Setup
             .AddTransient<WarrantPreviewControlViewModel>()
             .AddTransient<AddTechnicianViewModel>()
             .AddTransient<EditWarrantViewModel>()
-            .AddTransient<CreateWarrantViewModel>()
-            .AddTransient<EditWarrantSequenceViewModel>();
+            .AddTransient<CreateWarrantViewModel>();
 }

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Interfaces;
-using System.Windows;
+using System.Windows.Controls;
 
 namespace Repairshop.Client.Infrastructure.Navigation;
+
 internal class DialogService
     : IDialogService
 {
@@ -13,16 +14,18 @@ internal class DialogService
         _serviceProvider = serviceProvider;
     }
 
-    public TResult? OpenDialog<TViewModel, TResult>()
-        where TViewModel : IDialogViewModel<TResult>
+    public TResult? OpenDialog<TViewModel, TResult, TDialogContent>()
+        where TViewModel : IDialogViewModel<TResult, TDialogContent>
         where TResult : class
+        where TDialogContent : UserControl, IDialogContent
     {
-        IDialogViewModel<TResult> viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+        DialogContainer dialogContainer = new DialogContainer();
 
-        Window dialogContainer = new DialogContainer(viewModel);
+        UserControl control = 
+            _serviceProvider.GetRequiredService<TDialogContent>();
 
-        dialogContainer.Show();
+        dialogContainer.ShowWithContent<TResult>(control);
 
-        return dialogContainer.DialogResult as TResult;
+        return dialogContainer.Result as TResult;
     }
 }

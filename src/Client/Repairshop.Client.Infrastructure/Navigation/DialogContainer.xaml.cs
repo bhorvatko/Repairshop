@@ -1,5 +1,6 @@
 ﻿using Repairshop.Client.Common.Interfaces;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Repairshop.Client.Infrastructure.Navigation;
 /// <summary>
@@ -8,25 +9,34 @@ namespace Repairshop.Client.Infrastructure.Navigation;
 public partial class DialogContainer
     : Window
 {
-    public DialogContainer(IDialogViewModel viewModel)
+    private object? _viewModel;
+
+    public DialogContainer()
     {
         InitializeComponent();
-
-        ViewModel = viewModel;
-
-        viewModel.DialogFinished += FinishDialog;
-    }
-
-    private void FinishDialog(object result)
-    {
-        Result = result;
-
-        ViewModel.DialogFinished -= FinishDialog;
-
-        Close();
     }
 
     public object? Result { get; private set; }
 
-    public IDialogViewModel ViewModel { get; }
+    public void ShowWithContent<TResult>(UserControl dialogContent)
+    {
+        DialogContentControl.Content = dialogContent;
+        _viewModel = dialogContent.DataContext;
+
+        ((IDialogViewModel<TResult>)_viewModel).DialogFinished += FinishDialog;
+
+        ShowDialog();
+    }
+
+    private void FinishDialog<TResult>(TResult result)
+    {
+        Result = result;
+
+        if (_viewModel is not null)
+        {
+            ((IDialogViewModel<TResult>)_viewModel).DialogFinished -= FinishDialog;
+        }
+
+        Close();
+    }
 }

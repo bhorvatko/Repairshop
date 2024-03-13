@@ -34,8 +34,6 @@ public partial class App : Application
             .AddWarrantManagement();
 
         _serviceProvider = services.BuildServiceProvider();
-
-        Resources.Add("DashboardViewModel", new DataTemplate { VisualTree = new FrameworkElementFactory(typeof(DashboardView)) });
     }
 
     protected override void OnStartup(StartupEventArgs e)

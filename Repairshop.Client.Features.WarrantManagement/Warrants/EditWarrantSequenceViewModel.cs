@@ -6,7 +6,7 @@ using Repairshop.Client.Features.WarrantManagement.Procedures;
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public partial class EditWarrantSequenceViewModel
-    : ObservableObject, IDialogViewModel<IEnumerable<WarrantStep>>
+    : ObservableObject, IDialogViewModel<IEnumerable<WarrantStep>, EditWarrantSequenceView>
 {
     private readonly IProcedureService _procedureService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
@@ -25,17 +25,23 @@ public partial class EditWarrantSequenceViewModel
         Steps = new List<WarrantStep>(initialSteps);
     }
 
+    public event IDialogViewModel<IEnumerable<WarrantStep>>.DialogFinishedEventHandler? DialogFinished;
+
     public IEnumerable<Procedure> AvailableProcedures { get => _availableProcedures; set => SetProperty(ref _availableProcedures, value); }
     public IEnumerable<WarrantStep> Steps { get => _steps; set => SetProperty(ref _steps, value); }
-
-    public event DialogFinishedEventHandler? DialogFinished;
 
     [RelayCommand]
     public async Task LoadProcedures()
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
-            _availableProcedures = await _procedureService.GetProcedures();
+            AvailableProcedures = await _procedureService.GetProcedures();
         });
+    }
+
+    [RelayCommand]
+    public void FinishEditing()
+    {
+        DialogFinished?.Invoke(Steps);
     }
 }

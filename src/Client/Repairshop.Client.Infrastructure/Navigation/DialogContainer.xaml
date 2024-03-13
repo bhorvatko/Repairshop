@@ -9,5 +9,5 @@
         SizeToContent="WidthAndHeight"
         x:Name="dialogContainer">
 
-    <ContentControl Content="{Binding ViewModel, ElementName=dialogContainer}"/>
+    <ContentControl x:Name="DialogContentControl" />
 </Window>

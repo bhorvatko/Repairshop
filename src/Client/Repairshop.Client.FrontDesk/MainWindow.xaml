@@ -20,9 +20,9 @@
         <DataTemplate DataType="{x:Type warrants:CreateWarrantViewModel}">
             <warrants:CreateWarrantView />
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type dashboard:DashboardViewModel}">
+        <DataTemplate DataType="{x:Type dashboard:DashboardViewModel}">
             <dashboard:DashboardView />
-        </DataTemplate>-->
+        </DataTemplate>
         <DataTemplate DataType="{x:Type technicians:AddTechnicianViewModel}">
             <technicians:AddTechnicianView />
         </DataTemplate>

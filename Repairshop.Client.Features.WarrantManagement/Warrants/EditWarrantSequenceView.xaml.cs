@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Repairshop.Client.Common.Interfaces;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Repairshop.Client.Features.WarrantManagement.Warrants
+namespace Repairshop.Client.Features.WarrantManagement.Warrants;
+
+/// <summary>
+/// Interaction logic for EditWarrantSequenceView.xaml
+/// </summary>
+public partial class EditWarrantSequenceView 
+    : UserControl, IDialogContent
 {
-    /// <summary>
-    /// Interaction logic for EditWarrantSequenceView.xaml
-    /// </summary>
-    public partial class EditWarrantSequenceView : UserControl
+    public EditWarrantSequenceView(EditWarrantSequenceViewModel viewModel)
     {
-        public EditWarrantSequenceView()
-        {
-            InitializeComponent();
-        }
+        DataContext = viewModel;
+
+        InitializeComponent();
     }
 }

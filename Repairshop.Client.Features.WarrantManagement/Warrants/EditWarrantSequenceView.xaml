@@ -16,32 +16,42 @@
     </i:Interaction.Triggers>
     
     <DockPanel>
+        <Grid DockPanel.Dock="Top">
 
-        <GroupBox DockPanel.Dock="Left" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <GroupBox Grid.Column="0"
                   Header="Procedure">
-            <ListBox ItemsSource="{Binding AvailableProcedures}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Name}" 
+                <ListBox ItemsSource="{Binding AvailableProcedures}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Name}" 
                                Background="{Binding BackgroundColorBrush}" 
                                Foreground="{Binding ForegroundColorBrush}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
 
-        <GroupBox DockPanel.Dock="Right"
+            <GroupBox Grid.Column="1"
                   Header="Koraci naloga">
-            <ListBox ItemsSource="{Binding Steps}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Procedure.Name}"
+                <ListBox ItemsSource="{Binding Steps}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Procedure.Name}"
                                Background="{Binding Procedure.BackgroundColorBrush}"
                                ForceCursor="{Binding Procedure.ForegroundColorBrush}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+        </Grid>
 
+        <Button DockPanel.Dock="Bottom"
+                Content="OK"
+                Command="{Binding FinishEditingCommand}" />
     </DockPanel>
 </UserControl>

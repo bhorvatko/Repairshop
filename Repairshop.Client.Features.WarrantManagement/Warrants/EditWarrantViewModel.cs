@@ -30,7 +30,10 @@ public partial class EditWarrantViewModel
     public void EditWarrantSequence()
     {
         IEnumerable<WarrantStep>? sequence = 
-            _dialogService.OpenDialog<EditWarrantSequenceViewModel, IEnumerable<WarrantStep>>();
+            _dialogService.OpenDialog<
+                EditWarrantSequenceViewModel, 
+                IEnumerable<WarrantStep>,
+                EditWarrantSequenceView>();
 
         if (sequence is not null)
         {

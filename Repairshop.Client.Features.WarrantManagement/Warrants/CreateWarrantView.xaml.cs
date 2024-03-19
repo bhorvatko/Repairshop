@@ -1,12 +1,14 @@
-﻿using System.Windows.Controls;
+﻿using Repairshop.Client.Common.Navigation;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 /// <summary>
 /// Interaction logic for CreateWarrantView.xaml
 /// </summary>
-public partial class CreateWarrantView : UserControl
+public partial class CreateWarrantView
+    : ViewBase<CreateWarrantViewModel>
 {
-    public CreateWarrantView()
+    public CreateWarrantView(CreateWarrantViewModel viewModel)
+        : base(viewModel)
     {
         InitializeComponent();
     }

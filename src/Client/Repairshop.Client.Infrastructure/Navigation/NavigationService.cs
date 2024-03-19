@@ -1,25 +1,27 @@
-﻿using Repairshop.Client.Common.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.Navigation;
 
 namespace Repairshop.Client.Infrastructure.Navigation;
 
-public class NavigationService
+internal class NavigationService
     : INavigationService
 {
-    private readonly Func<Type, IViewModel> _viewModelFactory;
-    private readonly Action<IViewModel> _setViewModelAction;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly Func<MainView> _mainView;
 
     public NavigationService(
-        Func<Type, IViewModel> viewModelFactory,
-        Action<IViewModel> setViewModelAction)
+        IServiceProvider serviceProvider,
+        Func<MainView> mainView)
     {
-        _viewModelFactory = viewModelFactory;
-        _setViewModelAction = setViewModelAction;
+        _serviceProvider = serviceProvider;
+        _mainView = mainView;
     }
 
-    public void NavigateToView<TViewModel>() where TViewModel : IViewModel
+    public void NavigateToView<TView>() where TView : IViewBase
     {
-        IViewModel viewModel = _viewModelFactory(typeof(TViewModel));
+        TView view = _serviceProvider.GetRequiredService<TView>();
 
-        _setViewModelAction(viewModel);
+        _mainView().MainContentControl.Content = view;
     }
 }

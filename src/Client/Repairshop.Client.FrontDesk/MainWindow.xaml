@@ -1,4 +1,4 @@
-﻿<Window x:Class="Repairshop.Client.FrontDesk.MainWindow"
+﻿<nav:MainView x:Class="Repairshop.Client.FrontDesk.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,27 +9,10 @@
         xmlns:warrants="clr-namespace:Repairshop.Client.Features.WarrantManagement.Warrants;assembly=Repairshop.Client.Features.WarrantManagement"
         xmlns:dashboard="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard;assembly=Repairshop.Client.Features.WarrantManagement"
         xmlns:technicians="clr-namespace:Repairshop.Client.Features.WarrantManagement.Technicians;assembly=Repairshop.Client.Features.WarrantManagement"
+        xmlns:nav="clr-namespace:Repairshop.Client.Infrastructure.Navigation;assembly=Repairshop.Client.Infrastructure"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1024" Width="1280"
+        Title="Repairshop" Height="1024" Width="1280"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel}">
-
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type procedures:ProceduresViewModel}">
-            <procedures:ProceduresView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type warrants:CreateWarrantViewModel}">
-            <warrants:CreateWarrantView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type dashboard:DashboardViewModel}">
-            <dashboard:DashboardView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type technicians:AddTechnicianViewModel}">
-            <technicians:AddTechnicianView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type warrants:EditWarrantSequenceViewModel}">
-            <warrants:EditWarrantSequenceView />
-        </DataTemplate>
-    </Window.Resources>
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -56,8 +39,8 @@
                 </MenuItem>
             </Menu>
 
-            <ContentControl Content="{Binding CurrentViewModel}" />
-            
+            <ContentControl x:Name="contentControl" />
+
         </DockPanel>
 
         <Grid Panel.ZIndex="1000"
@@ -75,4 +58,4 @@
         </Grid>
         
     </Grid>
-</Window>
+</nav:MainView>

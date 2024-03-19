@@ -37,25 +37,25 @@ public partial class MainViewModel
     [RelayCommand]
     public void NavigateToDashboard()
     {
-        _navigationService.NavigateToView<DashboardViewModel>();
+        _navigationService.NavigateToView<DashboardView>();
     }
 
     [RelayCommand]
     public void NavigateToProceduresView()
     {
-        _navigationService.NavigateToView<ProceduresViewModel>();
+        _navigationService.NavigateToView<ProceduresView>();
     }
 
     [RelayCommand]
     public void NavigateToCreateWarrantView()
     {
-        _navigationService.NavigateToView<CreateWarrantViewModel>();
+        _navigationService.NavigateToView<CreateWarrantView>();
     }
 
     [RelayCommand]
     public void NavigateToAddTechnicianView()
     {
-        _navigationService.NavigateToView<AddTechnicianViewModel>();
+        _navigationService.NavigateToView<AddTechnicianView>();
     }
 
     public void ShowLoadingIndicator()

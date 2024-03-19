@@ -11,13 +11,14 @@ namespace Repairshop.Client.Infrastructure;
 
 public static class Setup
 {
-    public static IServiceCollection AddInfrastructure<TMainViewModel>(
+    public static IServiceCollection AddInfrastructure<TMainViewModel, TMainView>(
         this IServiceCollection services,
         IConfiguration config)
-        where TMainViewModel : IMainViewModel =>
+        where TMainViewModel : IMainViewModel
+        where TMainView : MainView =>
         services
             .AddLoadingIndicator<TMainViewModel>()
-            .AddNavigation<TMainViewModel>()
+            .AddNavigation<TMainView>()
             .AddApiClient(config)
             .AddApplicationServices()
             .AddMessageDialog();

@@ -30,7 +30,7 @@ public partial class App : Application
         services
             .AddSingleton<MainViewModel>()
             .AddSingleton<MainWindow>()
-            .AddInfrastructure<MainViewModel>(config)
+            .AddInfrastructure<MainViewModel, MainWindow>(config)
             .AddWarrantManagement();
 
         _serviceProvider = services.BuildServiceProvider();

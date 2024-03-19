@@ -1,6 +1,8 @@
-﻿namespace Repairshop.Client.Common.Interfaces;
+﻿using Repairshop.Client.Common.Navigation;
+
+namespace Repairshop.Client.Common.Interfaces;
 
 public interface INavigationService
 {
-    void NavigateToView<TViewModel>() where TViewModel : IViewModel;
+    void NavigateToView<TView>() where TView : IViewBase;
 }

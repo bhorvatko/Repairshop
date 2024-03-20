@@ -11,8 +11,15 @@ public partial class EditWarrantSequenceViewModel
     private readonly IProcedureService _procedureService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
 
-    private IEnumerable<Procedure> _availableProcedures = Enumerable.Empty<Procedure>();
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(AvailableProcedures))]
+    private IEnumerable<Procedure> _allProcedures = Enumerable.Empty<Procedure>();
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(AvailableProcedures))]
     private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
+
+    private Procedure? _selectedProcedure;
 
     public EditWarrantSequenceViewModel(
         IEnumerable<WarrantStep> initialSteps,
@@ -27,15 +34,15 @@ public partial class EditWarrantSequenceViewModel
 
     public event IDialogViewModel<IEnumerable<WarrantStep>>.DialogFinishedEventHandler? DialogFinished;
 
-    public IEnumerable<Procedure> AvailableProcedures { get => _availableProcedures; set => SetProperty(ref _availableProcedures, value); }
-    public IEnumerable<WarrantStep> Steps { get => _steps; set => SetProperty(ref _steps, value); }
+    public IEnumerable<Procedure> AvailableProcedures => AllProcedures.ExceptBy(Steps.Select(x => x.Procedure.Id), x => x.Id);
+    public Procedure? SelectedProcedure { get => _selectedProcedure; set => SetProperty(ref _selectedProcedure, value); }
 
     [RelayCommand]
     public async Task LoadProcedures()
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
-            AvailableProcedures = await _procedureService.GetProcedures();
+            AllProcedures = await _procedureService.GetProcedures();
         });
     }
 
@@ -43,5 +50,13 @@ public partial class EditWarrantSequenceViewModel
     public void FinishEditing()
     {
         DialogFinished?.Invoke(Steps);
+    }
+
+    [RelayCommand]
+    public void AddStep()
+    {
+        if (SelectedProcedure is null) return;
+
+        Steps = Steps.Append(WarrantStep.CreateNew(SelectedProcedure));
     }
 }

@@ -20,12 +20,14 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             
             <GroupBox Grid.Column="0"
                   Header="Procedure">
-                <ListBox ItemsSource="{Binding AvailableProcedures}">
+                <ListBox ItemsSource="{Binding AvailableProcedures}"
+                         SelectedItem="{Binding SelectedProcedure}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label Content="{Binding Name}" 
@@ -36,14 +38,26 @@
                 </ListBox>
             </GroupBox>
 
-            <GroupBox Grid.Column="1"
+            <Button Grid.Column="1" 
+                    Content="--"
+                    Command="{Binding AddStepCommand}"/>
+
+            <GroupBox Grid.Column="2"
                   Header="Koraci naloga">
                 <ListBox ItemsSource="{Binding Steps}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Procedure.Name}"
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Content="Radiona"
+                                          IsChecked="{Binding CanBeTransitionedToByWorkshop}" />
+                                    <CheckBox Content="Recepcija"
+                                          IsChecked="{Binding CanBeTransitionedToByFrontDesk}" />
+                                </StackPanel>
+                                <Label Content="{Binding Procedure.Name}"
                                Background="{Binding Procedure.BackgroundColorBrush}"
-                               ForceCursor="{Binding Procedure.ForegroundColorBrush}" />
+                               Foreground="{Binding Procedure.ForegroundColorBrush}" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

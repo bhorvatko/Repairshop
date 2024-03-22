@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
 
-namespace Repairshop.Server.Features.WarrantManagement.Warrants;
+namespace Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 
 internal class GetWarrantModelsSpecification
     : Specification<Warrant, WarrantQueryModel>
@@ -9,7 +9,7 @@ internal class GetWarrantModelsSpecification
     public GetWarrantModelsSpecification(Guid? technicianId)
     {
         Query.Where(x => x.TechnicianId == technicianId);
-        
+
         Query.Select(x => new WarrantQueryModel()
         {
             Id = x.Id,
@@ -17,7 +17,7 @@ internal class GetWarrantModelsSpecification
             IsUrgent = x.IsUrgent,
             TechnicianId = x.TechnicianId,
             Title = x.Title,
-            CanBeAdvancedByFrontOffice = 
+            CanBeAdvancedByFrontOffice =
                 x.CurrentStep!.NextTransition != null
                     ? x.CurrentStep!.NextTransition.CanBePerformedByFrontOffice
                     : false,
@@ -29,9 +29,9 @@ internal class GetWarrantModelsSpecification
                 x.CurrentStep!.NextTransition != null
                     ? x.CurrentStep!.NextTransition!.CanBePerformedByWorkshop
                     : false,
-            CanBeRolledBakByWorkshop = 
-                x.CurrentStep!.PreviousTransition != null 
-                    ? x.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop 
+            CanBeRolledBakByWorkshop =
+                x.CurrentStep!.PreviousTransition != null
+                    ? x.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop
                     : false,
             Procedure = new ProcedureModel()
             {

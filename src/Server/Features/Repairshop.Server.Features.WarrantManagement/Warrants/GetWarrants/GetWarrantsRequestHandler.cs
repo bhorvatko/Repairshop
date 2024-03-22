@@ -2,7 +2,7 @@
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
-namespace Repairshop.Server.Features.WarrantManagement.Warrants;
+namespace Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 
 internal class GetWarrantsRequestHandler
     : IRequestHandler<GetWarrantsRequest, GetWarrantsResponse>
@@ -19,10 +19,10 @@ internal class GetWarrantsRequestHandler
     }
 
     public async Task<GetWarrantsResponse> Handle(
-        GetWarrantsRequest request, 
+        GetWarrantsRequest request,
         CancellationToken cancellationToken)
     {
-        GetWarrantModelsSpecification specification = 
+        GetWarrantModelsSpecification specification =
             new(technicianId: request.TechnicianId);
 
         IEnumerable<WarrantQueryModel> queryModels =

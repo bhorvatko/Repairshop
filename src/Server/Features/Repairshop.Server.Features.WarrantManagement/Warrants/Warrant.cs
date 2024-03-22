@@ -1,6 +1,7 @@
 ﻿using Repairshop.Server.Common.Entities;
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
+using Repairshop.Server.Features.WarrantManagement.Warrants.CreateWarrant;
 
 namespace Repairshop.Server.Features.WarrantManagement.Warrants;
 public class Warrant
@@ -42,6 +43,28 @@ public class Warrant
 
     public void SetInitialStep() => SetCurrentStep(Steps.First());
 
+    public void SetCurrentStepByProcedureId(Guid? procedureId)
+    {
+        if (procedureId is null)
+        {
+            SetInitialStep();
+
+            return;
+        }
+
+        WarrantStep? newCurrentStep = 
+            Steps.FirstOrDefault(x => x.ProcedureId == procedureId);
+
+        if (newCurrentStep is null)
+        {
+            throw new DomainArgumentException(
+                procedureId,
+                $"The warrant sequence does not contain any steps with the procedure ID {procedureId}");
+        }
+
+        SetCurrentStep(newCurrentStep);
+    }
+
     public void AdvanceToStep(Guid nextStepId)
     {
         if (CurrentStep is null)
@@ -59,8 +82,27 @@ public class Warrant
         SetCurrentStep(CurrentStep.NextStep);
     }
 
+    public void Update(
+        string title,
+        DateTime deadline,
+        bool isUrgent,
+        IEnumerable<WarrantStep> steps)
+    {
+        Title = title;
+        Deadline = deadline;
+        IsUrgent = isUrgent;
+        Steps = steps;
+    }
+
     private void SetCurrentStep(WarrantStep step)
     {
+        if (!Steps.Contains(step))
+        {
+            throw new DomainArgumentException(
+                step,
+                "The specified step is not part of the warrant's step sequence.");
+        }
+
         CurrentStep = step;
         CurrentStepId = step.Id;
     }

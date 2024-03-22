@@ -1,4 +1,4 @@
-﻿using Repairshop.Server.Features.WarrantManagement.Warrants;
+﻿using Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
 

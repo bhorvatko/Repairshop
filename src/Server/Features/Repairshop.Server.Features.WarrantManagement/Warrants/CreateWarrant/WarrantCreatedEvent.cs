@@ -1,6 +1,6 @@
 ﻿using Repairshop.Server.Common.Events;
 
-namespace Repairshop.Server.Features.WarrantManagement.Warrants;
+namespace Repairshop.Server.Features.WarrantManagement.Warrants.CreateWarrant;
 
 internal class WarrantCreatedEvent
     : DomainEvent

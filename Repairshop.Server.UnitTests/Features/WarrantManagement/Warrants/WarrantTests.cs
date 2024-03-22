@@ -49,4 +49,30 @@ public class WarrantTests
 
         act.Should().Throw<DomainArgumentException>();
     }
+
+    [Fact]
+    public async Task Updating_a_warrant()
+    {
+        // Arrange
+        Warrant warrant = await WarrantHelper.Create();
+
+        string updatedTitle = "Updated title";
+        DateTime updatedDeadline = warrant.Deadline.AddYears(1);
+        bool updatedIsUrgent = !warrant.IsUrgent;
+        IEnumerable<WarrantStep> updatedSteps = warrant.Steps.Take(2);
+
+        // Act
+        warrant.Update(
+            updatedTitle,
+            updatedDeadline,
+            updatedIsUrgent,
+            updatedSteps);
+
+        // Assert
+        warrant.Should().Match<Warrant>(x =>
+            x.Title == updatedTitle
+                && x.Deadline == updatedDeadline
+                && x.IsUrgent == updatedIsUrgent
+                && x.Steps.Count() == updatedSteps.Count());
+    }
 }

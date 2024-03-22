@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Repairshop.Server.Common.Persistence;
-using Repairshop.Server.Features.WarrantManagement.Warrants;
+using Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 using Repairshop.Shared.Features.WarrantManagement.Technicians;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;

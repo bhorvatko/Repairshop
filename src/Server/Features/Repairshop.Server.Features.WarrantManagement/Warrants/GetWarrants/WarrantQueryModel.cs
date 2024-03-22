@@ -1,6 +1,6 @@
 ﻿using Repairshop.Shared.Features.WarrantManagement.Procedures;
 
-namespace Repairshop.Server.Features.WarrantManagement.Warrants;
+namespace Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 
 internal class WarrantQueryModel
 {

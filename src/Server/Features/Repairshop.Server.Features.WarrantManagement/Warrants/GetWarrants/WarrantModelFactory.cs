@@ -2,7 +2,7 @@
 using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
-namespace Repairshop.Server.Features.WarrantManagement.Warrants;
+namespace Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 
 internal class WarrantModelFactory
 {
@@ -31,8 +31,8 @@ internal class WarrantModelFactory
     private bool CanBeTransitioned(
         bool canBeTransitionedByFrontOffice,
         bool canBeTransitionedByWorkshop) =>
-        (canBeTransitionedByFrontOffice && ClientIsFrontOffice())
-            || (canBeTransitionedByWorkshop && ClientIsWorkshop());
+        canBeTransitionedByFrontOffice && ClientIsFrontOffice()
+            || canBeTransitionedByWorkshop && ClientIsWorkshop();
 
     private bool ClientIsFrontOffice() =>
         GetClientContext() == RepairshopClientContext.FrontOffice;
@@ -40,6 +40,6 @@ internal class WarrantModelFactory
     private bool ClientIsWorkshop() =>
         GetClientContext() == RepairshopClientContext.Workshop;
 
-    private string GetClientContext() => 
+    private string GetClientContext() =>
         _clientContextProvider.GetClientContext();
 }

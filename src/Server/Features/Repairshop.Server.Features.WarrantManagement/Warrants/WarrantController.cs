@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Repairshop.Server.Common.Controllers;
+using Repairshop.Server.Features.WarrantManagement.Warrants.UpdateWarrant;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Warrants;
@@ -30,6 +31,16 @@ public class WarrantController
     [HttpGet]
     public async Task<IActionResult> GetWarrants(
         [FromQuery] GetWarrantsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateWarrant(
+        [FromBody] UpdateWarrantRequest request,
         CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);

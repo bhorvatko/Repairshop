@@ -3,7 +3,7 @@ using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
-namespace Repairshop.Server.Features.WarrantManagement.Warrants;
+namespace Repairshop.Server.Features.WarrantManagement.Warrants.AdvanceWarrant;
 
 internal class AdvanceWarrantRequestHandler
     : IRequestHandler<AdvanceWarrantRequest, AdvanceWarrantResponse>

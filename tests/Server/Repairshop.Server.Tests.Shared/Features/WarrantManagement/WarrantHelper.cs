@@ -10,7 +10,7 @@ public static class WarrantHelper
         IEnumerable<WarrantStep>? steps = null) =>
         Warrant.Create(
             title,
-            deadline ?? DateTime.MaxValue,
+            deadline ?? new DateTime(2000, 1, 1),
             isUrgent,
             steps ?? await WarrantStepHelper.CreateStepSequence(3));
 }

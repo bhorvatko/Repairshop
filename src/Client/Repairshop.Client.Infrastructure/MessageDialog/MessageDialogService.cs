@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using Repairshop.Client.Common.Interfaces;
+using System.Windows;
 
 namespace Repairshop.Client.Infrastructure.MessageDialog;
 
 public class MessageDialogService
+    : IMessageDialogService
 {
     public void ShowMessage(Exception exception) =>
         MessageBox.Show(
@@ -10,4 +12,11 @@ public class MessageDialogService
             caption: "Unexpected error",
             button: MessageBoxButton.OK,
             icon: MessageBoxImage.Error);
+
+    public void ShowMessage(string title, string message) =>
+        MessageBox.Show(
+            messageBoxText: message,
+            caption: title,
+            button: MessageBoxButton.OK,
+            icon: MessageBoxImage.Information);
 }

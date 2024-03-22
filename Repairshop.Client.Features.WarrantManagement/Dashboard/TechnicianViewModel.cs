@@ -22,4 +22,6 @@ public class TechnicianViewModel
         IEnumerable<WarrantViewModel> warrants) =>
         new TechnicianViewModel(name, warrants);
 
+    public static TechnicianViewModel CreateUnassignedTechnician(IEnumerable<WarrantViewModel> warrants) =>
+        new TechnicianViewModel("< Nedodjeljeno >", warrants);
 }

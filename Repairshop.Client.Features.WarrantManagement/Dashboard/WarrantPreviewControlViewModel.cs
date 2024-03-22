@@ -8,7 +8,7 @@ public class WarrantPreviewControlViewModel
 
     public WarrantViewModel Warrant { get; set; }
     public string LabelContent { get => _labelContent; set => SetProperty(ref _labelContent, value); }
-    public bool PlayUpdatedAnimaton { get; set; }
+    public bool PlayUpdateAnimation { get; set; }
 
     public WarrantPreviewControlViewModel(WarrantViewModel warrant)
     {

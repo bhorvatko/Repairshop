@@ -1,5 +1,4 @@
 ﻿using Repairshop.Client.Common.Interfaces;
-using Repairshop.Client.Infrastructure.MessageDialog;
 
 namespace Repairshop.Client.Infrastructure.LoadingIndicator;
 
@@ -7,11 +6,11 @@ public class LoadingIndicatorService
     : ILoadingIndicatorService
 {
     private readonly IMainViewModel _mainViewModel;
-    private readonly MessageDialogService _messageDialogService;
+    private readonly IMessageDialogService _messageDialogService;
 
     public LoadingIndicatorService(
         IMainViewModel mainViewModel,
-        MessageDialogService messageDialogService)
+        IMessageDialogService messageDialogService)
     {
         _mainViewModel = mainViewModel;
         _messageDialogService = messageDialogService;

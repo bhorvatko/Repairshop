@@ -16,12 +16,12 @@ internal class AdvanceWarrantRequestHandler
     }
 
     public async Task<AdvanceWarrantResponse> Handle(
-        AdvanceWarrantRequest request, 
+        AdvanceWarrantRequest request,
         CancellationToken cancellationToken)
     {
         GetWarrantSpecification query = new(request.WarrantId);
 
-        Warrant? warrant = 
+        Warrant? warrant =
             await _warrants.FirstOrDefaultAsync(query, cancellationToken);
 
         if (warrant is null)

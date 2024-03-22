@@ -33,7 +33,7 @@ internal class ProcedureService
 
         return response
             .Procedures
-            .Select(x => Procedure.Create(x.Id, x.Name, x.Color));
+            .Select(x => x.ToViewModel());
     }
 
     public async Task UpdateProcedure(Guid id, string name, string color)

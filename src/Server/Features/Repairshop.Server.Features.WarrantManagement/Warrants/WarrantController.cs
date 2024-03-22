@@ -26,4 +26,14 @@ public class WarrantController
 
         return Ok(response);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetWarrants(
+        [FromQuery] GetWarrantsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

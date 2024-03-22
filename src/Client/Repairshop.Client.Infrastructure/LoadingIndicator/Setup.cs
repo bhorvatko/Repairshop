@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Interfaces;
-using Repairshop.Client.Infrastructure.MessageDialog;
 
 namespace Repairshop.Client.Infrastructure.LoadingIndicator;
 internal static class Setup
@@ -11,5 +10,5 @@ internal static class Setup
             .AddSingleton<ILoadingIndicatorService, LoadingIndicatorService>(sp => 
                 new LoadingIndicatorService(
                     sp.GetRequiredService<TMainViewModel>(),
-                    sp.GetRequiredService<MessageDialogService>()));
+                    sp.GetRequiredService<IMessageDialogService>()));
 }

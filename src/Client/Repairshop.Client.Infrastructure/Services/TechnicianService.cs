@@ -1,6 +1,7 @@
 ﻿using Repairshop.Client.Features.WarrantManagement.Dashboard;
-using Repairshop.Client.Features.WarrantManagement.Procedures;
+using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Technicians;
+using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Infrastructure.Services;
 
@@ -32,13 +33,6 @@ internal class TechnicianService
 
         return response
             .Technicians
-            .Select(x => TechnicianViewModel.Create(
-                x.Name,
-                x.Warrants.Select(w => 
-                    WarrantViewModel.Create(
-                        w.IsUrgent,
-                        w.Deadline,
-                        Procedure.Create(w.Procedure.Id, w.Procedure.Name, w.Procedure.Color),
-                        w.Title))));
+            .Select(x => x.ToViewModel());
     }
 }

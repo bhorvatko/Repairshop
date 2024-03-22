@@ -47,6 +47,9 @@ internal class ApiClient
         return response;
     }
 
+    public Task<TResponse> Get<TResponse>(string resource, object request) =>
+        Get<TResponse>(resource.AppendQuery(request));
+
     public async Task<TResponse> Put<TRequest, TResponse>(
         string resource,
         TRequest request)

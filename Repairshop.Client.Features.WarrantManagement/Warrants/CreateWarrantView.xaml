@@ -11,7 +11,17 @@
              d:DataContext="{d:DesignInstance Type=local:CreateWarrantViewModel}">
     <Grid>
 
-        <local:EditWarrantControl ViewModel="{Binding EditWarrantViewModel}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <local:EditWarrantControl Grid.Row="0"
+                                  ViewModel="{Binding EditWarrantViewModel}" />
+
+        <Button Grid.Row="1"
+                Content="Pokreni novi nalog"
+                Command="{Binding CreateWarrantCommand}"/>
 
     </Grid>
 </nav:ViewBase>

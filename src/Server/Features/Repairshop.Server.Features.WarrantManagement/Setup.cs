@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Server.Features.WarrantManagement.Data;
+using Repairshop.Server.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement;
 
@@ -19,5 +20,6 @@ public static class Setup
                 builder
                     .UseSqlServer(getDbConnectionString())
                     .AddInterceptors(interceptorTypes.Select(t => (IInterceptor)serviceProvider.GetRequiredService(t)));
-            });
+            })
+            .AddTransient<WarrantModelFactory>();
 }

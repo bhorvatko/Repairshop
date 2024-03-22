@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Repairshop.Shared.Common.ClientContext;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
-using System.Reflection;
 
 namespace System.Net.Http;
 
@@ -14,8 +14,8 @@ public static class HttpClientExtensions
         return client.GetFromJsonAsync<TValue>(requestUri.AppendQuery(request));
     }
 
-    private static string GetQueryParameterString(
-        this PropertyInfo property, 
-        object request) =>
-        property.Name + "=" + property.GetValue(request)?.ToString() ?? "";
+    public static void AddClientContextHeader(
+        this HttpClient client, 
+        string clientContext) =>
+        client.DefaultRequestHeaders.Add(ClientContextConstants.ClientContextHeader, clientContext);
 }

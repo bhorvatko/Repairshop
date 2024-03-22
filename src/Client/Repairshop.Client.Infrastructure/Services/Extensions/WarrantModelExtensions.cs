@@ -10,5 +10,7 @@ internal static class WarrantModelExtensions
             model.IsUrgent,
             model.Deadline,
             model.Procedure.ToViewModel(),
-            model.Title);
+            model.Title,
+            model.CanBeAdvanced,
+            model.CanBeRolledBack);
 }

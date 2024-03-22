@@ -8,10 +8,14 @@ internal class GetWarrantsRequestHandler
     : IRequestHandler<GetWarrantsRequest, GetWarrantsResponse>
 {
     private readonly IRepository<Warrant> _warrants;
+    private readonly WarrantModelFactory _warrantModelFactory;
 
-    public GetWarrantsRequestHandler(IRepository<Warrant> warrants)
+    public GetWarrantsRequestHandler(
+        IRepository<Warrant> warrants,
+        WarrantModelFactory warrantModelFactory)
     {
         _warrants = warrants;
+        _warrantModelFactory = warrantModelFactory;
     }
 
     public async Task<GetWarrantsResponse> Handle(
@@ -21,9 +25,12 @@ internal class GetWarrantsRequestHandler
         GetWarrantModelsSpecification specification = 
             new(technicianId: request.TechnicianId);
 
+        IEnumerable<WarrantQueryModel> queryModels =
+            await _warrants.ListAsync(specification, cancellationToken);
+
         return new GetWarrantsResponse()
         {
-            Warrants = await _warrants.ListAsync(specification, cancellationToken)
+            Warrants = _warrantModelFactory.Create(queryModels)
         };
     }
 }

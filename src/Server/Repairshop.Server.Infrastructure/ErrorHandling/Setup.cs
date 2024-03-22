@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Repairshop.Server.Common.Exceptions;
 
 namespace Repairshop.Server.Infrastructure.ErrorHandling;
 internal static class Setup
@@ -10,6 +9,7 @@ internal static class Setup
             .AddExceptionHandler<DomainArgumentExceptionHandler>()
             .AddExceptionHandler<EntityNotFoundExceptionHandler>()
             .AddExceptionHandler<DomainInvalidOperationExceptionHandler>()
+            .AddExceptionHandler<BadRequestExceptionHandler>()
             .AddProblemDetails();
 
     public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app) =>

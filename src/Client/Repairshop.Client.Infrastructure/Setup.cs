@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Infrastructure.ApiClient;
+using Repairshop.Client.Infrastructure.ClientContext;
 using Repairshop.Client.Infrastructure.LoadingIndicator;
 using Repairshop.Client.Infrastructure.MessageDialog;
 using Repairshop.Client.Infrastructure.Navigation;
@@ -13,7 +14,8 @@ public static class Setup
 {
     public static IServiceCollection AddInfrastructure<TMainViewModel, TMainView>(
         this IServiceCollection services,
-        IConfiguration config)
+        IConfiguration config,
+        string clientContext)
         where TMainViewModel : IMainViewModel
         where TMainView : MainView =>
         services
@@ -21,5 +23,6 @@ public static class Setup
             .AddNavigation<TMainView>()
             .AddApiClient(config)
             .AddApplicationServices()
-            .AddMessageDialog();
+            .AddMessageDialog()
+            .AddClientContext(clientContext);
 }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Features.WarrantManagement;
-using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Infrastructure;
 using Repairshop.Client.Infrastructure.ApiClient;
+using Repairshop.Shared.Common.ClientContext;
 using System.Windows;
 
 namespace Repairshop.Client.FrontDesk;
@@ -30,7 +30,7 @@ public partial class App : Application
         services
             .AddSingleton<MainViewModel>()
             .AddSingleton<MainWindow>()
-            .AddInfrastructure<MainViewModel, MainWindow>(config)
+            .AddInfrastructure<MainViewModel, MainWindow>(config, RepairshopClientContext.FrontOffice)
             .AddWarrantManagement();
 
         _serviceProvider = services.BuildServiceProvider();

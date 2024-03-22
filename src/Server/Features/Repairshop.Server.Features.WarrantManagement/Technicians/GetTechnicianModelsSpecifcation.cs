@@ -1,27 +1,42 @@
 ﻿using Ardalis.Specification;
+using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
-using Repairshop.Shared.Features.WarrantManagement.Technicians;
-using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
 internal class GetTechnicianModelsSpecifcation
-    : Specification<Technician, TechnicianModel>
+    : Specification<Technician, TechnicianQueryModel>
 {
     public GetTechnicianModelsSpecifcation()
     {
         Query.AsNoTracking();
 
-        Query.Select(x => new TechnicianModel()
+        Query.Select(x => new TechnicianQueryModel()
         {
             Id = x.Id,
             Name = x.Name,
-            Warrants = x.Warrants.Select(w => new WarrantModel()
+            Warrants = x.Warrants.Select(w => new WarrantQueryModel()
             {
                 Id = w.Id,
                 Deadline = w.Deadline,
                 IsUrgent = w.IsUrgent,
                 TechnicianId = w.TechnicianId,
                 Title = w.Title,
+                CanBeAdvancedByFrontOffice =
+                w.CurrentStep!.NextTransition != null
+                    ? w.CurrentStep!.NextTransition.CanBePerformedByFrontOffice
+                    : false,
+                CanBeRolledBackByFrontOffice =
+                w.CurrentStep!.PreviousTransition != null
+                     ? w.CurrentStep!.PreviousTransition!.CanBePerformedByFrontOffice
+                     : false,
+                CanBeAdvancedByWorkshop =
+                w.CurrentStep!.NextTransition != null
+                    ? w.CurrentStep!.NextTransition!.CanBePerformedByWorkshop
+                    : false,
+                CanBeRolledBakByWorkshop =
+                w.CurrentStep!.PreviousTransition != null
+                    ? w.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop
+                    : false,
                 Procedure = new ProcedureModel()
                 {
                     Id = w.CurrentStep!.Procedure.Id,

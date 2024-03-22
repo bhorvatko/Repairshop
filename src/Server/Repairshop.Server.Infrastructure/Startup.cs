@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Server.Infrastructure.Authorization;
+using Repairshop.Server.Infrastructure.ClientContext;
 using Repairshop.Server.Infrastructure.ErrorHandling;
 using Repairshop.Server.Infrastructure.Mediator;
 using Repairshop.Server.Infrastructure.Notifications;
@@ -26,7 +27,8 @@ public static class Startup
             .AddErrorHandling()
             .AddApiKey()
             .AddNotifications()
-            .AddPersistence();
+            .AddPersistence()
+            .AddClientContext();
 
         return services;
     }

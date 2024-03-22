@@ -10,7 +10,7 @@ public static class WarrantStepHelper
         IEnumerable<Procedure> procedures = ProcedureHelper.Create(numberOfSteps);
 
         IEnumerable<CreateWarrantStepArgs> stepArgs =
-            procedures.Select(x => new CreateWarrantStepArgs(x.Id, false, false));
+            procedures.Select(x => new CreateWarrantStepArgs(x.Id, true, true));
 
         GetProceduresByIdDelegate getProceduresById =
             ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));

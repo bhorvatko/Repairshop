@@ -5,6 +5,7 @@ using Repairshop.Server.Features.WarrantManagement.Data;
 using Repairshop.Server.Features.WarrantManagement.Procedures;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
+using Repairshop.Shared.Common.ClientContext;
 using Xunit.Abstractions;
 
 namespace Repairshop.Server.IntegrationTests.Common;
@@ -26,6 +27,7 @@ public class IntegrationTestBase
 
         _client = factory.CreateClient();
         _client.DefaultRequestHeaders.Add("X-API-KEY", TestConstants.ApiKey);
+        _client.AddClientContextHeader(RepairshopClientContext.FrontOffice);
 
         var scope = factory.Services.CreateScope();
         

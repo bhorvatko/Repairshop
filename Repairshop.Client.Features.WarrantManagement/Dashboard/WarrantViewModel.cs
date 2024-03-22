@@ -1,4 +1,6 @@
-﻿using Repairshop.Client.Features.WarrantManagement.Procedures;
+﻿using Repairshop.Client.Common.Extensions;
+using Repairshop.Client.Features.WarrantManagement.Procedures;
+using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
@@ -26,6 +28,8 @@ public class WarrantViewModel
     public string Title { get; private set; }
     public bool CanBeRolledBack { get; private set; }
     public bool CanBeAdvanced { get; private set; }
+    public Visibility CanBeRolledBackVisibility => CanBeRolledBack.ToVisibility();
+    public Visibility CanBeAdvancedVisibility => CanBeAdvanced.ToVisibility();
 
     public static WarrantViewModel Create(
         bool isUrgent,

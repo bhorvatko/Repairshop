@@ -19,7 +19,7 @@ public class WarrantStepTests
         IEnumerable<Procedure> procedures = ProcedureHelper.Create(numberOfSteps);
 
         IEnumerable<CreateWarrantStepArgs> stepArgs = 
-            procedures.Select(x => new CreateWarrantStepArgs(x.Id, false, false));
+            procedures.Select(x => new CreateWarrantStepArgs(x.Id, true, true));
 
         GetProceduresByIdDelegate getProceduresById =
             ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));
@@ -94,7 +94,7 @@ public class WarrantStepTests
         IEnumerable<Procedure> procedures = ProcedureHelper.Create(3);
 
         IEnumerable<CreateWarrantStepArgs> stepArgs =
-            procedures.Select(x => new CreateWarrantStepArgs(x.Id, false, false));
+            procedures.Select(x => new CreateWarrantStepArgs(x.Id, true, true));
 
         GetProceduresByIdDelegate getProceduresById =
             ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));
@@ -131,7 +131,7 @@ public class WarrantStepTests
         IEnumerable<Procedure> procedures = ProcedureHelper.Create(3);
 
         IEnumerable<CreateWarrantStepArgs> stepArgs =
-            procedures.Select(x => new CreateWarrantStepArgs(x.Id, false, false));
+            procedures.Select(x => new CreateWarrantStepArgs(x.Id, true, true));
 
         GetProceduresByIdDelegate getProceduresById =
             ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));
@@ -154,7 +154,7 @@ public class WarrantStepTests
         IEnumerable<Procedure> procedures = ProcedureHelper.Create(3);
 
         IEnumerable<CreateWarrantStepArgs> stepArgs =
-            procedures.Select(x => new CreateWarrantStepArgs(x.Id, false, false));
+            procedures.Select(x => new CreateWarrantStepArgs(x.Id, true, true));
 
         GetProceduresByIdDelegate getProceduresById =
             ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));
@@ -197,5 +197,31 @@ public class WarrantStepTests
 
         transitionBetweenSteps.CanBePerformedByFrontOffice.Should().BeTrue();
         transitionBetweenSteps.CanBePerformedByWorkshop.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Creating_a_step_which_is_not_advancable_should_fail()
+    {
+        // Arrange
+        IEnumerable<Procedure> procedures = ProcedureHelper.Create(2);
+
+        IEnumerable<CreateWarrantStepArgs> stepArgs = new[]
+        {
+            new CreateWarrantStepArgs(procedures.First().Id, false, false),
+            new CreateWarrantStepArgs(procedures.Last().Id, false, false)
+        };
+
+        GetProceduresByIdDelegate getProceduresById =
+            ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));
+
+        // Act
+        Func<Task> act = 
+            async () => await WarrantStep.CreateStepSequence(stepArgs, getProceduresById);
+
+        // Assert
+        await act
+            .Should()
+            .ThrowAsync<DomainArgumentException>()
+            .Where(x => x.InvalidArgument == stepArgs);
     }
 }

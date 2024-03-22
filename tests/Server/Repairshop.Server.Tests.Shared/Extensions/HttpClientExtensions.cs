@@ -16,6 +16,9 @@ public static class HttpClientExtensions
 
     public static void AddClientContextHeader(
         this HttpClient client, 
-        string clientContext) =>
+        string clientContext)
+    {
+        client.DefaultRequestHeaders.Remove(ClientContextConstants.ClientContextHeader);
         client.DefaultRequestHeaders.Add(ClientContextConstants.ClientContextHeader, clientContext);
+    }
 }

@@ -37,6 +37,13 @@ public class WarrantStep
                 "A procedure cannot occur more than once in a step sequence.");
         }
 
+        if (stepArgs.Skip(1).Any(x => !x.CanBeTransitionedToByFrontDesk && !x.CanBeTransitionedToByWorkshop))
+        {
+            throw new DomainArgumentException(
+                stepArgs,
+                "All steps (except for the first) must be advancable to by at least the front desk or workshop");
+        }
+
         IEnumerable<Procedure> procedures =
             await getProcedures(stepArgs.Select(x => x.ProcedureId));
 
@@ -77,7 +84,7 @@ public class WarrantStep
         {
             Id = Guid.NewGuid(),
             Procedure = procedure,
-            ProcedureId = procedure.Id
+            ProcedureId = procedure.Id,
         };
     }
 

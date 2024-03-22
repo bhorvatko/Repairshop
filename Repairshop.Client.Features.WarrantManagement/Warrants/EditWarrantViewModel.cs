@@ -6,7 +6,7 @@ using Repairshop.Client.Features.WarrantManagement.Procedures;
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public partial class EditWarrantViewModel
-    : ObservableObject
+    : ObservableObject, IViewModel
 {
     private readonly IDialogService _dialogService;
 

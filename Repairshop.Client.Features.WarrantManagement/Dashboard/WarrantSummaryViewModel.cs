@@ -4,9 +4,10 @@ using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
-public class WarrantViewModel
+public class WarrantSummaryViewModel
 {
-    private WarrantViewModel(
+    private WarrantSummaryViewModel(
+        Guid id,
         bool isUrgent,
         DateTime deadline,
         Procedure procedure,
@@ -14,6 +15,7 @@ public class WarrantViewModel
         bool canBeRolledBack,
         bool canBeAdvanced) 
     {
+        Id = id;
         IsUrgent = isUrgent;
         Deadline = deadline;
         Procedure = procedure;
@@ -22,6 +24,7 @@ public class WarrantViewModel
         CanBeAdvanced = canBeAdvanced;
     }
 
+    public Guid Id { get; private set; }
     public bool IsUrgent { get; private set; }
     public DateTime Deadline { get; private set; }
     public Procedure Procedure { get; private set; }
@@ -31,14 +34,16 @@ public class WarrantViewModel
     public Visibility CanBeRolledBackVisibility => CanBeRolledBack.ToVisibility();
     public Visibility CanBeAdvancedVisibility => CanBeAdvanced.ToVisibility();
 
-    public static WarrantViewModel Create(
+    public static WarrantSummaryViewModel Create(
+        Guid id,
         bool isUrgent,
         DateTime deadline,
         Procedure procedure,
         string title,
         bool canBeRolledBack,
         bool canBeAdvanced) =>
-        new WarrantViewModel(
+        new WarrantSummaryViewModel(
+            id,
             isUrgent,
             deadline,
             procedure,

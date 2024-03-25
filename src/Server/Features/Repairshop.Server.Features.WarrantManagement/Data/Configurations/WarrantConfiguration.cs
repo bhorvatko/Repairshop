@@ -12,6 +12,9 @@ internal class WarrantConfiguration
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder
             .Property(x => x.Title)
             .HasMaxLength(100);

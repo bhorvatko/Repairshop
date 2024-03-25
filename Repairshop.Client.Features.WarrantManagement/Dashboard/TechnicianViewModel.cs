@@ -4,24 +4,24 @@ namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 public class TechnicianViewModel
     : ObservableObject
 {
-    private IEnumerable<WarrantViewModel> _warrants = Enumerable.Empty<WarrantViewModel>();
+    private IEnumerable<WarrantSummaryViewModel> _warrants = Enumerable.Empty<WarrantSummaryViewModel>();
 
     private TechnicianViewModel(
         string name,
-        IEnumerable<WarrantViewModel> warrants)
+        IEnumerable<WarrantSummaryViewModel> warrants)
     {
         Warrants = warrants;
         Name = name;
     }
 
-    public IEnumerable<WarrantViewModel> Warrants { get => _warrants; set => SetProperty(ref _warrants, value); }
+    public IEnumerable<WarrantSummaryViewModel> Warrants { get => _warrants; set => SetProperty(ref _warrants, value); }
     public string Name { get; set; }
 
     public static TechnicianViewModel Create(
         string name,
-        IEnumerable<WarrantViewModel> warrants) =>
+        IEnumerable<WarrantSummaryViewModel> warrants) =>
         new TechnicianViewModel(name, warrants);
 
-    public static TechnicianViewModel CreateUnassignedTechnician(IEnumerable<WarrantViewModel> warrants) =>
+    public static TechnicianViewModel CreateUnassignedTechnician(IEnumerable<WarrantSummaryViewModel> warrants) =>
         new TechnicianViewModel("< Nedodjeljeno >", warrants);
 }

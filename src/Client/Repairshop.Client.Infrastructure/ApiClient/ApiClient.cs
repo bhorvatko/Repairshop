@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using Repairshop.Client.Infrastructure.ClientContext;
+using Repairshop.Shared.Common.ClientContext;
 using RestSharp;
 
 namespace Repairshop.Client.Infrastructure.ApiClient;
@@ -6,13 +8,16 @@ internal class ApiClient
 {
     private readonly ApiOptions _apiOptions;
     private readonly RestClient _restClient;
+    private readonly ClientContextProvider _clientContextProvider;
 
     public ApiClient(
         IOptions<ApiOptions> apiOptions, 
-        RestClient restClient)
+        RestClient restClient,
+        ClientContextProvider clientContextProvider)
     {
         _apiOptions = apiOptions.Value;
         _restClient = restClient;
+        _clientContextProvider = clientContextProvider;
     }
 
     public async Task<TResponse> Post<TRequest, TResponse>(
@@ -70,5 +75,8 @@ internal class ApiClient
 
     private RestRequest CreateRequest(string resource) =>
         new RestRequest(resource)
-            .AddHeader("X-API-KEY", _apiOptions.ApiKey);
+            .AddHeader("X-API-KEY", _apiOptions.ApiKey)
+            .AddHeader(
+                ClientContextConstants.ClientContextHeader, 
+                _clientContextProvider.ClientContext);
 }

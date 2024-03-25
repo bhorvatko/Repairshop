@@ -5,12 +5,13 @@ namespace Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 internal static class WarrantModelExtensions
 {
-    public static WarrantViewModel ToViewModel(this WarrantModel model) =>
-        WarrantViewModel.Create(
+    public static WarrantSummaryViewModel ToViewModel(this WarrantModel model) =>
+        WarrantSummaryViewModel.Create(
+            model.Id,
             model.IsUrgent,
             model.Deadline,
             model.Procedure.ToViewModel(),
             model.Title,
-            model.CanBeAdvanced,
-            model.CanBeRolledBack);
+            model.CanBeRolledBack,
+            model.CanBeAdvanced);
 }

@@ -53,4 +53,15 @@ public class WarrantStep
     {
         return new WarrantStep(procedure, true, true);
     }
+
+    public static WarrantStep Create(
+        Procedure procedure,
+        bool canBeTransitionedToByFrontDesk,
+        bool canBeTransitionedToByWorkshop)
+    {
+        return new WarrantStep(
+            procedure, 
+            canBeTransitionedToByFrontDesk, 
+            canBeTransitionedToByWorkshop);
+    }
 }

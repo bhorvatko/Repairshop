@@ -92,6 +92,8 @@ public class Warrant
         Deadline = deadline;
         IsUrgent = isUrgent;
         Steps = steps;
+
+        CurrentStep = null;
     }
 
     private void SetCurrentStep(WarrantStep step)

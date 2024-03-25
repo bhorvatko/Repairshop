@@ -11,6 +11,9 @@ internal class TechnicianConfiguration
     {
         builder.ToTable(PersistenceConstants.Tables.Technicians);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder
             .Property(x => x.Name)
             .HasMaxLength(100);

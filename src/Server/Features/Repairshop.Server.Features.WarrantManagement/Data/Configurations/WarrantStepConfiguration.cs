@@ -12,6 +12,9 @@ internal class WarrantStepConfiguration
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder
             .HasOne(x => x.Procedure)
             .WithMany()

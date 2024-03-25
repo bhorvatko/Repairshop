@@ -10,12 +10,18 @@ public partial class EditWarrantViewModel
 {
     private readonly IDialogService _dialogService;
 
+    [ObservableProperty]
     private string _subject = string.Empty;
+
+    [ObservableProperty]
     private DateTime _deadline = DateTime.Now;
+
+    [ObservableProperty]
     private bool _isUrgent = false;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SequenceProcedures))]
+    private WarrantStep? _currentStep;
+
     private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
 
     public EditWarrantViewModel(IDialogService dialogService)
@@ -23,10 +29,23 @@ public partial class EditWarrantViewModel
         _dialogService = dialogService;
     }
 
-    public string Subject { get => _subject; set => SetProperty(ref _subject, value); }
-    public DateTime Deadline { get => _deadline; set => SetProperty(ref _deadline, value); }
-    public bool IsUrgent { get => _isUrgent; set => SetProperty(ref _isUrgent, value); }
     public IEnumerable<Procedure> SequenceProcedures => Steps.Select(x => x.Procedure);
+
+    public IEnumerable<WarrantStep> Steps
+    {
+        get => _steps;
+        set
+        {
+            SetProperty(ref _steps, value);
+
+            OnPropertyChanged(nameof(SequenceProcedures));
+
+            if (!_steps.Any(s => s.Procedure.Id == CurrentStep?.Procedure.Id))
+            {
+                CurrentStep = _steps.FirstOrDefault();
+            }
+        }
+    }
 
     [RelayCommand]
     public void EditWarrantSequence()

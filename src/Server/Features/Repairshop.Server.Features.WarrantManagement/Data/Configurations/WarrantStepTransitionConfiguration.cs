@@ -13,6 +13,9 @@ internal class WarrantStepTransitionConfiguration
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder
             .HasOne(x => x.PreviousStep)
             .WithOne(x => x.NextTransition)

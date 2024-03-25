@@ -1,4 +1,5 @@
 ﻿using Repairshop.Client.Features.WarrantManagement.Dashboard;
+using Repairshop.Client.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Features.WarrantManagement.Interfaces;
 
@@ -10,7 +11,16 @@ public interface IWarrantService
         bool isUrgent,
         IEnumerable<CreateWarrantStepDto> steps);
 
-    Task<IEnumerable<WarrantViewModel>> GetUnassignedWarrants();
+    Task UpdateWarrant(
+        Guid id,
+        string title,
+        DateTime deadline,
+        bool isUrgent,
+        IEnumerable<CreateWarrantStepDto> steps,
+        Guid? currentStepProcedureId);
+
+    Task<IEnumerable<WarrantSummaryViewModel>> GetUnassignedWarrants();
+    Task<WarrantViewModel> GetWarrant(Guid id);
 }
 
 public class CreateWarrantStepDto

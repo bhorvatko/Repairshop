@@ -12,4 +12,6 @@ public class WarrantModel
     public required ProcedureModel Procedure { get; set; }
     public required bool CanBeAdvanced { get; set; }
     public required bool CanBeRolledBack { get; set; }
+    public required Guid? NextStepId { get; set; }
+    public required Guid? PreviousStepId { get; set; }
 }

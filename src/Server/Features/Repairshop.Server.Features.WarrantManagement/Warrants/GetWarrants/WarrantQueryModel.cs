@@ -14,4 +14,6 @@ internal class WarrantQueryModel
     public required bool CanBeRolledBackByFrontOffice { get; set; }
     public required bool CanBeAdvancedByWorkshop { get; set; }
     public required bool CanBeRolledBakByWorkshop { get; set; }
+    public required Guid? NextStepId { get; set; }
+    public required Guid? PreviousStepId { get; set; }
 }

@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public partial class CreateWarrantViewModel
-    : IViewModel
+    : ViewModelBase
 {
     private readonly IWarrantService _warrantService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;

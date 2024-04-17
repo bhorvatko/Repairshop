@@ -13,4 +13,5 @@ public class ViewBase<TViewModel>
 
 public interface IViewBase
 {
+    object DataContext { get; }
 }

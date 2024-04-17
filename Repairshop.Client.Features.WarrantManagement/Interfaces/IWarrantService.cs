@@ -21,6 +21,8 @@ public interface IWarrantService
 
     Task<IEnumerable<WarrantSummaryViewModel>> GetUnassignedWarrants();
     Task<WarrantViewModel> GetWarrant(Guid id);
+    Task AdvanceWarrant(Guid warrantId, Guid stepId);
+    Task RollbackWarrant(Guid warrantId, Guid stepId);
 }
 
 public class CreateWarrantStepDto

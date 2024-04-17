@@ -10,6 +10,8 @@ internal class WarrantService
     : IWarrantService
 {
     private const string WarrantsEndpoint = "Warrants";
+    private const string AdvanceWarrantEndpoint = $"{WarrantsEndpoint}/Advance";
+    private const string RollbackWarrantEndpoint = $"{WarrantsEndpoint}/Rollback";
 
     private readonly ApiClient.ApiClient _apiClient;
 
@@ -83,6 +85,32 @@ internal class WarrantService
             response.Deadline,
             response.Title,
             response.WarrantSteps.Select(x => x.ToViewModel()));
+    }
+
+    public async Task AdvanceWarrant(Guid warrantId, Guid stepId)
+    {
+        AdvanceWarrantRequest request = new()
+        {
+            StepId = stepId,
+            WarrantId = warrantId
+        };
+
+        await _apiClient.Post<AdvanceWarrantRequest, AdvanceWarrantResponse>(
+            AdvanceWarrantEndpoint, 
+            request);
+    }
+
+    public async Task RollbackWarrant(Guid warrantId, Guid stepId)
+    {
+        RollbackWarrantRequest request = new()
+        {
+            StepId = stepId,
+            WarrantId = warrantId
+        };
+
+        await _apiClient.Post<RollbackWarrantRequest, RollbackWarrantResponse>(
+            RollbackWarrantEndpoint,
+            request);
     }
 
     private static WarrantStepDto CreateWarrantStepDto(CreateWarrantStepDto createDto) =>

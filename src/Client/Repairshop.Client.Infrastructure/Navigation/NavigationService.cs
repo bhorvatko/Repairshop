@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
-using System.Windows.Controls;
 
 namespace Repairshop.Client.Infrastructure.Navigation;
 
@@ -23,7 +22,7 @@ internal class NavigationService
     {
         TView view = _serviceProvider.GetRequiredService<TView>();
 
-        _mainView().MainContentControl.Content = view;
+        NavigateToView(view);
     }
 
     public void NavigateToView<TView, TViewModel>(Action<TViewModel> viewModelConfig)
@@ -33,6 +32,16 @@ internal class NavigationService
 
         viewModelConfig((TViewModel)view.DataContext);
 
-        _mainView().MainContentControl.Content = view;
+        NavigateToView(view);
     }
+
+    private void NavigateToView<TView>(TView view)
+    {
+        IViewBase? currentView = _mainView().MainContentControl?.Content as IViewBase;
+        IViewModel? currentViewModel = currentView?.DataContext as IViewModel;
+
+        currentViewModel?.OnNavigatedAway();
+
+        _mainView().MainContentControl.Content = view;
+    }    
 }

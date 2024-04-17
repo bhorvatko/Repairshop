@@ -43,4 +43,34 @@ public partial class WarrantPreviewControlViewModel
             vm.EditWarrantViewModel.Steps = warrant.Steps;
         });
     }
+
+    [RelayCommand]
+    public async Task AdvanceWarrant()
+    {
+        if (Warrant.NextStepId is null)
+        {
+            return;
+        }
+
+        await _warrantService.AdvanceWarrant(
+            Warrant.Id, 
+            Warrant.NextStepId.Value);
+
+        _navigationService.NavigateToView<DashboardView>();
+    }
+
+    [RelayCommand]
+    public async Task RollbackWarrant()
+    {
+        if (Warrant.PreviousStepId is null)
+        {
+            return;
+        }
+
+        await _warrantService.RollbackWarrant(
+            Warrant.Id,
+            Warrant.PreviousStepId.Value);
+
+        _navigationService.NavigateToView<DashboardView>();
+    }
 }

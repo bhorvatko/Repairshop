@@ -22,21 +22,29 @@ internal class GetTechnicianModelsSpecifcation
                 TechnicianId = w.TechnicianId,
                 Title = w.Title,
                 CanBeAdvancedByFrontOffice =
-                w.CurrentStep!.NextTransition != null
-                    ? w.CurrentStep!.NextTransition.CanBePerformedByFrontOffice
-                    : false,
+                    w.CurrentStep!.NextTransition != null
+                        ? w.CurrentStep!.NextTransition.CanBePerformedByFrontOffice
+                        : false,
                 CanBeRolledBackByFrontOffice =
-                w.CurrentStep!.PreviousTransition != null
-                     ? w.CurrentStep!.PreviousTransition!.CanBePerformedByFrontOffice
-                     : false,
+                    w.CurrentStep!.PreviousTransition != null
+                         ? w.CurrentStep!.PreviousTransition!.CanBePerformedByFrontOffice
+                         : false,
                 CanBeAdvancedByWorkshop =
-                w.CurrentStep!.NextTransition != null
-                    ? w.CurrentStep!.NextTransition!.CanBePerformedByWorkshop
-                    : false,
+                    w.CurrentStep!.NextTransition != null
+                        ? w.CurrentStep!.NextTransition!.CanBePerformedByWorkshop
+                        : false,
                 CanBeRolledBakByWorkshop =
-                w.CurrentStep!.PreviousTransition != null
-                    ? w.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop
-                    : false,
+                    w.CurrentStep!.PreviousTransition != null
+                        ? w.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop
+                        : false,
+                NextStepId =
+                    w.CurrentStep.NextTransition != null
+                        ? w.CurrentStep.NextTransition.NextStep.Id
+                        : null,
+                PreviousStepId =
+                    w.CurrentStep.PreviousTransition != null
+                        ? w.CurrentStep.PreviousTransition.PreviousStep.Id
+                        : null,
                 Procedure = new ProcedureModel()
                 {
                     Id = w.CurrentStep!.Procedure.Id,

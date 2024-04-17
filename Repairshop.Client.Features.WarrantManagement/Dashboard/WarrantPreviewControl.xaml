@@ -72,11 +72,13 @@
 
         <Button Grid.Column="1"
                 Content="&lt;"
-                Visibility="{Binding Warrant.CanBeRolledBackVisibility}"/>
+                Visibility="{Binding Warrant.CanBeRolledBackVisibility}"
+                Command="{Binding RollbackWarrantCommand}"/>
 
         <Button Grid.Column="2"
                 Content=">" 
-                Visibility="{Binding Warrant.CanBeAdvancedVisibility}"/>
+                Visibility="{Binding Warrant.CanBeAdvancedVisibility}"
+                Command="{Binding AdvanceWarrantCommand}" />
 
     </Grid>
 </UserControl>

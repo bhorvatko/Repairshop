@@ -13,5 +13,7 @@ internal static class WarrantModelExtensions
             model.Procedure.ToViewModel(),
             model.Title,
             model.CanBeRolledBack,
-            model.CanBeAdvanced);
+            model.CanBeAdvanced,
+            model.NextStepId,
+            model.PreviousStepId);
 }

@@ -17,7 +17,8 @@ public class WarrantPreviewControlViewModelFactory
         _warrantService = warrantService;
     }
 
-    public WarrantPreviewControlViewModel CreateViewModel(WarrantSummaryViewModel warrant)
+    public WarrantPreviewControlViewModel CreateViewModel(
+        WarrantSummaryViewModel warrant)
     {
         return new WarrantPreviewControlViewModel(
             warrant,

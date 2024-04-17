@@ -20,11 +20,15 @@ public partial class TechnicianDashboardViewModel
 
     public TechnicianDashboardViewModel(
         WarrantPreviewControlViewModelFactory warrantPreviewControlViewModelFactory,
-        IEnumerable<TechnicianViewModel> availableTechnicians)
+        IReadOnlyCollection<TechnicianViewModel> availableTechnicians,
+        Guid? selectedTechnicianId)
     {
         _warrantPreviewControlViewModelFactory = warrantPreviewControlViewModelFactory;
 
         AvailableTechnicians = availableTechnicians;
+
+        SelectedTechnician =
+            availableTechnicians.FirstOrDefault(x => x.Id == selectedTechnicianId);
     }
 
     public TechnicianViewModel? SelectedTechnician
@@ -34,7 +38,10 @@ public partial class TechnicianDashboardViewModel
         {
             SetProperty(ref _selectedTechnician, value);
 
-            Warrants = value?.Warrants.Select(x => _warrantPreviewControlViewModelFactory.CreateViewModel(x))
+            Warrants = value?
+                .Warrants
+                .Select(x => 
+                    _warrantPreviewControlViewModelFactory.CreateViewModel(x))
                 ?? Enumerable.Empty<WarrantPreviewControlViewModel>();
         }
     }

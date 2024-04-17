@@ -33,6 +33,14 @@ internal class GetWarrantModelsSpecification
                 x.CurrentStep!.PreviousTransition != null
                     ? x.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop
                     : false,
+            NextStepId =
+                x.CurrentStep.NextTransition != null
+                    ? x.CurrentStep.NextTransition.NextStep.Id
+                    : null,
+            PreviousStepId =
+                x.CurrentStep.PreviousTransition != null
+                    ? x.CurrentStep.PreviousTransition.PreviousStep.Id
+                    : null,
             Procedure = new ProcedureModel()
             {
                 Id = x.CurrentStep!.Procedure.Id,

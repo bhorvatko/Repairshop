@@ -82,6 +82,23 @@ public class Warrant
         SetCurrentStep(CurrentStep.NextStep);
     }
 
+    public void RollbackToStep(Guid previousStepId)
+    {
+        if (CurrentStep is null)
+        {
+            throw new DomainInvalidOperationException("The warrant does not have it's current step set.");
+        }
+
+        if (CurrentStep.PreviousStep?.Id != previousStepId)
+        {
+            throw new DomainArgumentException(
+                previousStepId,
+                "Cannot rollback to the specified step.");
+        }
+
+        SetCurrentStep(CurrentStep.PreviousStep);
+    }
+
     public void Update(
         string title,
         DateTime deadline,

@@ -24,7 +24,9 @@ internal class WarrantModelFactory
             TechnicianId = x.TechnicianId,
             Procedure = x.Procedure,
             CanBeAdvanced = CanBeTransitioned(x.CanBeAdvancedByFrontOffice, x.CanBeAdvancedByWorkshop),
-            CanBeRolledBack = CanBeTransitioned(x.CanBeRolledBackByFrontOffice, x.CanBeRolledBakByWorkshop)
+            CanBeRolledBack = CanBeTransitioned(x.CanBeRolledBackByFrontOffice, x.CanBeRolledBakByWorkshop),
+            NextStepId = x.NextStepId,
+            PreviousStepId = x.PreviousStepId,
         });
     }
 

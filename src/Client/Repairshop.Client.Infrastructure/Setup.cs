@@ -7,6 +7,7 @@ using Repairshop.Client.Infrastructure.LoadingIndicator;
 using Repairshop.Client.Infrastructure.MessageDialog;
 using Repairshop.Client.Infrastructure.Navigation;
 using Repairshop.Client.Infrastructure.Services;
+using Repairshop.Client.Infrastructure.UserSettings;
 
 namespace Repairshop.Client.Infrastructure;
 
@@ -24,5 +25,6 @@ public static class Setup
             .AddApiClient(config)
             .AddApplicationServices()
             .AddMessageDialog()
-            .AddClientContext(clientContext);
+            .AddClientContext(clientContext)
+            .AddUserSettings();
 }

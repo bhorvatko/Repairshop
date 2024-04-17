@@ -51,6 +51,32 @@ public class WarrantTests
     }
 
     [Fact]
+    public async Task Rollback_a_warrant_to_the_previous_step()
+    {
+        IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
+        Warrant warrant = await WarrantHelper.Create(steps: steps);
+        warrant.SetInitialStep();
+        warrant.AdvanceToStep(steps.Select(x => x.Id).ElementAt(1));
+
+        warrant.RollbackToStep(steps.First().Id);
+
+        warrant.CurrentStep.Should().Be(steps.First());
+    }
+
+    [Fact]
+    public async Task Rollback_a_warrant_to_a_step_which_is_not_previous_in_the_sequence_should_fail()
+    {
+        IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
+        Warrant warrant = await WarrantHelper.Create(steps: steps);
+        warrant.SetInitialStep();
+        warrant.AdvanceToStep(steps.Select(x => x.Id).ElementAt(1));
+
+        Action act = () => warrant.RollbackToStep(steps.Last().Id);
+
+        act.Should().Throw<DomainArgumentException>();
+    }
+
+    [Fact]
     public async Task Updating_a_warrant()
     {
         // Arrange

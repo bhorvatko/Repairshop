@@ -7,6 +7,7 @@ internal static class TechnicianModelExtensions
 {
     public static TechnicianViewModel ToViewModel(this TechnicianModel model) =>
         TechnicianViewModel.Create(
+            model.Id,
             model.Name,
             model.Warrants.Select(w => w.ToViewModel()));
 }

@@ -23,10 +23,14 @@ public class TechnicianDashboardViewModelFactory
         _warrantPreviewControlViewModelFactory = warrantPreviewControlViewModelFactory;
     }
 
-    public async Task<IEnumerable<TechnicianDashboardViewModel>> CreateViewModel(int count)
+    public async Task<IReadOnlyCollection<TechnicianDashboardViewModel>> CreateViewModel(
+        IEnumerable<Guid?> technicianIds)
     {
-        IEnumerable<TechnicianViewModel> technicians = Enumerable.Empty<TechnicianViewModel>();
-        IEnumerable<WarrantSummaryViewModel> unassignedWarrants = Enumerable.Empty<WarrantSummaryViewModel>();
+        IEnumerable<TechnicianViewModel> technicians = 
+            Enumerable.Empty<TechnicianViewModel>();
+
+        IEnumerable<WarrantSummaryViewModel> unassignedWarrants = 
+            Enumerable.Empty<WarrantSummaryViewModel>();
 
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
@@ -37,13 +41,15 @@ public class TechnicianDashboardViewModelFactory
             unassignedWarrants = await unassignedWarrantsTask;
         });
 
-        technicians = technicians.Append(TechnicianViewModel.CreateUnassignedTechnician(unassignedWarrants));
+        technicians = 
+            technicians.Append(TechnicianViewModel.CreateUnassignedTechnician(unassignedWarrants));
 
-        return Enumerable
-            .Range(0, count)
-            .Select(_ => 
+        return technicianIds
+            .Select(technicianId => 
                 new TechnicianDashboardViewModel(
                     _warrantPreviewControlViewModelFactory, 
-                    technicians));
+                    technicians.ToList(),
+                    technicianId))
+            .ToList();
     }
 }

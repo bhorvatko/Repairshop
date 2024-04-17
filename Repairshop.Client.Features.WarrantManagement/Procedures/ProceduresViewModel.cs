@@ -1,14 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Extensions;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.Navigation;
 using System.Drawing;
 using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Procedures;
 
 public partial class ProceduresViewModel
-    : ObservableObject, IViewModel
+    : ViewModelBase
 {
     private readonly IProcedureService _procedureService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;

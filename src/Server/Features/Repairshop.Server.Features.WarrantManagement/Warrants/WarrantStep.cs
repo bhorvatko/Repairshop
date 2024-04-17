@@ -18,6 +18,7 @@ public class WarrantStep
     public Guid WarrantId { get; private set; }
 
     public WarrantStep? NextStep => NextTransition?.NextStep;
+    public WarrantStep? PreviousStep => PreviousTransition?.PreviousStep;
 
     public static async Task<IEnumerable<WarrantStep>> CreateStepSequence(
         IEnumerable<CreateWarrantStepArgs> stepArgs,

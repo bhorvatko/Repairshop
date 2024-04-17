@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 
 namespace Repairshop.Client.Features.WarrantManagement.Technicians;
 
 public partial class AddTechnicianViewModel
-    : IViewModel
+    : ViewModelBase
 {
     private readonly ITechnicianService _technicianService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;

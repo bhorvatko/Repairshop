@@ -9,6 +9,7 @@ internal class TechnicianService
     : ITechnicianService
 {
     private const string TechniciansEndpoint = "Technicians";
+    private const string AssignWarrantEndpoint = $"{TechniciansEndpoint}/AssignWarrant";
 
     private readonly ApiClient.ApiClient _apiClient;
 
@@ -34,5 +35,20 @@ internal class TechnicianService
         return response
             .Technicians
             .Select(x => x.ToViewModel());
+    }
+
+    public async Task AssignWarrant(
+        Guid technicianId,
+        Guid warrantId)
+    {
+        AssignWarrantRequest request = new()
+        {
+            TechnicianId = technicianId,
+            WarrantId = warrantId
+        };
+
+        await _apiClient.Put<AssignWarrantRequest, AssignWArrantResponse>(
+            AssignWarrantEndpoint,
+            request);
     }
 }

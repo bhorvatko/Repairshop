@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Repairshop.Server.Common.Controllers;
 using Repairshop.Server.Features.WarrantManagement.Warrants.UpdateWarrant;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
@@ -61,6 +62,17 @@ public class WarrantController
     [HttpPut]
     public async Task<IActionResult> UpdateWarrant(
         [FromBody] UpdateWarrantRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpPut]
+    [Route("{id}/Unassign")]
+    public async Task<IActionResult> UnassignWarrant(
+        [FromRoute] UnassignWarrantRequest request,
         CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);

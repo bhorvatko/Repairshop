@@ -23,6 +23,7 @@ public interface IWarrantService
     Task<WarrantViewModel> GetWarrant(Guid id);
     Task AdvanceWarrant(Guid warrantId, Guid stepId);
     Task RollbackWarrant(Guid warrantId, Guid stepId);
+    Task UnassignWarrant(Guid warrantId);
 }
 
 public class CreateWarrantStepDto

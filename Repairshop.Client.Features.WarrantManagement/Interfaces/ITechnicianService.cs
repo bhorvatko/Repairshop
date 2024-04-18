@@ -3,4 +3,5 @@ public interface ITechnicianService
 {
     Task<IEnumerable<TechnicianViewModel>> GetTechnicians();
     Task CreateTechnician(string name);
+    Task AssignWarrant(Guid technicianId, Guid warrantId);
 }

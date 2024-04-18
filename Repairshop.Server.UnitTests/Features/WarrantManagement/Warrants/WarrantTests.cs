@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Repairshop.Server.Common.Exceptions;
+using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Server.Tests.Shared.Features.WarrantManagement;
 
@@ -100,5 +101,17 @@ public class WarrantTests
                 && x.Deadline == updatedDeadline
                 && x.IsUrgent == updatedIsUrgent
                 && x.Steps.Count() == updatedSteps.Count());
+    }
+
+    [Fact]
+    public async Task Unassigning_a_warrant()
+    {
+        Warrant warrant = await WarrantHelper.Create();
+        Technician technician = TechnicianHelper.Create();
+        technician.AssignWarrant(warrant);
+
+        warrant.UnassignWarrant();
+
+        warrant.TechnicianId.Should().BeNull();
     }
 }

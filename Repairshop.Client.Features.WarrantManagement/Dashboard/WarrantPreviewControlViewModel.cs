@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
@@ -72,5 +74,19 @@ public partial class WarrantPreviewControlViewModel
             Warrant.PreviousStepId.Value);
 
         _navigationService.NavigateToView<DashboardView>();
+    }
+
+    [RelayCommand]
+    public void StartDrag(MouseEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            WarrantPreviewControl source = (WarrantPreviewControl)e.Source;
+
+            WarrantPreviewControlViewModel sourceViewModel = 
+                (WarrantPreviewControlViewModel)source.DataContext;
+
+            DragDrop.DoDragDrop(source, sourceViewModel.Warrant, DragDropEffects.Move);
+        }
     }
 }

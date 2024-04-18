@@ -73,6 +73,21 @@ internal class ApiClient
         return response;
     }
 
+    public async Task<TResponse> Put<TResponse>(string resource)
+    {
+        RestRequest restRequest =
+            CreateRequest(resource);
+
+        TResponse? response = await _restClient.PutAsync<TResponse>(restRequest);
+
+        if (response is null)
+        {
+            throw new InvalidOperationException($"The received response for PUT {resource} is empty.");
+        }
+
+        return response;
+    }
+
     private RestRequest CreateRequest(string resource) =>
         new RestRequest(resource)
             .AddHeader("X-API-KEY", _apiOptions.ApiKey)

@@ -113,6 +113,11 @@ public class Warrant
         CurrentStep = null;
     }
 
+    public void UnassignWarrant()
+    {
+        TechnicianId = null;
+    }
+
     private void SetCurrentStep(WarrantStep step)
     {
         if (!Steps.Contains(step))

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=local:TechnicianDashboardViewModel}">
@@ -40,7 +41,14 @@
                           HorizontalContentAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <local:WarrantPreviewControl />
+                            <local:WarrantPreviewControl>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseMove">
+                                        <i:InvokeCommandAction Command="{Binding StartDragCommand}" 
+                                                               PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </local:WarrantPreviewControl>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -50,6 +58,13 @@
         <TabItem Header="Filteri">
             
         </TabItem>
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Drop">
+                <i:InvokeCommandAction Command="{Binding WarrantDropCommand}" 
+                                       PassEventArgsToCommand="True"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
         
     </TabControl>
 </UserControl>

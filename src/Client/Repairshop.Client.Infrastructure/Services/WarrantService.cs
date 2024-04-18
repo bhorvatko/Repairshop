@@ -113,6 +113,11 @@ internal class WarrantService
             request);
     }
 
+    public async Task UnassignWarrant(Guid warrantId)
+    {
+        await _apiClient.Put<UnassignWarrantResponse>($"Warrants/{warrantId}/Unassign");
+    }
+
     private static WarrantStepDto CreateWarrantStepDto(CreateWarrantStepDto createDto) =>
         new WarrantStepDto()
         {

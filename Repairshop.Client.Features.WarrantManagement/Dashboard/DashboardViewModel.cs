@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Configuration;
@@ -12,7 +11,6 @@ public partial class DashboardViewModel
     private readonly TechnicianDashboardViewModelFactory _technicianDashboardViewModelFactory;
     private readonly IUserSettingsProvider<WarrantManagementConfiguration> _userSettingsProvider;
 
-    [ObservableProperty]
     private IReadOnlyCollection<TechnicianDashboardViewModel> _technicianDashboards = 
         new List<TechnicianDashboardViewModel>();
 
@@ -22,6 +20,12 @@ public partial class DashboardViewModel
     {
         _technicianDashboardViewModelFactory = technicianDashboardViewModelFactory;
         _userSettingsProvider = userSettingsProvider;
+    }
+
+    public IReadOnlyCollection<TechnicianDashboardViewModel> TechnicianDashboards
+    {
+        get => _technicianDashboards;
+        set => SetTechnicianDashboards(value);
     }
 
     [RelayCommand]
@@ -53,5 +57,25 @@ public partial class DashboardViewModel
         };
 
         _userSettingsProvider.SaveSettings(userSettings);
+    }
+
+    public override void Dispose()
+    {
+        DisposeTechnicianDashboard();
+        base.Dispose();
+    }
+
+    private void SetTechnicianDashboards(IReadOnlyCollection<TechnicianDashboardViewModel> newTechnicianDashboards)
+    {
+        DisposeTechnicianDashboard();
+        SetProperty(ref _technicianDashboards, newTechnicianDashboards, nameof(TechnicianDashboards));
+    }
+
+    private void DisposeTechnicianDashboard()
+    {
+        foreach (TechnicianDashboardViewModel technicianDashboardViewModel in _technicianDashboards)
+        {
+            technicianDashboardViewModel.Dispose();
+        }
     }
 }

@@ -8,13 +8,16 @@ using System.Windows;
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
 public partial class TechnicianDashboardViewModel
-    : ObservableObject
+    : ObservableObject, IDisposable
 {
     private readonly WarrantPreviewControlViewModelFactory _warrantPreviewControlViewModelFactory;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly ITechnicianService _technicianService;
     private readonly INavigationService _navigationService;
     private readonly IWarrantService _warrantService;
+    private readonly IWarrantNotificationService _warrantNotificationService;
+
+    private IDisposable? _warrantAddedSubscription;
 
     [ObservableProperty]
     private IEnumerable<TechnicianViewModel> _availableTechnicians = 
@@ -32,6 +35,7 @@ public partial class TechnicianDashboardViewModel
         ITechnicianService technicianService,
         INavigationService navigationService,
         IWarrantService warrantService,
+        IWarrantNotificationService warrantNotificationService,
         IReadOnlyCollection<TechnicianViewModel> availableTechnicians,
         Guid? selectedTechnicianId)
     {
@@ -40,6 +44,7 @@ public partial class TechnicianDashboardViewModel
         _technicianService = technicianService;
         _navigationService = navigationService;
         _warrantService = warrantService;
+        _warrantNotificationService = warrantNotificationService;
 
         AvailableTechnicians = availableTechnicians;
 
@@ -56,9 +61,15 @@ public partial class TechnicianDashboardViewModel
 
             Warrants = value?
                 .Warrants
-                .Select(x => 
-                    _warrantPreviewControlViewModelFactory.CreateViewModel(x))
+                .Select(CreateWarrantPreviewControlViewModel)
                 ?? Enumerable.Empty<WarrantPreviewControlViewModel>();
+
+            _warrantAddedSubscription?.Dispose();
+
+            _warrantAddedSubscription =
+                _warrantNotificationService.SubscribeToWarrantAddedNotifications(
+                    value?.Id,
+                    OnWarrantAdded);
         }
     }
 
@@ -80,4 +91,15 @@ public partial class TechnicianDashboardViewModel
 
         _navigationService.NavigateToView<DashboardView>();
     }
+
+    public void Dispose()
+    {
+        _warrantAddedSubscription?.Dispose();
+    }
+
+    private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant) =>
+        Warrants = Warrants.Append(CreateWarrantPreviewControlViewModel(addedWarrant));
+
+    private WarrantPreviewControlViewModel CreateWarrantPreviewControlViewModel(WarrantSummaryViewModel warrant) =>
+        _warrantPreviewControlViewModelFactory.CreateViewModel(warrant);
 }

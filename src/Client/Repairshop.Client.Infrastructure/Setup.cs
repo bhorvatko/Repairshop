@@ -6,6 +6,7 @@ using Repairshop.Client.Infrastructure.ClientContext;
 using Repairshop.Client.Infrastructure.LoadingIndicator;
 using Repairshop.Client.Infrastructure.MessageDialog;
 using Repairshop.Client.Infrastructure.Navigation;
+using Repairshop.Client.Infrastructure.Notifications;
 using Repairshop.Client.Infrastructure.Services;
 using Repairshop.Client.Infrastructure.UserSettings;
 
@@ -26,5 +27,6 @@ public static class Setup
             .AddApplicationServices()
             .AddMessageDialog()
             .AddClientContext(clientContext)
-            .AddUserSettings();
+            .AddUserSettings()
+            .AddNotifications();
 }

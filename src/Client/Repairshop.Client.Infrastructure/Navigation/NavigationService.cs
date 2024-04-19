@@ -43,5 +43,7 @@ internal class NavigationService
         currentViewModel?.OnNavigatedAway();
 
         _mainView().MainContentControl.Content = view;
+
+        currentViewModel?.Dispose();
     }    
 }

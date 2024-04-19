@@ -11,19 +11,22 @@ public class TechnicianDashboardViewModelFactory
     private readonly IWarrantService _warrantService;
     private readonly WarrantPreviewControlViewModelFactory _warrantPreviewControlViewModelFactory;
     private readonly INavigationService _navigationService;
+    private readonly IWarrantNotificationService _warrantNotificationService;
 
     public TechnicianDashboardViewModelFactory(
         ILoadingIndicatorService loadingIndicatorService, 
         ITechnicianService technicianService, 
         IWarrantService warrantService, 
         WarrantPreviewControlViewModelFactory warrantPreviewControlViewModelFactory,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        IWarrantNotificationService warrantNotificationService)
     {
         _loadingIndicatorService = loadingIndicatorService;
         _technicianService = technicianService;
         _warrantService = warrantService;
         _warrantPreviewControlViewModelFactory = warrantPreviewControlViewModelFactory;
         _navigationService = navigationService;
+        _warrantNotificationService = warrantNotificationService;
     }
 
     public async Task<IReadOnlyCollection<TechnicianDashboardViewModel>> CreateViewModel(
@@ -55,6 +58,7 @@ public class TechnicianDashboardViewModelFactory
                     _technicianService,
                     _navigationService,
                     _warrantService,
+                    _warrantNotificationService,
                     technicians.ToList(),
                     technicianId))
             .ToList();

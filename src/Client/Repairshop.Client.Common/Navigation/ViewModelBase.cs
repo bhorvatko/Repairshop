@@ -7,4 +7,5 @@ public class ViewModelBase
     : ObservableObject, IViewModel
 {
     public virtual void OnNavigatedAway() { }
+    public virtual void Dispose() { }
 }

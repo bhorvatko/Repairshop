@@ -1,6 +1,6 @@
 ﻿namespace Repairshop.Client.Common.Interfaces;
 
-public interface IViewModel
+public interface IViewModel : IDisposable
 {
     void OnNavigatedAway();
 }

@@ -1,31 +1,20 @@
-﻿using MediatR;
-using Repairshop.Server.Common.Notifications;
+﻿using Repairshop.Server.Common.Notifications;
 using Repairshop.Shared.Features.WarrantManagement.Technicians;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
 
 internal class WarrantAssignedEventHandler
-    : INotificationHandler<WarrantAssignedEvent>
+    : DomainEventHandler<WarrantAssignedEvent, WarrantAssignedNotification>
 {
-    private readonly INotificationDispatcher _notificationDispatcher;
-
-    public WarrantAssignedEventHandler(INotificationDispatcher notificationDispatcher)
+    public WarrantAssignedEventHandler(INotificationDispatcher notificationDispatcher) 
+        : base(notificationDispatcher)
     {
-        _notificationDispatcher = notificationDispatcher;
     }
 
-    public async Task Handle(
-        WarrantAssignedEvent notification, 
-        CancellationToken cancellationToken)
-    {
-        WarrantAssignedNotification warrantAssignedNotification = new()
+    public override WarrantAssignedNotification CreateNotification(WarrantAssignedEvent domainEvent) =>
+        new()
         {
-            TechnicianId = notification.TechnicianId,
-            WarrantId = notification.WarrantId
+            TechnicianId = domainEvent.TechnicianId,
+            WarrantId = domainEvent.WarrantId
         };
-
-        await _notificationDispatcher.DispatchNotification(
-            warrantAssignedNotification,
-            cancellationToken);
-    }
 }

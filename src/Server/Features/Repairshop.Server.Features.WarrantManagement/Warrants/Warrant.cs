@@ -46,28 +46,6 @@ public class Warrant
         return warrant;
     }
 
-    public void SetCurrentStepByProcedureId(Guid? procedureId)
-    {
-        if (procedureId is null)
-        {
-            SetInitialStep();
-
-            return;
-        }
-
-        WarrantStep? newCurrentStep = 
-            Steps.FirstOrDefault(x => x.ProcedureId == procedureId);
-
-        if (newCurrentStep is null)
-        {
-            throw new DomainArgumentException(
-                procedureId,
-                $"The warrant sequence does not contain any steps with the procedure ID {procedureId}");
-        }
-
-        SetCurrentStep(newCurrentStep);
-    }
-
     public void AdvanceToStep(
         Guid nextStepId,
         string clientContext)
@@ -110,18 +88,22 @@ public class Warrant
         SetCurrentStep(CurrentStep.PreviousStep);
     }
 
-    public void Update(
+    public async Task Update(
         string title,
         DateTime deadline,
         bool isUrgent,
-        IEnumerable<WarrantStep> steps)
+        IEnumerable<WarrantStep> steps,
+        Guid? currentStepProcedureId,
+        Func<Task> beforeFinalising)
     {
         Title = title;
         Deadline = deadline;
         IsUrgent = isUrgent;
         Steps = steps;
 
-        CurrentStep = null;
+        await beforeFinalising();
+
+        SetCurrentStepByProcedureId(currentStepProcedureId);
     }
 
     public void UnassignWarrant()
@@ -142,6 +124,28 @@ public class Warrant
 
         CurrentStep = step;
         CurrentStepId = step.Id;
+    }
+
+    private void SetCurrentStepByProcedureId(Guid? procedureId)
+    {
+        if (procedureId is null)
+        {
+            SetInitialStep();
+
+            return;
+        }
+
+        WarrantStep? newCurrentStep =
+            Steps.FirstOrDefault(x => x.ProcedureId == procedureId);
+
+        if (newCurrentStep is null)
+        {
+            throw new DomainArgumentException(
+                procedureId,
+                $"The warrant sequence does not contain any steps with the procedure ID {procedureId}");
+        }
+
+        SetCurrentStep(newCurrentStep);
     }
 
     private void EnsureCanBeTransitioned(

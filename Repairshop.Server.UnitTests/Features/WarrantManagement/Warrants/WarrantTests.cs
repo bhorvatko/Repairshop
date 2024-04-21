@@ -88,11 +88,13 @@ public class WarrantTests
         IEnumerable<WarrantStep> updatedSteps = warrant.Steps.Take(2);
 
         // Act
-        warrant.Update(
+        await warrant.Update(
             updatedTitle,
             updatedDeadline,
             updatedIsUrgent,
-            updatedSteps);
+            updatedSteps,
+            null,
+            () => Task.CompletedTask);
 
         // Assert
         warrant.Should().Match<Warrant>(x =>

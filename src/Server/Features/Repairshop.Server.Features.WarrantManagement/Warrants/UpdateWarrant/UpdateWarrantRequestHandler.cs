@@ -50,15 +50,13 @@ internal class UpdateWarrantRequestHandler
                 warrantStepArgs,
                 getProceduresById);
 
-        warrant.Update(
+        await warrant.Update(
             request.Title,
             request.Deadline,
             request.IsUrgent,
-            stepSequence);
-
-        await _warrants.SaveChangesAsync(cancellationToken);
-
-        warrant.SetCurrentStepByProcedureId(request.CurrentStepProcedureId);
+            stepSequence,
+            request.CurrentStepProcedureId,
+            () => _warrants.SaveChangesAsync(cancellationToken));
         
         await _warrants.SaveChangesAsync(cancellationToken);
 

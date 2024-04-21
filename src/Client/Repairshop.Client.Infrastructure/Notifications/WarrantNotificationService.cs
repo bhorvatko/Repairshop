@@ -33,6 +33,7 @@ internal class WarrantNotificationService
                 {
                     options.Headers.Add("X-API-KEY", apiOptions.Value.ApiKey);
                 })
+            .WithAutomaticReconnect()
             .Build();
 
         _warrantAddedSubject = CreateSubject<WarrantCreatedNotification>();
@@ -45,15 +46,20 @@ internal class WarrantNotificationService
         Guid? technicianId,
         Action<WarrantSummaryViewModel> onWarrantAdded)
     {
-        return _warrantAssignedSubject
-            .Where(x => x.ToTechnicianId == technicianId)
-            .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
-            .Subscribe(onWarrantAdded);
+        IObservable<WarrantSummaryViewModel> warrantAssignedObservable =
+            _warrantAssignedSubject
+                .Where(x => x.ToTechnicianId == technicianId)
+                .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant));
 
-        // TO DO: Subscribe only if technicianId is null
-        //_warrantAddedSubject
-        //    .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
-        //    .Subscribe(onWarrantAdded);
+        IObservable<WarrantSummaryViewModel> warrantCreatedObservable =
+            _warrantAddedSubject.Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant));
+
+        IObservable<WarrantSummaryViewModel> resultingObservable = 
+            technicianId is null
+                ? Observable.Merge(warrantAssignedObservable, warrantCreatedObservable)
+                : warrantAssignedObservable;
+
+        return resultingObservable.Subscribe(onWarrantAdded);
     }
 
     public IDisposable SubscribeToWarrantRemovedNotifications(

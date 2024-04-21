@@ -1,20 +1,21 @@
 ﻿using Ardalis.Specification;
-using Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrants;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
+using Repairshop.Shared.Features.WarrantManagement.Technicians;
+using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
 internal class GetTechnicianModelsSpecifcation
-    : Specification<Technician, TechnicianQueryModel>
+    : Specification<Technician, TechnicianModel>
 {
     public GetTechnicianModelsSpecifcation()
     {
         Query.AsNoTracking();
 
-        Query.Select(x => new TechnicianQueryModel()
+        Query.Select(x => new TechnicianModel()
         {
             Id = x.Id,
             Name = x.Name,
-            Warrants = x.Warrants.Select(w => new WarrantQueryModel()
+            Warrants = x.Warrants.Select(w => new WarrantModel()
             {
                 Id = w.Id,
                 Deadline = w.Deadline,
@@ -33,7 +34,7 @@ internal class GetTechnicianModelsSpecifcation
                     w.CurrentStep!.NextTransition != null
                         ? w.CurrentStep!.NextTransition!.CanBePerformedByWorkshop
                         : false,
-                CanBeRolledBakByWorkshop =
+                CanBeRolledBackByWorkshop =
                     w.CurrentStep!.PreviousTransition != null
                         ? w.CurrentStep!.PreviousTransition!.CanBePerformedByWorkshop
                         : false,

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Repairshop.Server.Common.ClientContext;
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
@@ -9,10 +10,14 @@ internal class RollbackWarrantRequestHandler
     : IRequestHandler<RollbackWarrantRequest, RollbackWarrantResponse>
 {
     private readonly IRepository<Warrant> _warrants;
+    private readonly IClientContextProvider _clientContextProvider;
 
-    public RollbackWarrantRequestHandler(IRepository<Warrant> warrants)
+    public RollbackWarrantRequestHandler(
+        IRepository<Warrant> warrants,
+        IClientContextProvider clientContextProvider)
     {
         _warrants = warrants;
+        _clientContextProvider = clientContextProvider;
     }
 
     public async Task<RollbackWarrantResponse> Handle(
@@ -29,7 +34,9 @@ internal class RollbackWarrantRequestHandler
             throw new EntityNotFoundException<Warrant, Guid>(request.WarrantId);
         }
 
-        warrant.RollbackToStep(request.StepId);
+        warrant.RollbackToStep(
+            request.StepId,
+            _clientContextProvider.GetClientContext());
 
         await _warrants.SaveChangesAsync(cancellationToken);
 

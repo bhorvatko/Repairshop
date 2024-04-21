@@ -14,10 +14,14 @@ internal class WarrantService
     private const string RollbackWarrantEndpoint = $"{WarrantsEndpoint}/Rollback";
 
     private readonly ApiClient.ApiClient _apiClient;
+    private readonly WarrantSummaryViewModelFactory _warrantSummaryViewModelFactory;
 
-    public WarrantService(ApiClient.ApiClient apiClient)
+    public WarrantService(
+        ApiClient.ApiClient apiClient, 
+        WarrantSummaryViewModelFactory warrantSummaryViewModelFactory)
     {
         _apiClient = apiClient;
+        _warrantSummaryViewModelFactory = warrantSummaryViewModelFactory;
     }
 
     public async Task CreateWarrant(
@@ -49,7 +53,7 @@ internal class WarrantService
         GetWarrantsResponse response = 
             await _apiClient.Get<GetWarrantsResponse>(WarrantsEndpoint, request);
 
-        return response.Warrants.Select(w => w.ToViewModel());
+        return response.Warrants.Select(_warrantSummaryViewModelFactory.Create);
     }
 
     public async Task UpdateWarrant(

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Repairshop.Server.Common.ClientContext;
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
@@ -9,10 +10,14 @@ internal class AdvanceWarrantRequestHandler
     : IRequestHandler<AdvanceWarrantRequest, AdvanceWarrantResponse>
 {
     private readonly IRepository<Warrant> _warrants;
+    private readonly IClientContextProvider _clientContextProvider;
 
-    public AdvanceWarrantRequestHandler(IRepository<Warrant> warrants)
+    public AdvanceWarrantRequestHandler(
+        IRepository<Warrant> warrants,
+        IClientContextProvider clientContextProvider)
     {
         _warrants = warrants;
+        _clientContextProvider = clientContextProvider;
     }
 
     public async Task<AdvanceWarrantResponse> Handle(
@@ -29,7 +34,9 @@ internal class AdvanceWarrantRequestHandler
             throw new EntityNotFoundException<Warrant, Guid>(request.WarrantId);
         }
 
-        warrant.AdvanceToStep(request.StepId);
+        warrant.AdvanceToStep(
+            request.StepId, 
+            _clientContextProvider.GetClientContext());
 
         await _warrants.SaveChangesAsync(cancellationToken);
 

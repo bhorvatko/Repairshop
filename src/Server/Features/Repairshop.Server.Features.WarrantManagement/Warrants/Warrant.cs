@@ -2,6 +2,7 @@
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants.CreateWarrant;
+using Repairshop.Shared.Common.ClientContext;
 
 namespace Repairshop.Server.Features.WarrantManagement.Warrants;
 public class Warrant
@@ -65,7 +66,9 @@ public class Warrant
         SetCurrentStep(newCurrentStep);
     }
 
-    public void AdvanceToStep(Guid nextStepId)
+    public void AdvanceToStep(
+        Guid nextStepId,
+        string clientContext)
     {
         if (CurrentStep is null)
         {
@@ -79,10 +82,14 @@ public class Warrant
                 "Cannot advance to the specified step.");
         }
 
+        EnsureCanBeTransitioned(clientContext, CurrentStep.NextTransition!);
+
         SetCurrentStep(CurrentStep.NextStep);
     }
 
-    public void RollbackToStep(Guid previousStepId)
+    public void RollbackToStep(
+        Guid previousStepId,
+        string clientContext)
     {
         if (CurrentStep is null)
         {
@@ -95,6 +102,8 @@ public class Warrant
                 previousStepId,
                 "Cannot rollback to the specified step.");
         }
+
+        EnsureCanBeTransitioned(clientContext, CurrentStep.PreviousTransition!);
 
         SetCurrentStep(CurrentStep.PreviousStep);
     }
@@ -129,5 +138,22 @@ public class Warrant
 
         CurrentStep = step;
         CurrentStepId = step.Id;
+    }
+
+    private void EnsureCanBeTransitioned(
+        string clientContext,
+        WarrantStepTransition transition)
+    {
+        if (clientContext == RepairshopClientContext.FrontOffice
+            && !transition.CanBePerformedByFrontOffice)
+        {
+            throw new DomainInvalidOperationException("The transition cannot be performed by the front office.");
+        }
+
+        if (clientContext == RepairshopClientContext.Workshop
+            && !transition.CanBePerformedByWorkshop)
+        {
+            throw new DomainInvalidOperationException("The transition cannot be performed by the workshop.");
+        }
     }
 }

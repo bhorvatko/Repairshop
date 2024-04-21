@@ -10,8 +10,10 @@ public class WarrantModel
     public required bool IsUrgent { get; set; }
     public required Guid? TechnicianId { get; set; }
     public required ProcedureModel Procedure { get; set; }
-    public required bool CanBeAdvanced { get; set; }
-    public required bool CanBeRolledBack { get; set; }
+    public required bool CanBeAdvancedByWorkshop { get; set; }
+    public required bool CanBeAdvancedByFrontOffice { get; set; }
+    public required bool CanBeRolledBackByWorkshop { get; set; }
+    public required bool CanBeRolledBackByFrontOffice { get; set; }
     public required Guid? NextStepId { get; set; }
     public required Guid? PreviousStepId { get; set; }
 }

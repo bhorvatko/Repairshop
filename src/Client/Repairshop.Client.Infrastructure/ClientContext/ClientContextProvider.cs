@@ -2,7 +2,7 @@
 
 internal class ClientContextProvider
 {
-    public string ClientContext { get; private set;  }
+    public string ClientContext { get; private set; }
 
     public ClientContextProvider(string clientContext)
     {

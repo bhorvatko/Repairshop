@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Infrastructure.ApiClient;
+using Repairshop.Client.Infrastructure.Services;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -13,9 +14,14 @@ internal class WarrantNotificationService
     : IWarrantNotificationService
 {
     private readonly Subject<WarrantCreatedNotification> _warrantAddedSubject;
+    private readonly WarrantSummaryViewModelFactory _warrantSummaryViewModelFactory;
 
-    public WarrantNotificationService(IOptions<ApiOptions> apiOptions)
+    public WarrantNotificationService(
+        IOptions<ApiOptions> apiOptions,
+        WarrantSummaryViewModelFactory warrantSummaryViewModelFactory)
     {
+        _warrantSummaryViewModelFactory = warrantSummaryViewModelFactory;
+
         _warrantAddedSubject = new Subject<WarrantCreatedNotification>();
 
         HubConnection hubConnection = new HubConnectionBuilder()
@@ -35,9 +41,9 @@ internal class WarrantNotificationService
     public IDisposable SubscribeToWarrantAddedNotifications(
         Guid? technicianId,
         Action<WarrantSummaryViewModel> onWarrantAdded) =>
+        // TO DO: Subscribe only if technicianId is null
         _warrantAddedSubject
-            .Where(x => x.TechnicianId == technicianId)
-            .Select(x => x.WarrantModel.ToViewModel())
+            .Select(x => _warrantSummaryViewModelFactory.Create(x.WarrantModel))
             .Subscribe(onWarrantAdded);
 
     public IDisposable SubscribeToWarrantRemovedNotifications(Guid? technicianId, Action<Guid> onWarrantRemoved)

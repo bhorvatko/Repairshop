@@ -1,7 +1,5 @@
 ﻿using Repairshop.Client.Features.WarrantManagement.Dashboard;
-using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Technicians;
-using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Infrastructure.Services;
 
@@ -12,10 +10,14 @@ internal class TechnicianService
     private const string AssignWarrantEndpoint = $"{TechniciansEndpoint}/AssignWarrant";
 
     private readonly ApiClient.ApiClient _apiClient;
+    private readonly TechnicianViewModelFactory _technicianViewModelFactory;
 
-    public TechnicianService(ApiClient.ApiClient apiClient)
+    public TechnicianService(
+        ApiClient.ApiClient apiClient,
+        TechnicianViewModelFactory technicianViewModelFactory)
     {
         _apiClient = apiClient;
+        _technicianViewModelFactory = technicianViewModelFactory;
     }
 
     public async Task CreateTechnician(string name)
@@ -34,7 +36,7 @@ internal class TechnicianService
 
         return response
             .Technicians
-            .Select(x => x.ToViewModel());
+            .Select(_technicianViewModelFactory.Create);
     }
 
     public async Task AssignWarrant(

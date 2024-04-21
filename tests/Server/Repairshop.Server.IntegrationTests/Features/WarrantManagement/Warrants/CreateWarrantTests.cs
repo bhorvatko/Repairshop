@@ -87,4 +87,32 @@ public class CreateWarrantTests
                 secondStep.NextTransition.Should().BeNull();
             });
     }
+
+    [Fact]
+    public async Task Creating_a_warrant_should_create_a_notification()
+    {
+        // Arrange
+        Procedure procedure = ProcedureHelper.Create();
+        _dbContext.Add(procedure);
+        _dbContext.SaveChanges();
+
+        IEnumerable<WarrantStepDto> steps = new[]
+        {
+            WarrantStepDtoHelper.Create(procedure.Id)
+        };
+
+        CreateWarrantRequest request = CreateWarrantRequestHelper.Create(steps);
+
+        WarrantCreatedNotification? notification = null;
+
+        await SubscribeToNotification<WarrantCreatedNotification>(x => notification = x);
+
+        // Act
+        await _client.PostAsJsonAsync("Warrants", request);
+
+        // Assert
+        notification.Should().NotBeNull();
+        notification!.WarrantModel.Should().NotBeNull();
+        notification!.WarrantModel.Id.Should().NotBeEmpty();
+    }
 }

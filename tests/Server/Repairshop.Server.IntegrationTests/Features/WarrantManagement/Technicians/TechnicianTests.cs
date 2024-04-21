@@ -129,16 +129,10 @@ public class TechnicianTests
 
         WarrantAssignedNotification? notification = null;
 
-        _hubConnection.On<WarrantAssignedNotification>(
-            "RecieveNotification",
-            x => notification = x);
-
-        await _hubConnection.StartAsync();
+        await SubscribeToNotification<WarrantAssignedNotification>(x => notification = x);
 
         // Act
         await _client.PutAsJsonAsync("Technicians/AssignWarrant", request);
-
-        await Task.Delay(100);
 
         // Assert
         notification.Should().NotBeNull();

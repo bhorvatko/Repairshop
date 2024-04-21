@@ -4,6 +4,7 @@ using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Infrastructure.ApiClient;
 using Repairshop.Client.Infrastructure.Services;
+using Repairshop.Shared.Common.Notifications;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -26,7 +27,7 @@ internal class WarrantNotificationService
 
         HubConnection hubConnection = new HubConnectionBuilder()
             .WithUrl(
-                "https://localhost/Notifications",
+                $"{apiOptions.Value.BaseAddress}/{NotificationConstants.NotificationsEndpoint}",
                 options =>
                 {
                     options.Headers.Add("X-API-KEY", apiOptions.Value.ApiKey);
@@ -34,7 +35,7 @@ internal class WarrantNotificationService
             .Build();
 
         hubConnection.On<WarrantCreatedNotification>(
-            "RecieveNotification",
+            NotificationConstants.ReceiveNotificationMethodName,
             x => _warrantAddedSubject.OnNext(x));
     }
 

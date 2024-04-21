@@ -6,6 +6,7 @@ using Repairshop.Server.Features.WarrantManagement.Procedures;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Shared.Common.ClientContext;
+using Repairshop.Shared.Common.Notifications;
 using Xunit.Abstractions;
 
 namespace Repairshop.Server.IntegrationTests.Common;
@@ -37,13 +38,22 @@ public class IntegrationTestBase
 
         _hubConnection = new HubConnectionBuilder()
             .WithUrl(
-                "https://localhost/Notifications",
+                $"https://localhost/{NotificationConstants.NotificationsEndpoint}",
                 options =>
                 {
                     options.HttpMessageHandlerFactory = _ => factory.Server.CreateHandler();
                     options.Headers.Add("X-API-KEY", TestConstants.ApiKey);
                 })
             .Build();
+    }
+
+    protected Task SubscribeToNotification<TNotification>(Action<TNotification> handler)
+    {
+        _hubConnection.On(
+            NotificationConstants.ReceiveNotificationMethodName,
+            handler);
+
+        return _hubConnection.StartAsync();
     }
 
     private void ClearDatabase()

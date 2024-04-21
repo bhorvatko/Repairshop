@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Repairshop.Server.Common.Notifications;
+using Repairshop.Shared.Common.Notifications;
 
 namespace Repairshop.Server.Infrastructure.Notifications;
 internal class NotificationDispatcher
@@ -16,6 +17,9 @@ internal class NotificationDispatcher
         object notification,
         CancellationToken cancellationToken)
     {
-        await _hubContext.Clients.All.SendAsync("RecieveNotification", notification, cancellationToken);
+        await _hubContext.Clients.All.SendAsync(
+            NotificationConstants.ReceiveNotificationMethodName, 
+            notification, 
+            cancellationToken);
     }
 }

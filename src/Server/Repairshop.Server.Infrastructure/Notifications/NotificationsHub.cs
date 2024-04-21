@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Repairshop.Shared.Common.Notifications;
 
 namespace Repairshop.Server.Infrastructure.Notifications;
 
@@ -10,7 +11,7 @@ internal class NotificationsHub
         CancellationToken cancellationToken)
     {
         await Clients.All.SendAsync(
-            "RecieveNotification", 
+            NotificationConstants.ReceiveNotificationMethodName, 
             notification, 
             cancellationToken);
     }

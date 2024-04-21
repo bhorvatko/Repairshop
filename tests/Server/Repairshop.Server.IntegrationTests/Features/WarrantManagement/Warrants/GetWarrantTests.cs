@@ -22,14 +22,7 @@ public class GetWarrantTests
     public async Task Getting_a_warrant()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
-        
-        _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
-
-        warrant.SetInitialStep();
-
-        _dbContext.SaveChanges();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         GetWarrantRequest request = new() { Id = warrant.Id };
 

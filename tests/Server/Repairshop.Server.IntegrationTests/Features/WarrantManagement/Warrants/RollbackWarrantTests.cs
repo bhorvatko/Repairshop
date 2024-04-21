@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Server.IntegrationTests.Common;
 using Repairshop.Server.Tests.Shared.Features.WarrantManagement;
+using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 using System.Net.Http.Json;
 using Xunit.Abstractions;
@@ -23,13 +24,9 @@ public class RollbackWarrantTests
     public async Task Rolling_back_a_warrant_to_the_next_step()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
-        _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
-
-        warrant.SetInitialStep();
-        warrant.AdvanceToStep(warrant.Steps.ElementAt(1).Id);
+        warrant.AdvanceToStep(warrant.Steps.ElementAt(1).Id, RepairshopClientContext.FrontOffice);
 
         _dbContext.SaveChanges();
 

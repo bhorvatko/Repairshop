@@ -39,15 +39,12 @@ internal class CreateWarrantRequestHandler
                 warrantStepArgs,
                 getProceduresById);
 
-        Warrant warrant = Warrant.Create(
+        Warrant warrant = await Warrant.Create(
             request.Title,
             request.Deadline,
             request.IsUrgnet,
-            stepSequence);
-
-        await _warrants.AddAsync(warrant, cancellationToken);
-
-        warrant.SetInitialStep();
+            stepSequence,
+            warrant => _warrants.AddAsync(warrant, cancellationToken));
 
         await _warrants.SaveChangesAsync(cancellationToken);
 

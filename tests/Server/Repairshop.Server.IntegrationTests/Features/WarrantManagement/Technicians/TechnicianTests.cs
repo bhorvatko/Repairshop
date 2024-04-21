@@ -48,10 +48,7 @@ public class TechnicianTests
         Technician technician = TechnicianHelper.Create();
         _dbContext.Add(technician);
 
-        Warrant warrant = await WarrantHelper.Create();
-        _dbContext.Add(warrant);
-
-        _dbContext.SaveChanges();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         AssignWarrantRequest request = new()
         {
@@ -77,7 +74,7 @@ public class TechnicianTests
     public async Task Assigning_a_warrant_from_one_technician_to_another()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         Technician firstTechnician = TechnicianHelper.Create("First");
 
@@ -122,10 +119,7 @@ public class TechnicianTests
         Technician technician = TechnicianHelper.Create();
         _dbContext.Add(technician);
 
-        Warrant warrant = await WarrantHelper.Create();
-        _dbContext.Add(warrant);
-
-        _dbContext.SaveChanges();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         AssignWarrantRequest request = new()
         {

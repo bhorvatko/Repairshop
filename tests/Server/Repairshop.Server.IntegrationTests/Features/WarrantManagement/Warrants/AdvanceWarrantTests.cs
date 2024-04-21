@@ -23,14 +23,7 @@ public class AdvanceWarrantTests
     public async Task Advancing_a_warrant_to_the_next_step()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
-
-        _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
-
-        warrant.SetInitialStep();
-
-        _dbContext.SaveChanges();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         AdvanceWarrantRequest request = new AdvanceWarrantRequest
         {

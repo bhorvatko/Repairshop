@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
-using Repairshop.Server.Features.WarrantManagement.Procedures;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Server.IntegrationTests.Common;
 using Repairshop.Server.Tests.Shared.Features.WarrantManagement;
-using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 using Xunit.Abstractions;
@@ -26,14 +24,12 @@ public class GetWarrantsTests
     {
         // Arrange
         Technician technician = TechnicianHelper.Create();
-        Warrant assignedWarrant = await WarrantHelper.Create();
+        Warrant assignedWarrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         technician.AssignWarrant(assignedWarrant);
 
         _dbContext.Add(technician);
         _dbContext.SaveChanges();
-
-        assignedWarrant.SetInitialStep();
 
         _dbContext.SaveChanges();
 
@@ -63,14 +59,7 @@ public class GetWarrantsTests
     public async Task Getting_unassigned_warrants()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
-
-        _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
-
-        warrant.SetInitialStep();
-
-        _dbContext.SaveChanges();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         GetWarrantsRequest request = new()
         {

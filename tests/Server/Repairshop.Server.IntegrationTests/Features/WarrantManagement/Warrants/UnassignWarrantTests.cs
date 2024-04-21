@@ -24,7 +24,7 @@ public class UnassignWarrantTests
     public async Task Unassigning_a_warrant_from_the_technician()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         Technician technician = TechnicianHelper.Create();
 

@@ -22,15 +22,11 @@ internal class UpdateWarrantTest
     public async Task Updating_a_warrant()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         int originalNumberOfSteps = warrant.Steps.Count();
 
         _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
-
-        warrant.SetInitialStep();
-
         _dbContext.SaveChanges();
 
         UpdateWarrantRequest request = new()
@@ -67,15 +63,11 @@ internal class UpdateWarrantTest
     public async Task Updating_a_warrant_removes_the_previous_step_sequence()
     {
         // Arrange
-        Warrant warrant = await WarrantHelper.Create();
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         int originalNumberOfSteps = warrant.Steps.Count();
 
         _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
-
-        warrant.SetInitialStep();
-
         _dbContext.SaveChanges();
 
         UpdateWarrantRequest request = new()

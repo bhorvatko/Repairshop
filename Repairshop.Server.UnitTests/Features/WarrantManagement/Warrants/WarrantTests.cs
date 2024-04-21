@@ -16,11 +16,12 @@ public class WarrantTests
         bool isUrgent = true;
         IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
 
-        Warrant warrant = Warrant.Create(
+        Warrant warrant = await Warrant.Create(
             title,
             deadline,
             isUrgent,
-            steps);
+            steps,
+            _ => Task.CompletedTask);
 
         warrant.Title.Should().Be(title);
         warrant.Deadline.Should().Be(deadline);
@@ -33,7 +34,6 @@ public class WarrantTests
     {
         IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
         Warrant warrant = await WarrantHelper.Create(steps: steps);
-        warrant.SetInitialStep();
 
         warrant.AdvanceToStep(steps.Skip(1).First().Id, RepairshopClientContext.FrontOffice);
 
@@ -45,7 +45,6 @@ public class WarrantTests
     {
         IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
         Warrant warrant = await WarrantHelper.Create(steps: steps);
-        warrant.SetInitialStep();
 
         Action act = 
             () => warrant.AdvanceToStep(steps.Last().Id, RepairshopClientContext.FrontOffice);
@@ -58,7 +57,6 @@ public class WarrantTests
     {
         IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
         Warrant warrant = await WarrantHelper.Create(steps: steps);
-        warrant.SetInitialStep();
         warrant.AdvanceToStep(steps.Select(x => x.Id).ElementAt(1), RepairshopClientContext.FrontOffice);
 
         warrant.RollbackToStep(steps.First().Id, RepairshopClientContext.FrontOffice);
@@ -71,7 +69,6 @@ public class WarrantTests
     {
         IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
         Warrant warrant = await WarrantHelper.Create(steps: steps);
-        warrant.SetInitialStep();
         warrant.AdvanceToStep(steps.Select(x => x.Id).ElementAt(1), RepairshopClientContext.FrontOffice);
 
         Action act = () => warrant.RollbackToStep(steps.Last().Id, RepairshopClientContext.FrontOffice);
@@ -134,7 +131,6 @@ public class WarrantTests
                     canBeTransitionedByWorkshop: stepsCanBeTransitionedByWorkshop);
 
         Warrant warrant = await WarrantHelper.Create(steps: steps);
-        warrant.SetInitialStep();
 
         // Act
         Action act = 
@@ -163,7 +159,6 @@ public class WarrantTests
                     canBeTransitionedByWorkshop: stepsCanBeTransitionedByWorkshop);
 
         Warrant warrant = await WarrantHelper.Create(steps: steps);
-        warrant.SetInitialStep();
 
         // Use authorized client context for arranging
         warrant.AdvanceToStep(

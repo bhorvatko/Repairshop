@@ -18,15 +18,16 @@ public class Warrant
     public bool IsUrgent { get; private set; }
     public IEnumerable<WarrantStep> Steps { get; private set; }
     public Guid? CurrentStepId { get; private set; }
-    public WarrantStep? CurrentStep { get; private set; }
+    public WarrantStep CurrentStep { get; private set; }
     public Guid? TechnicianId { get; private set; }
     public Technician? Technician { get; private set; }
 
-    public static Warrant Create(
+    public static async Task<Warrant> Create(
         string title,
         DateTime deadline,
         bool isUrgent,
-        IEnumerable<WarrantStep> steps)
+        IEnumerable<WarrantStep> steps,
+        Func<Warrant, Task> beforeFinalising)
     {
         Warrant warrant = new Warrant()
         {
@@ -37,12 +38,13 @@ public class Warrant
             Steps = steps
         };
 
+        await beforeFinalising(warrant);
+
+        warrant.SetInitialStep();
         warrant.AddEvent(WarrantCreatedEvent.Create(warrant));
 
         return warrant;
     }
-
-    public void SetInitialStep() => SetCurrentStep(Steps.First());
 
     public void SetCurrentStepByProcedureId(Guid? procedureId)
     {
@@ -126,6 +128,8 @@ public class Warrant
     {
         TechnicianId = null;
     }
+
+    private void SetInitialStep() => SetCurrentStep(Steps.First());
 
     private void SetCurrentStep(WarrantStep step)
     {

@@ -35,8 +35,8 @@ internal class WarrantNotificationService
                 })
             .Build();
 
-        _warrantAssignedSubject = CreateSubject<WarrantAssignedNotification>();
         _warrantAddedSubject = CreateSubject<WarrantCreatedNotification>();
+        _warrantAssignedSubject = CreateSubject<WarrantAssignedNotification>();
 
         _hubConnection.StartAsync().Wait();
     }
@@ -76,8 +76,8 @@ internal class WarrantNotificationService
         Subject<TSubject> subject = new Subject<TSubject>();
 
         _hubConnection.On<TSubject>(
-            NotificationConstants.ReceiveNotificationMethodName,
-            x => subject.OnNext(x));
+            typeof(TSubject).Name,
+            subject.OnNext);
 
         return subject;
     }

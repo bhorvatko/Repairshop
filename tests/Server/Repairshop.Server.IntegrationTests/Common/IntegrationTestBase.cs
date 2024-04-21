@@ -50,7 +50,7 @@ public class IntegrationTestBase
     protected Task SubscribeToNotification<TNotification>(Action<TNotification> handler)
     {
         _hubConnection.On(
-            NotificationConstants.ReceiveNotificationMethodName,
+            typeof(TNotification).Name,
             handler);
 
         return _hubConnection.StartAsync();

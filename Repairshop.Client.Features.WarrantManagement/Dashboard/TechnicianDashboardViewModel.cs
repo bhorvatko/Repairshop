@@ -18,6 +18,7 @@ public partial class TechnicianDashboardViewModel
     private readonly IWarrantNotificationService _warrantNotificationService;
 
     private IDisposable? _warrantAddedSubscription;
+    private IDisposable? _warrantRemovedSubscription;
 
     [ObservableProperty]
     private IEnumerable<TechnicianViewModel> _availableTechnicians = 
@@ -70,6 +71,11 @@ public partial class TechnicianDashboardViewModel
                 _warrantNotificationService.SubscribeToWarrantAddedNotifications(
                     value?.Id,
                     OnWarrantAdded);
+
+            _warrantRemovedSubscription =
+                _warrantNotificationService.SubscribeToWarrantRemovedNotifications(
+                    value?.Id,
+                    OnWarrantRemoved);
         }
     }
 
@@ -95,10 +101,14 @@ public partial class TechnicianDashboardViewModel
     public void Dispose()
     {
         _warrantAddedSubscription?.Dispose();
+        _warrantRemovedSubscription?.Dispose();
     }
 
     private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant) =>
         Warrants = Warrants.Append(CreateWarrantPreviewControlViewModel(addedWarrant));
+
+    private void OnWarrantRemoved(Guid removedWarrantId) =>
+        Warrants = Warrants.Where(x => x.Warrant.Id != removedWarrantId).ToList();
 
     private WarrantPreviewControlViewModel CreateWarrantPreviewControlViewModel(WarrantSummaryViewModel warrant) =>
         _warrantPreviewControlViewModelFactory.CreateViewModel(warrant);

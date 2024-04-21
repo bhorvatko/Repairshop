@@ -2,5 +2,5 @@
 
 public class WarrantCreatedNotification
 {
-    public required WarrantModel WarrantModel { get; set; }
+    public required WarrantModel Warrant { get; set; }
 }

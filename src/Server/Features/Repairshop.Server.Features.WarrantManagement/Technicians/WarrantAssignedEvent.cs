@@ -1,22 +1,27 @@
 ﻿using Repairshop.Server.Common.Events;
+using Repairshop.Server.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
 internal class WarrantAssignedEvent
     : DomainEvent
 {
     private WarrantAssignedEvent(
-        Guid warrantId,
-        Guid technicianId)
+        Warrant warrant,
+        Guid toTechnicianId,
+        Guid? fromTechnicianId)
     {
-        WarrantId = warrantId;
-        TechnicianId = technicianId;
+        Warrant = warrant;
+        ToTechnicianId = toTechnicianId;
+        FromTechnicianId = fromTechnicianId;
     }
 
-    public Guid WarrantId { get; private set; }
-    public Guid TechnicianId { get; private set; }
+    public Warrant Warrant { get; private set; }
+    public Guid ToTechnicianId { get; private set; }
+    public Guid? FromTechnicianId { get; private set; }
 
     public static WarrantAssignedEvent Create(
-        Guid warrantId,
-        Guid technicianId) =>
-        new WarrantAssignedEvent(warrantId, technicianId);
+        Warrant warrant,
+        Guid toTechnicianId,
+        Guid? fromTechnicianId) =>
+        new WarrantAssignedEvent(warrant, toTechnicianId, fromTechnicianId);
 }

@@ -5,6 +5,7 @@ using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Infrastructure.ApiClient;
 using Repairshop.Client.Infrastructure.Services;
 using Repairshop.Shared.Common.Notifications;
+using Repairshop.Shared.Features.WarrantManagement.Technicians;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -15,7 +16,9 @@ internal class WarrantNotificationService
     : IWarrantNotificationService
 {
     private readonly Subject<WarrantCreatedNotification> _warrantAddedSubject;
+    private readonly Subject<WarrantAssignedNotification> _warrantAssignedSubject;
     private readonly WarrantSummaryViewModelFactory _warrantSummaryViewModelFactory;
+    private readonly HubConnection _hubConnection;
 
     public WarrantNotificationService(
         IOptions<ApiOptions> apiOptions,
@@ -23,9 +26,7 @@ internal class WarrantNotificationService
     {
         _warrantSummaryViewModelFactory = warrantSummaryViewModelFactory;
 
-        _warrantAddedSubject = new Subject<WarrantCreatedNotification>();
-
-        HubConnection hubConnection = new HubConnectionBuilder()
+        _hubConnection = new HubConnectionBuilder()
             .WithUrl(
                 $"{apiOptions.Value.BaseAddress}/{NotificationConstants.NotificationsEndpoint}",
                 options =>
@@ -34,26 +35,50 @@ internal class WarrantNotificationService
                 })
             .Build();
 
-        hubConnection.On<WarrantCreatedNotification>(
-            NotificationConstants.ReceiveNotificationMethodName,
-            x => _warrantAddedSubject.OnNext(x));
+        _warrantAssignedSubject = CreateSubject<WarrantAssignedNotification>();
+        _warrantAddedSubject = CreateSubject<WarrantCreatedNotification>();
+
+        _hubConnection.StartAsync().Wait();
     }
 
     public IDisposable SubscribeToWarrantAddedNotifications(
         Guid? technicianId,
-        Action<WarrantSummaryViewModel> onWarrantAdded) =>
-        // TO DO: Subscribe only if technicianId is null
-        _warrantAddedSubject
-            .Select(x => _warrantSummaryViewModelFactory.Create(x.WarrantModel))
+        Action<WarrantSummaryViewModel> onWarrantAdded)
+    {
+        return _warrantAssignedSubject
+            .Where(x => x.ToTechnicianId == technicianId)
+            .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
             .Subscribe(onWarrantAdded);
 
-    public IDisposable SubscribeToWarrantRemovedNotifications(Guid? technicianId, Action<Guid> onWarrantRemoved)
+        // TO DO: Subscribe only if technicianId is null
+        //_warrantAddedSubject
+        //    .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
+        //    .Subscribe(onWarrantAdded);
+    }
+
+    public IDisposable SubscribeToWarrantRemovedNotifications(
+        Guid? technicianId, 
+        Action<Guid> onWarrantRemoved)
     {
-        throw new NotImplementedException();
+        return _warrantAssignedSubject
+            .Where(x => x.FromTechnicianId == technicianId)
+            .Select(x => x.Warrant.Id)
+            .Subscribe(onWarrantRemoved);
     }
 
     public IDisposable SubscribeToWarrantUpdatedNotifications(Guid? technicianId, Action<WarrantSummaryViewModel> onWarrantUpdated)
     {
         throw new NotImplementedException();
+    }
+
+    private Subject<TSubject> CreateSubject<TSubject>()
+    {
+        Subject<TSubject> subject = new Subject<TSubject>();
+
+        _hubConnection.On<TSubject>(
+            NotificationConstants.ReceiveNotificationMethodName,
+            x => subject.OnNext(x));
+
+        return subject;
     }
 }

@@ -136,8 +136,9 @@ public class TechnicianTests
 
         // Assert
         notification.Should().NotBeNull();
-        notification!.WarrantId.Should().Be(warrant.Id);
-        notification!.TechnicianId.Should().Be(technician.Id);
+        notification!.Warrant.Id.Should().Be(warrant.Id);
+        notification!.ToTechnicianId.Should().Be(technician.Id);
+        notification!.FromTechnicianId.Should().BeNull();
     }
 
     [Fact]

@@ -26,8 +26,10 @@ public class Technician
 
     public void AssignWarrant(Warrant warrant)
     {
+        Guid? previousTechnicianId = warrant.TechnicianId;
+
         Warrants = Warrants?.Append(warrant).ToList() ?? new[] { warrant }.ToList();
 
-        AddEvent(WarrantAssignedEvent.Create(warrant.Id, Id));
+        AddEvent(WarrantAssignedEvent.Create(warrant, Id, previousTechnicianId));
     }
 }

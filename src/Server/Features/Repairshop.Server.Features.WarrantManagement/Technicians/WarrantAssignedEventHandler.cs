@@ -1,4 +1,5 @@
 ﻿using Repairshop.Server.Common.Notifications;
+using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Shared.Features.WarrantManagement.Technicians;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
@@ -14,7 +15,8 @@ internal class WarrantAssignedEventHandler
     public override WarrantAssignedNotification CreateNotification(WarrantAssignedEvent domainEvent) =>
         new()
         {
-            TechnicianId = domainEvent.TechnicianId,
-            WarrantId = domainEvent.WarrantId
+            ToTechnicianId = domainEvent.ToTechnicianId,
+            FromTechnicianId = domainEvent.FromTechnicianId,
+            Warrant = domainEvent.Warrant.ToWarrantModel()
         };
 }

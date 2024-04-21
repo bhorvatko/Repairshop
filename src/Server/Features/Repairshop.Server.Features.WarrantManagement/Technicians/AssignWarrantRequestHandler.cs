@@ -32,8 +32,11 @@ internal class AssignWarrantRequestHandler
             throw new EntityNotFoundException<Technician, Guid>(request.TechnicianId);
         }
 
+        GetWarrantSpecification getWarrantSpecification =
+            new(request.WarrantId);
+
         Warrant? warrant =
-            await _warrants.GetByIdAsync(request.WarrantId, cancellationToken);
+            await _warrants.FirstOrDefaultAsync(getWarrantSpecification, cancellationToken);
 
         if (warrant is null)
         {

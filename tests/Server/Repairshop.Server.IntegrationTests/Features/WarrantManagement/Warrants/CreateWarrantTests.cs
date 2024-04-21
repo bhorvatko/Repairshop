@@ -112,7 +112,7 @@ public class CreateWarrantTests
 
         // Assert
         notification.Should().NotBeNull();
-        notification!.WarrantModel.Should().NotBeNull();
-        notification!.WarrantModel.Id.Should().NotBeEmpty();
+        notification!.Warrant.Should().NotBeNull();
+        notification!.Warrant.Id.Should().NotBeEmpty();
     }
 }

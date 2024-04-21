@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
-public class TechnicianViewModel
+public partial class TechnicianViewModel
     : ObservableObject, IEquatable<TechnicianViewModel>
 {
+    [ObservableProperty]
     private IEnumerable<WarrantSummaryViewModel> _warrants = Enumerable.Empty<WarrantSummaryViewModel>();
 
     private TechnicianViewModel(
@@ -17,7 +18,6 @@ public class TechnicianViewModel
     }
 
     public Guid? Id { get; private set; }
-    public IEnumerable<WarrantSummaryViewModel> Warrants { get => _warrants; set => SetProperty(ref _warrants, value); }
     public string Name { get; set; }
 
     public static TechnicianViewModel Create(

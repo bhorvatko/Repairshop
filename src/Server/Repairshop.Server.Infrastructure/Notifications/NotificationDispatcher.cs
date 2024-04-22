@@ -6,19 +6,33 @@ internal class NotificationDispatcher
     : INotificationDispatcher
 {
     private readonly IHubContext<NotificationsHub> _hubContext;
+    private readonly HubConnectionIdProvider _hubConnectionIdProvider;
 
-    public NotificationDispatcher(IHubContext<NotificationsHub> hubContext)
+    public NotificationDispatcher(
+        IHubContext<NotificationsHub> hubContext,
+        HubConnectionIdProvider hubConnectionIdProvider)
     {
         _hubContext = hubContext;
+        _hubConnectionIdProvider = hubConnectionIdProvider;
     }
 
     public async Task DispatchNotification(
         object notification,
         CancellationToken cancellationToken)
     {
-        await _hubContext.Clients.All.SendAsync(
-            notification.GetType().Name, 
-            notification, 
-            cancellationToken);
+        string? hubConnectionId = _hubConnectionIdProvider.GethubConnectionId();
+
+        IEnumerable<string> excludedConnectionIds =
+            hubConnectionId is null 
+                ? Enumerable.Empty<string>() 
+                : new[] { hubConnectionId };
+
+        await _hubContext
+            .Clients
+            .AllExcept(excludedConnectionIds)
+            .SendAsync(
+                notification.GetType().Name, 
+                notification, 
+                cancellationToken);
     }
 }

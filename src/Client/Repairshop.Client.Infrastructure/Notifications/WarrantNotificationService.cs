@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Options;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
-using Repairshop.Client.Infrastructure.ApiClient;
 using Repairshop.Client.Infrastructure.Services;
-using Repairshop.Shared.Common.Notifications;
 using Repairshop.Shared.Features.WarrantManagement.Technicians;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 using System.Reactive.Linq;
@@ -21,20 +18,11 @@ internal class WarrantNotificationService
     private readonly HubConnection _hubConnection;
 
     public WarrantNotificationService(
-        IOptions<ApiOptions> apiOptions,
-        WarrantSummaryViewModelFactory warrantSummaryViewModelFactory)
+        WarrantSummaryViewModelFactory warrantSummaryViewModelFactory,
+        HubConnection hubConnection)
     {
         _warrantSummaryViewModelFactory = warrantSummaryViewModelFactory;
-
-        _hubConnection = new HubConnectionBuilder()
-            .WithUrl(
-                $"{apiOptions.Value.BaseAddress}/{NotificationConstants.NotificationsEndpoint}",
-                options =>
-                {
-                    options.Headers.Add("X-API-KEY", apiOptions.Value.ApiKey);
-                })
-            .WithAutomaticReconnect()
-            .Build();
+        _hubConnection = hubConnection;
 
         _warrantAddedSubject = CreateSubject<WarrantCreatedNotification>();
         _warrantAssignedSubject = CreateSubject<WarrantAssignedNotification>();

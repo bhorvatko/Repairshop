@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Options;
 using Repairshop.Client.Infrastructure.ClientContext;
 using Repairshop.Shared.Common.ClientContext;
+using Repairshop.Shared.Common.Notifications;
 using RestSharp;
 
 namespace Repairshop.Client.Infrastructure.ApiClient;
@@ -9,15 +11,18 @@ internal class ApiClient
     private readonly ApiOptions _apiOptions;
     private readonly RestClient _restClient;
     private readonly ClientContextProvider _clientContextProvider;
+    private readonly HubConnection _hubConnection;
 
     public ApiClient(
         IOptions<ApiOptions> apiOptions, 
         RestClient restClient,
-        ClientContextProvider clientContextProvider)
+        ClientContextProvider clientContextProvider,
+        HubConnection hubConnection)
     {
         _apiOptions = apiOptions.Value;
         _restClient = restClient;
         _clientContextProvider = clientContextProvider;
+        _hubConnection = hubConnection;
     }
 
     public async Task<TResponse> Post<TRequest, TResponse>(
@@ -88,10 +93,21 @@ internal class ApiClient
         return response;
     }
 
-    private RestRequest CreateRequest(string resource) =>
-        new RestRequest(resource)
+    private RestRequest CreateRequest(string resource)
+    {
+        RestRequest request = new RestRequest(resource)
             .AddHeader("X-API-KEY", _apiOptions.ApiKey)
             .AddHeader(
-                ClientContextConstants.ClientContextHeader, 
+                ClientContextConstants.ClientContextHeader,
                 _clientContextProvider.ClientContext);
+
+        if (_hubConnection.ConnectionId is not null)
+        {
+            request.AddHeader(
+                NotificationConstants.HubConnectionIdHeader,
+                _hubConnection.ConnectionId);
+        }
+
+        return request;
+    }
 }

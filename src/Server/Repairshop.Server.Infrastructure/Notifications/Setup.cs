@@ -11,7 +11,9 @@ internal static class Setup
         services
             .AddSignalR();
 
-        services.AddTransient<INotificationDispatcher, NotificationDispatcher>();
+        services
+            .AddTransient<INotificationDispatcher, NotificationDispatcher>()
+            .AddTransient<HubConnectionIdProvider>();
 
         return services;
     }

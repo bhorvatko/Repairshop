@@ -134,6 +134,9 @@ public class TechnicianTests
         // Act
         await _client.PutAsJsonAsync("Technicians/AssignWarrant", request);
 
+        // TO DO: Find an alternative way of waiting for the notification to be received
+        await Task.Delay(100);
+
         // Assert
         notification.Should().NotBeNull();
         notification!.Warrant.Id.Should().Be(warrant.Id);

@@ -11,6 +11,7 @@ internal class GetWarrantSpecification
             .Include(x => x.CurrentStep).ThenInclude(x => x.Procedure)
             .Include(x => x.Steps).ThenInclude(x => x.NextTransition)
             .Include(x => x.Steps).ThenInclude(x => x.PreviousTransition)
+            .Include(x => x.Steps).ThenInclude(x => x.Procedure)
             .Where(x => x.Id == warrantId);
     }
 }

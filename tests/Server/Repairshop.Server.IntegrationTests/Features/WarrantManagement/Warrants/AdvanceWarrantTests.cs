@@ -43,4 +43,28 @@ public class AdvanceWarrantTests
 
         result.CurrentStep!.Id.Should().Be(warrant.Steps.ElementAt(1).Id);
     }
+
+    [Fact]
+    public async Task Advancing_a_warrant_should_send_a_notification()
+    {
+        // Arrange
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
+
+        AdvanceWarrantRequest request = new AdvanceWarrantRequest
+        {
+            WarrantId = warrant.Id,
+            StepId = warrant.Steps.ElementAt(1).Id
+        };
+
+        WarrantProcedureChangedNotification? notification = null;
+
+        await SubscribeToNotification<WarrantProcedureChangedNotification>(x => notification = x);
+
+        // Act
+        await _client.PostAsJsonAsync("Warrants/Advance", request);
+
+        // Assert
+        notification.Should().NotBeNull();
+        notification!.Warrant.Id.Should().Be(warrant.Id);
+    }
 }

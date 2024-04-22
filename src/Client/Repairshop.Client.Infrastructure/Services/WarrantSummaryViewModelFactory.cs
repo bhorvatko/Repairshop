@@ -25,7 +25,8 @@ internal class WarrantSummaryViewModelFactory
             CanBeTransitioned(model.CanBeRolledBackByFrontOffice, model.CanBeRolledBackByWorkshop),
             CanBeTransitioned(model.CanBeAdvancedByFrontOffice, model.CanBeAdvancedByWorkshop),
             model.NextStepId,
-            model.PreviousStepId);
+            model.PreviousStepId,
+            model.TechnicianId);
 
     private bool CanBeTransitioned(
         bool canBeTransitionedByFrontOffice,

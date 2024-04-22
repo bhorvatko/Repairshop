@@ -48,4 +48,32 @@ public class RollbackWarrantTests
 
         result.CurrentStep!.Id.Should().Be(warrant.Steps.First().Id);
     }
+
+    [Fact]
+    public async Task Rolling_back_a_warrant_should_send_a_notification()
+    {
+        // Arrange
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
+
+        warrant.AdvanceToStep(warrant.Steps.ElementAt(1).Id, RepairshopClientContext.FrontOffice);
+
+        _dbContext.SaveChanges();
+
+        RollbackWarrantRequest request = new RollbackWarrantRequest
+        {
+            WarrantId = warrant.Id,
+            StepId = warrant.Steps.First().Id
+        };
+
+        WarrantProcedureChangedNotification? notification = null;
+
+        await SubscribeToNotification<WarrantProcedureChangedNotification>(x => notification = x);
+
+        // Act
+        await _client.PostAsJsonAsync("Warrants/Rollback", request);
+
+        // Assert
+        notification.Should().NotBeNull();
+        notification!.Warrant.Id.Should().Be(warrant.Id);
+    }
 }

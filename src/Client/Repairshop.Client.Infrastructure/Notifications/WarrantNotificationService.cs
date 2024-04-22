@@ -14,6 +14,7 @@ internal class WarrantNotificationService
 {
     private readonly Subject<WarrantCreatedNotification> _warrantAddedSubject;
     private readonly Subject<WarrantAssignedNotification> _warrantAssignedSubject;
+    private readonly Subject<WarrantProcedureChangedNotification> _warrantProcedureChangedSubject;
     private readonly WarrantSummaryViewModelFactory _warrantSummaryViewModelFactory;
     private readonly HubConnection _hubConnection;
 
@@ -26,6 +27,7 @@ internal class WarrantNotificationService
 
         _warrantAddedSubject = CreateSubject<WarrantCreatedNotification>();
         _warrantAssignedSubject = CreateSubject<WarrantAssignedNotification>();
+        _warrantProcedureChangedSubject = CreateSubject<WarrantProcedureChangedNotification>();
 
         _hubConnection.StartAsync().Wait();
     }
@@ -62,7 +64,10 @@ internal class WarrantNotificationService
 
     public IDisposable SubscribeToWarrantUpdatedNotifications(Guid? technicianId, Action<WarrantSummaryViewModel> onWarrantUpdated)
     {
-        throw new NotImplementedException();
+        return _warrantProcedureChangedSubject
+            .Where(x => x.Warrant.TechnicianId == technicianId)
+            .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
+            .Subscribe(onWarrantUpdated);
     }
 
     private Subject<TSubject> CreateSubject<TSubject>()

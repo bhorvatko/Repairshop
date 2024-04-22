@@ -15,7 +15,8 @@ public class WarrantSummaryViewModel
         bool canBeRolledBack,
         bool canBeAdvanced,
         Guid? nextStepId,
-        Guid? previousStepId) 
+        Guid? previousStepId,
+        Guid? technicianId) 
     {
         Id = id;
         IsUrgent = isUrgent;
@@ -26,6 +27,7 @@ public class WarrantSummaryViewModel
         CanBeAdvanced = canBeAdvanced;
         NextStepId = nextStepId;
         PreviousStepId = previousStepId;
+        TechnicianId = technicianId;
     }
 
     public Guid Id { get; private set; }
@@ -37,6 +39,7 @@ public class WarrantSummaryViewModel
     public bool CanBeAdvanced { get; private set; }
     public Guid? NextStepId { get; private set; }
     public Guid? PreviousStepId { get; private set; }
+    public Guid? TechnicianId { get; private set; }
 
     public Visibility CanBeRolledBackVisibility => 
         (CanBeRolledBack && PreviousStepId is not null).ToVisibility();
@@ -53,7 +56,8 @@ public class WarrantSummaryViewModel
         bool canBeRolledBack,
         bool canBeAdvanced,
         Guid? nextStepId,
-        Guid? previousStepId) =>
+        Guid? previousStepId,
+        Guid? technicianId) =>
         new WarrantSummaryViewModel(
             id,
             isUrgent,
@@ -63,6 +67,7 @@ public class WarrantSummaryViewModel
             canBeRolledBack,
             canBeAdvanced,
             nextStepId,
-            previousStepId);
+            previousStepId,
+            technicianId);
 
 }

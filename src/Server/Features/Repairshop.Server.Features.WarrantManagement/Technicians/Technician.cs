@@ -1,4 +1,5 @@
 ﻿using Repairshop.Server.Common.Entities;
+using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Technicians;
@@ -28,7 +29,16 @@ public class Technician
     {
         Guid? previousTechnicianId = warrant.TechnicianId;
 
+        if (previousTechnicianId == Id)
+        {
+            throw new DomainArgumentException(
+                warrant,
+                "Warrant is already assigned to the technician");
+        }
+
         Warrants = Warrants?.Append(warrant).ToList() ?? new[] { warrant }.ToList();
+
+        warrant.AssignTo(this);
 
         AddEvent(WarrantAssignedEvent.Create(warrant, Id, previousTechnicianId));
     }

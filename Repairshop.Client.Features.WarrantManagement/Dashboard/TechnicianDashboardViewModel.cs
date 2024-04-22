@@ -19,6 +19,7 @@ public partial class TechnicianDashboardViewModel
 
     private IDisposable? _warrantAddedSubscription;
     private IDisposable? _warrantRemovedSubscription;
+    private IDisposable? _warrantUpdatedSubscription;
 
     [ObservableProperty]
     private IEnumerable<TechnicianViewModel> _availableTechnicians = 
@@ -65,17 +66,7 @@ public partial class TechnicianDashboardViewModel
                 .Select(CreateWarrantPreviewControlViewModel)
                 ?? Enumerable.Empty<WarrantPreviewControlViewModel>();
 
-            _warrantAddedSubscription?.Dispose();
-
-            _warrantAddedSubscription =
-                _warrantNotificationService.SubscribeToWarrantAddedNotifications(
-                    value?.Id,
-                    OnWarrantAdded);
-
-            _warrantRemovedSubscription =
-                _warrantNotificationService.SubscribeToWarrantRemovedNotifications(
-                    value?.Id,
-                    OnWarrantRemoved);
+            SetSubscriptions(value?.Id);
         }
     }
 
@@ -89,6 +80,11 @@ public partial class TechnicianDashboardViewModel
 
         WarrantSummaryViewModel warrant =
             (WarrantSummaryViewModel)e.Data.GetData(typeof(WarrantSummaryViewModel));
+
+        if (warrant.TechnicianId == SelectedTechnician?.Id)
+        {
+            return;
+        }
 
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(() => 
             SelectedTechnician?.Id is not null
@@ -117,6 +113,40 @@ public partial class TechnicianDashboardViewModel
     private void OnWarrantRemoved(Guid removedWarrantId) =>
         Warrants = Warrants.Where(x => x.Warrant.Id != removedWarrantId).ToList();
 
+    private void OnWarrantUpdated(WarrantSummaryViewModel updatedWarrant)
+    {
+        WarrantPreviewControlViewModel updatedWarrantViewModel =
+            CreateWarrantPreviewControlViewModel(updatedWarrant);
+
+        updatedWarrantViewModel.PlayUpdateAnimation = true;
+
+        Warrants = Warrants
+            .Where(x => x.Warrant.Id != updatedWarrant.Id)
+            .Append(updatedWarrantViewModel);
+    }
+
     private WarrantPreviewControlViewModel CreateWarrantPreviewControlViewModel(WarrantSummaryViewModel warrant) =>
         _warrantPreviewControlViewModelFactory.CreateViewModel(warrant);
+
+    private void SetSubscriptions(Guid? technicianId)
+    {
+        _warrantAddedSubscription?.Dispose();
+        _warrantRemovedSubscription?.Dispose();
+        _warrantUpdatedSubscription?.Dispose();
+
+        _warrantAddedSubscription =
+            _warrantNotificationService.SubscribeToWarrantAddedNotifications(
+                technicianId,
+                OnWarrantAdded);
+
+        _warrantRemovedSubscription =
+            _warrantNotificationService.SubscribeToWarrantRemovedNotifications(
+                technicianId,
+                OnWarrantRemoved);
+
+        _warrantUpdatedSubscription =
+            _warrantNotificationService.SubscribeToWarrantUpdatedNotifications(
+                technicianId,
+                OnWarrantUpdated);
+    }
 }

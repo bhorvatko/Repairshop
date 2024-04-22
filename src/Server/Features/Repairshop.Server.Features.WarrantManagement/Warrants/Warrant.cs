@@ -2,6 +2,7 @@
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants.CreateWarrant;
+using Repairshop.Server.Features.WarrantManagement.Warrants.ProcedureChanged;
 using Repairshop.Shared.Common.ClientContext;
 
 namespace Repairshop.Server.Features.WarrantManagement.Warrants;
@@ -100,6 +101,7 @@ public class Warrant
         Deadline = deadline;
         IsUrgent = isUrgent;
         Steps = steps;
+        CurrentStep = null!;
 
         await beforeFinalising();
 
@@ -111,10 +113,18 @@ public class Warrant
         TechnicianId = null;
     }
 
+    public void AssignTo(Technician technician)
+    {
+        Technician = technician;
+        TechnicianId = technician.Id;
+    }
+
     private void SetInitialStep() => SetCurrentStep(Steps.First());
 
     private void SetCurrentStep(WarrantStep step)
     {
+        Guid? previousProcedureId = CurrentStep?.ProcedureId;
+
         if (!Steps.Contains(step))
         {
             throw new DomainArgumentException(
@@ -124,6 +134,12 @@ public class Warrant
 
         CurrentStep = step;
         CurrentStepId = step.Id;
+
+        if (previousProcedureId is not null 
+            && previousProcedureId != CurrentStep.ProcedureId)
+        {
+            AddEvent(WarrantProcedureChangedEvent.Create(this));
+        }
     }
 
     private void SetCurrentStepByProcedureId(Guid? procedureId)

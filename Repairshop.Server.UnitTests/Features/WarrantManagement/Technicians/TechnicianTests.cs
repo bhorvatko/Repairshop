@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
 using Repairshop.Server.Tests.Shared.Features.WarrantManagement;
@@ -23,5 +24,19 @@ public class TechnicianTests
         technician.AssignWarrant(warrant);
 
         technician.Warrants.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task Assigning_a_warrant_already_assigned_to_the_technician_should_fail()
+    {
+        Technician technician = Technician.Create("Test");
+        Warrant warrant = await WarrantHelper.Create();
+        technician.AssignWarrant(warrant);
+
+        Action act = () => technician.AssignWarrant(warrant);
+
+        act.Should()
+            .Throw<DomainArgumentException>()
+            .Where(x => x.InvalidArgument == warrant);
     }
 }

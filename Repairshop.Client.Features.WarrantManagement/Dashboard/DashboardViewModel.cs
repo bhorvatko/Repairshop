@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Configuration;
@@ -11,15 +12,21 @@ public partial class DashboardViewModel
     private readonly TechnicianDashboardViewModelFactory _technicianDashboardViewModelFactory;
     private readonly IUserSettingsProvider<WarrantManagementConfiguration> _userSettingsProvider;
 
+    [ObservableProperty]
+    private ProcedureLegendViewModel _procedureLegendViewModel;
+
     private IReadOnlyCollection<TechnicianDashboardViewModel> _technicianDashboards = 
         new List<TechnicianDashboardViewModel>();
 
     public DashboardViewModel(
         TechnicianDashboardViewModelFactory technicianDashboardViewModelFactory,
-        IUserSettingsProvider<WarrantManagementConfiguration> userSettingsProvider)
+        IUserSettingsProvider<WarrantManagementConfiguration> userSettingsProvider,
+        ProcedureLegendViewModel procedureLegendViewModel)
     {
         _technicianDashboardViewModelFactory = technicianDashboardViewModelFactory;
         _userSettingsProvider = userSettingsProvider;
+
+        ProcedureLegendViewModel = procedureLegendViewModel;
     }
 
     public IReadOnlyCollection<TechnicianDashboardViewModel> TechnicianDashboards

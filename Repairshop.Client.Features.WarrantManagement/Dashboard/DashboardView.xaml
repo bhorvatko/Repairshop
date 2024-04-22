@@ -20,6 +20,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <ItemsControl Grid.Column="0" 
@@ -36,6 +37,9 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <local:ProcedureLegend Grid.Column="1" 
+                               DataContext="{Binding ProcedureLegendViewModel}" />
 
     </Grid>
 </nav:ViewBase>

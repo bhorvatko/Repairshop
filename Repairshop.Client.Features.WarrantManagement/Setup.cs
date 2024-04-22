@@ -9,5 +9,6 @@ public static class Setup
     public static IServiceCollection AddWarrantManagement(this IServiceCollection services) =>
         services
             .AddTransient<WarrantPreviewControlViewModelFactory>()
-            .AddTransient<TechnicianDashboardViewModelFactory>();
+            .AddTransient<TechnicianDashboardViewModelFactory>()
+            .AddTransient<ProcedureLegendViewModel>();
 }

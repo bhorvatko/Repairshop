@@ -104,8 +104,15 @@ public partial class TechnicianDashboardViewModel
         _warrantRemovedSubscription?.Dispose();
     }
 
-    private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant) =>
-        Warrants = Warrants.Append(CreateWarrantPreviewControlViewModel(addedWarrant));
+    private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant)
+    {
+        WarrantPreviewControlViewModel addedWarrantViewModel =
+            CreateWarrantPreviewControlViewModel(addedWarrant);
+
+        addedWarrantViewModel.PlayUpdateAnimation = true;
+
+        Warrants = Warrants.Append(addedWarrantViewModel);
+    }
 
     private void OnWarrantRemoved(Guid removedWarrantId) =>
         Warrants = Warrants.Where(x => x.Warrant.Id != removedWarrantId).ToList();

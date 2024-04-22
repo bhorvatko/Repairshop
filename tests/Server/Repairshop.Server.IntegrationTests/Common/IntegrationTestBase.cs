@@ -5,6 +5,7 @@ using Repairshop.Server.Features.WarrantManagement.Data;
 using Repairshop.Server.Features.WarrantManagement.Procedures;
 using Repairshop.Server.Features.WarrantManagement.Technicians;
 using Repairshop.Server.Features.WarrantManagement.Warrants;
+using Repairshop.Server.Features.WarrantManagement.WarrantTemplates;
 using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Common.Notifications;
 using Xunit.Abstractions;
@@ -63,5 +64,7 @@ public class IntegrationTestBase
         _dbContext.Set<WarrantStep>().ExecuteDelete();
         _dbContext.Set<Procedure>().ExecuteDelete();
         _dbContext.Set<Technician>().ExecuteDelete();
+        _dbContext.Set<WarrantTemplateStep>().ExecuteDelete();
+        _dbContext.Set<WarrantTemplate>().ExecuteDelete();
     }
 }

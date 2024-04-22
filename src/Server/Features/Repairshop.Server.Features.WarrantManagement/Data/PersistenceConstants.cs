@@ -8,5 +8,7 @@ internal static class PersistenceConstants
         public const string WarrantSteps = nameof(WarrantSteps);
         public const string WarrantStepTransitions = nameof(WarrantStepTransitions);
         public const string Technicians = nameof(Technicians);
+        public const string WarrantTemplates = nameof(WarrantTemplates);
+        public const string WarrantTemplateSteps = nameof(WarrantTemplateSteps);
     }
 }

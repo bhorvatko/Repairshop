@@ -25,7 +25,6 @@ public partial class TechnicianDashboardViewModel
     private IEnumerable<TechnicianViewModel> _availableTechnicians = 
         Enumerable.Empty<TechnicianViewModel>();
 
-    [ObservableProperty]
     private IEnumerable<WarrantPreviewControlViewModel> _warrants = 
         Enumerable.Empty<WarrantPreviewControlViewModel>();
 
@@ -70,6 +69,15 @@ public partial class TechnicianDashboardViewModel
         }
     }
 
+    public IEnumerable<WarrantPreviewControlViewModel> Warrants
+    {
+        get => _warrants
+            .OrderBy(x => x.Warrant.IsUrgent)
+            .ThenBy(x => x.Warrant.Deadline);
+
+        set => SetProperty(ref _warrants, value);
+    }
+
     [RelayCommand]
     public async Task WarrantDrop(DragEventArgs e)
     {
@@ -98,6 +106,11 @@ public partial class TechnicianDashboardViewModel
     {
         _warrantAddedSubscription?.Dispose();
         _warrantRemovedSubscription?.Dispose();
+
+        foreach (WarrantPreviewControlViewModel warrant in Warrants)
+        {
+            warrant.Dispose();
+        }   
     }
 
     private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant)
@@ -110,8 +123,17 @@ public partial class TechnicianDashboardViewModel
         Warrants = Warrants.Append(addedWarrantViewModel);
     }
 
-    private void OnWarrantRemoved(Guid removedWarrantId) =>
-        Warrants = Warrants.Where(x => x.Warrant.Id != removedWarrantId).ToList();
+    private void OnWarrantRemoved(Guid removedWarrantId)
+    {
+        WarrantPreviewControlViewModel? warrantToBeRemoved = 
+            Warrants.FirstOrDefault(x => x.Warrant.Id == removedWarrantId);
+
+        if (warrantToBeRemoved is null) return;
+
+        warrantToBeRemoved.Dispose();
+
+        Warrants = Warrants.Except(new[] { warrantToBeRemoved });
+    }
 
     private void OnWarrantUpdated(WarrantSummaryViewModel updatedWarrant)
     {

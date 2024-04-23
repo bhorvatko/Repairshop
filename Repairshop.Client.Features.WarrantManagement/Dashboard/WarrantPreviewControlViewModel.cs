@@ -5,15 +5,18 @@ using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
 public partial class WarrantPreviewControlViewModel
-    : ObservableObject
+    : ObservableObject, IDisposable
 {
+    private static AnimationClock _animationClock =
+        new AnimationClock(5);
+
     private readonly INavigationService _navigationService;
     private readonly IWarrantService _warrantService;
-    private string _labelContent;
 
     public WarrantPreviewControlViewModel(
         WarrantSummaryViewModel warrant,
@@ -23,12 +26,14 @@ public partial class WarrantPreviewControlViewModel
         Warrant = warrant;
         _navigationService = navigationService;
         _warrantService = warrantService;
-        _labelContent = warrant.Title;
+
+        _animationClock.Tick += UpdateLabelContent;
     }
 
     public WarrantSummaryViewModel Warrant { get; set; }
-    public string LabelContent { get => _labelContent; set => SetProperty(ref _labelContent, value); }
     public bool PlayUpdateAnimation { get; set; }
+    public string LabelContent => 
+        _animationClock.State ? Warrant.Title : Warrant.Deadline.ToString();
 
     [RelayCommand]
     public async Task UpdateWarrant()
@@ -87,6 +92,30 @@ public partial class WarrantPreviewControlViewModel
                 (WarrantPreviewControlViewModel)source.DataContext;
 
             DragDrop.DoDragDrop(source, sourceViewModel.Warrant, DragDropEffects.Move);
+        }
+    }
+
+    public void Dispose()
+    {
+        _animationClock.Tick -= UpdateLabelContent;
+    }
+
+    private void UpdateLabelContent(object? sender, EventArgs eventArgs)
+    {
+        OnPropertyChanged(nameof(LabelContent));
+    }
+
+    private class AnimationClock : DispatcherTimer
+    {
+        public bool State { get; private set; } = true;
+
+        public AnimationClock(int intervalInSeconds)
+        {
+            Interval = new TimeSpan(0, 0, intervalInSeconds);
+
+            Tick += (s, e) => State = !State;
+
+            Start();
         }
     }
 }

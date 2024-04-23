@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Server.Infrastructure.Authorization;
 using Repairshop.Server.Infrastructure.ClientContext;
 using Repairshop.Server.Infrastructure.ErrorHandling;
+using Repairshop.Server.Infrastructure.HealthChecks;
 using Repairshop.Server.Infrastructure.Mediator;
 using Repairshop.Server.Infrastructure.Notifications;
 using Repairshop.Server.Infrastructure.OpenApi;
@@ -28,7 +29,8 @@ public static class Startup
             .AddApiKey()
             .AddNotifications()
             .AddPersistence()
-            .AddClientContext();
+            .AddClientContext()
+            .AddApiHealthChecks();
 
         return services;
     }
@@ -41,13 +43,17 @@ public static class Startup
             .UseErrorHandling();
 
         app
+            .UseApiHealthChecks();
+
+        app
             .MapControllers();
 
         app
             .UseOpenApi()
             .UseApiKey();
 
-        app.UseNotifications();
+        app
+            .UseNotifications();
 
         return app;
     }

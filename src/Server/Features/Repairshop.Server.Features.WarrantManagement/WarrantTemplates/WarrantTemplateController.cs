@@ -15,4 +15,14 @@ public class WarrantTemplateController : ApiControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetWarrantTemplates(
+        [FromQuery] GetWarrantTemplatesRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

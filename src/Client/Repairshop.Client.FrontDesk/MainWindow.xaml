@@ -36,6 +36,10 @@
                         <MenuItem Header="Dodaj..." 
                                   Command="{Binding NavigateToAddTechnicianViewCommand}"/>
                     </MenuItem>
+                    <MenuItem Header="Šablone">
+                        <MenuItem Header="Dodaj..."
+                                  Command="{Binding NavigateToCreateWarrantTemplateViewCommand}" />
+                    </MenuItem>
                 </MenuItem>
             </Menu>
 

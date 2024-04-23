@@ -25,10 +25,3 @@ public interface IWarrantService
     Task RollbackWarrant(Guid warrantId, Guid stepId);
     Task UnassignWarrant(Guid warrantId);
 }
-
-public class CreateWarrantStepDto
-{
-    public required Guid ProcedureId { get; set; }
-    public required bool CanBeTransitionedToByFrontDesk { get; set; }
-    public required bool CanBeTransitionedToByWorkshop { get; set; }
-}

@@ -18,6 +18,6 @@ internal class WarrantTemplateConfiguration
         builder
             .HasMany(x => x.Steps)
             .WithOne()
-            .HasForeignKey(x => x.Id);
+            .HasForeignKey(x => x.WarrantTemplateId);
     }
 }

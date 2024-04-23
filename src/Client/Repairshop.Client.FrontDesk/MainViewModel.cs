@@ -5,6 +5,7 @@ using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.Technicians;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
+using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 using System.Windows;
 
 namespace Repairshop.Client.FrontDesk;
@@ -56,6 +57,12 @@ public partial class MainViewModel
     public void NavigateToAddTechnicianView()
     {
         _navigationService.NavigateToView<AddTechnicianView>();
+    }
+
+    [RelayCommand]
+    public void NavigateToCreateWarrantTemplateView()
+    {
+        _navigationService.NavigateToView<CreateWarrantTemplateView>();
     }
 
     public void ShowLoadingIndicator()

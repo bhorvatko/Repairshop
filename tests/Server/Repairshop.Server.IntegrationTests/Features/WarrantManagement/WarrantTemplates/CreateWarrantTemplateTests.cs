@@ -62,7 +62,7 @@ public class CreateWarrantTemplateTests : IntegrationTestBase
         createdEntity.Name.Should().Be("Template");
         createdEntity.Steps.Should().HaveCount(2);
         createdEntity.Steps
-            .OrderByDescending(x => x.CanBeTransitionedToByFrontOffice)
+            .OrderBy(x => x.CanBeTransitionedToByFrontOffice)
             .Should()
             .SatisfyRespectively(
                 firstStep =>

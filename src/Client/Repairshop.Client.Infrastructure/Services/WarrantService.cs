@@ -35,7 +35,7 @@ internal class WarrantService
             Title = title,
             Deadline = deadline,
             IsUrgnet = isUrgent,
-            Steps = steps.Select(CreateWarrantStepDto)
+            Steps = steps.Select(x => x.ToWarrantStepDto())
         };
 
         await _apiClient.Post<CreateWarrantRequest, CreateWarrantResponse>(
@@ -70,7 +70,7 @@ internal class WarrantService
             Title = title,
             Deadline = deadline,
             IsUrgent = isUrgent,
-            Steps = steps.Select(CreateWarrantStepDto),
+            Steps = steps.Select(x => x.ToWarrantStepDto()),
             CurrentStepProcedureId = currentStepProcedureId
         };
 
@@ -121,12 +121,4 @@ internal class WarrantService
     {
         await _apiClient.Put<UnassignWarrantResponse>($"Warrants/{warrantId}/Unassign");
     }
-
-    private static WarrantStepDto CreateWarrantStepDto(CreateWarrantStepDto createDto) =>
-        new WarrantStepDto()
-        {
-            CanBeTransitionedToByFrontDesk = createDto.CanBeTransitionedToByFrontDesk,
-            CanBeTransitionedToByWorkshop = createDto.CanBeTransitionedToByWorkshop,
-            ProcedureId = createDto.ProcedureId
-        };
 }

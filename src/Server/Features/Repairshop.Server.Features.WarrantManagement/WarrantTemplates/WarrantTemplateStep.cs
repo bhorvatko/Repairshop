@@ -18,6 +18,7 @@ public class WarrantTemplateStep
     public Procedure Procedure { get; private set; }
     public bool CanBeTransitionedToByWorkshop { get; private set; }
     public bool CanBeTransitionedToByFrontOffice { get; private set; }
+    public Guid WarrantTemplateId { get; private set; }
 
     public static async Task<IReadOnlyCollection<WarrantTemplateStep>> CreateStepSequence(
         IEnumerable<CreateWarrantStepArgs> stepArgs,

@@ -86,9 +86,14 @@ namespace Repairshop.Server.Features.WarrantManagement.Migrations
                     b.Property<Guid>("ProcedureId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("WarrantTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProcedureId");
+
+                    b.HasIndex("WarrantTemplateId");
 
                     b.ToTable("WarrantTemplateSteps", "wm");
                 });
@@ -176,15 +181,15 @@ namespace Repairshop.Server.Features.WarrantManagement.Migrations
 
             modelBuilder.Entity("Repairshop.Server.Features.WarrantManagement.WarrantTemplates.WarrantTemplateStep", b =>
                 {
-                    b.HasOne("Repairshop.Server.Features.WarrantManagement.WarrantTemplates.WarrantTemplate", null)
-                        .WithMany("Steps")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Repairshop.Server.Features.WarrantManagement.Procedures.Procedure", "Procedure")
                         .WithMany()
                         .HasForeignKey("ProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Repairshop.Server.Features.WarrantManagement.WarrantTemplates.WarrantTemplate", null)
+                        .WithMany("Steps")
+                        .HasForeignKey("WarrantTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

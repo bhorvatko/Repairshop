@@ -1,4 +1,7 @@
 ﻿using Repairshop.Client.Features.WarrantManagement.Interfaces;
+using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
+using Repairshop.Client.Infrastructure.Services.Extensions;
+using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.WarrantTemplates;
 
 namespace Repairshop.Client.Infrastructure.Services;
@@ -28,5 +31,24 @@ internal class WarrantTemplateService
         await _apiClient.Post<CreateWarrantTemplateRequest, CreateWarrantTemplateResponse>(
             WarrantTemplatesEndpoint,
             request);
+    }
+
+    public async Task<IReadOnlyCollection<WarrantTemplateViewModel>> GetWarrantTemplates()
+    {
+        GetWarrantTemplatesResponse response = 
+            await _apiClient.Get<GetWarrantTemplatesResponse>(WarrantTemplatesEndpoint);
+
+        return 
+            response
+                .WarrantTemplates
+                .Select(x => new WarrantTemplateViewModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Steps = x.Steps
+                        .Select(x => x.ToViewModel())
+                        .ToList()
+                })
+                .ToList();
     }
 }

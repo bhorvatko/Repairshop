@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
+using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
@@ -60,6 +61,20 @@ public partial class EditWarrantViewModel
                 {
                     vm.Steps = Steps;
                 });
+
+        if (sequence is not null)
+        {
+            Steps = sequence.ToList();
+        }
+    }
+
+    [RelayCommand]
+    public void ApplyWarrantTemplate()
+    {
+        IEnumerable<WarrantStep>? sequence =
+            _dialogService.OpenDialog<
+                WarrantTemplateSelectorView,
+                IEnumerable<WarrantStep>>();
 
         if (sequence is not null)
         {

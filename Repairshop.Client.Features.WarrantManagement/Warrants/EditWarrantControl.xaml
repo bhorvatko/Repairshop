@@ -53,6 +53,10 @@
 
             <Button Content="Uredi" 
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.EditWarrantSequenceCommand}"/>
+
+            <Button Content="Primjeni šablonu"
+                    Command="{Binding ElementName=editWarrantControl, Path=ViewModel.ApplyWarrantTemplateCommand}" />
+
         </StackPanel>
 
         <Label Grid.Row="4" Grid.Column="0" 

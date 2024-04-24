@@ -13,6 +13,7 @@ internal class GetWarrantTempplateModelSpecification
         Query
             .Select(x => new WarrantTemplateModel()
             {
+                Id = x.Id,
                 Name = x.Name,
                 Steps = x.Steps.Select(s => new WarrantStepModel()
                 {

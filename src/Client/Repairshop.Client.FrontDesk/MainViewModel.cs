@@ -15,22 +15,11 @@ public partial class MainViewModel
 {
     private readonly INavigationService _navigationService;
 
-    private IViewModel? _currentViewModel;
     private Visibility _loadingIndicatorVisibility = Visibility.Collapsed;
 
     public MainViewModel(INavigationService navigationService)
     {
         _navigationService = navigationService;
-    }
-
-    public IViewModel? CurrentViewModel 
-    { 
-        get => _currentViewModel;
-        set
-        {
-            if (_currentViewModel?.GetType() == value?.GetType()) return;
-            SetProperty(ref _currentViewModel, value);
-        }
     }
 
     public Visibility LoadingIndicatorVisibility { get => _loadingIndicatorVisibility; set => SetProperty(ref _loadingIndicatorVisibility, value); }

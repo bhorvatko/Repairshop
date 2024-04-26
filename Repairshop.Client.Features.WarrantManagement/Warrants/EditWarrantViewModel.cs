@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.Validation;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 using System.ComponentModel.DataAnnotations;
@@ -33,6 +34,7 @@ public partial class EditWarrantViewModel
         _dialogService = dialogService;
     }
 
+    [NotEmpty]
     public IEnumerable<Procedure> SequenceProcedures => Steps.Select(x => x.Procedure);
 
     public IEnumerable<WarrantStep> Steps

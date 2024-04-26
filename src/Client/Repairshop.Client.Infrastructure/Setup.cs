@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Infrastructure.ApiClient;
 using Repairshop.Client.Infrastructure.ClientContext;
+using Repairshop.Client.Infrastructure.Forms;
 using Repairshop.Client.Infrastructure.LoadingIndicator;
 using Repairshop.Client.Infrastructure.MessageDialog;
 using Repairshop.Client.Infrastructure.Navigation;
@@ -28,5 +29,6 @@ public static class Setup
             .AddMessageDialog()
             .AddClientContext(clientContext)
             .AddUserSettings()
-            .AddNotifications();
+            .AddNotifications()
+            .AddForms();
 }

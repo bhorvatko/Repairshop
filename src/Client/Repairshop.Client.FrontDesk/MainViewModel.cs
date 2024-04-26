@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
@@ -14,12 +15,16 @@ public partial class MainViewModel
     : ObservableObject, IMainViewModel
 {
     private readonly INavigationService _navigationService;
+    private readonly IFormService _formService;
 
     private Visibility _loadingIndicatorVisibility = Visibility.Collapsed;
 
-    public MainViewModel(INavigationService navigationService)
+    public MainViewModel(
+        INavigationService navigationService,
+        IFormService formService)
     {
         _navigationService = navigationService;
+        _formService = formService;
     }
 
     public Visibility LoadingIndicatorVisibility { get => _loadingIndicatorVisibility; set => SetProperty(ref _loadingIndicatorVisibility, value); }
@@ -39,7 +44,7 @@ public partial class MainViewModel
     [RelayCommand]
     public void NavigateToCreateWarrantView()
     {
-        _navigationService.NavigateToView<CreateWarrantView>();
+        _formService.ShowForm<CreateWarrantView>();
     }
 
     [RelayCommand]

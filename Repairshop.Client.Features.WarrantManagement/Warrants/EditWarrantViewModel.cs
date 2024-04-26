@@ -1,14 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
-using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public partial class EditWarrantViewModel
-    : ViewModelBase
+    : ObservableObject
 {
     private readonly IDialogService _dialogService;
 

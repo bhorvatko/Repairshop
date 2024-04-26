@@ -12,5 +12,6 @@ public static class Setup
             .AddTransient<WarrantPreviewControlViewModelFactory>()
             .AddTransient<TechnicianDashboardViewModelFactory>()
             .AddTransient<ProcedureLegendViewModel>()
-            .AddTransient<WarrantFilterSelectionViewModelFactory>();
+            .AddTransient<WarrantFilterSelectionViewModelFactory>()
+            .AddTransient<EditWarrantViewModel>();
 }

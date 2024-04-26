@@ -1,4 +1,5 @@
-﻿using Repairshop.Client.Common.Forms;
+﻿using Repairshop.Client.Common.Extensions;
+using Repairshop.Client.Common.Forms;
 using System.ComponentModel;
 using System.Windows;
 
@@ -19,7 +20,9 @@ public partial class FormContainer
     public string SubmitText => 
         _viewModel?.GetSubmitText() ?? string.Empty;
 
-    public bool FormValid { get; private set; }
+    public bool SubmissionInProgress { get; private set; }
+    public Visibility ProgressBarVisibility => SubmissionInProgress.ToVisibility();
+    public bool EnableForm => !SubmissionInProgress;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -37,8 +40,20 @@ public partial class FormContainer
     {
         if (_viewModel?.ValidateForm() != true) return;
 
+        SetSubmissionInProgress(true);
+
         await _viewModel!.SubmitForm();
 
+        SetSubmissionInProgress(false);
+
         Close();
+    }
+
+    private void SetSubmissionInProgress(bool value)
+    {
+        SubmissionInProgress = value;
+        PropertyChanged?.Invoke(this, new(nameof(SubmissionInProgress)));
+        PropertyChanged?.Invoke(this, new(nameof(ProgressBarVisibility)));
+        PropertyChanged?.Invoke(this, new(nameof(EnableForm)));
     }
 }

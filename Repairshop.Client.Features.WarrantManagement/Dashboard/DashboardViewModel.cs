@@ -38,18 +38,21 @@ public partial class DashboardViewModel
     [RelayCommand]
     public async Task LoadTechnicians()
     {
-        IEnumerable<Guid?> technicianIds = 
-            _userSettingsProvider.GetSettings().TechnicianDashboards.Select(x => x.TechnicianId);
+        IEnumerable<TechnicianDashboardConfiguration> configurations =
+            _userSettingsProvider.GetSettings().TechnicianDashboards;
 
-        Guid?[] viewModelIds = Enumerable.Repeat<Guid?>(null, 3).ToArray();
+        TechnicianDashboardConfiguration[] viewModelConfigurations =
+            new TechnicianDashboardConfiguration[3];
 
-        for (int i = 0; i < viewModelIds.Count(); i++)
+        for (int i = 0; i < viewModelConfigurations.Count(); i++)
         {
-            viewModelIds[i] = technicianIds.ElementAtOrDefault(i);
+            viewModelConfigurations[i] =
+                configurations.ElementAtOrDefault(i) 
+                    ?? TechnicianDashboardConfiguration.CreateDefault();
         }
 
         TechnicianDashboards =
-            await _technicianDashboardViewModelFactory.CreateViewModel(viewModelIds);
+            await _technicianDashboardViewModelFactory.CreateViewModels(viewModelConfigurations);
     }
 
     public override void OnNavigatedAway()
@@ -57,9 +60,10 @@ public partial class DashboardViewModel
         WarrantManagementConfiguration userSettings = _userSettingsProvider.GetSettings() with
         {
             TechnicianDashboards = TechnicianDashboards
-                .Select(x => new TechnicianDashboardConfiguration() 
-                { 
-                    TechnicianId = x.SelectedTechnician?.Id 
+                .Select(x => new TechnicianDashboardConfiguration()
+                {
+                    TechnicianId = x.SelectedTechnician?.Id,
+                    ProcedureFilters = x.GetFilteredProcedureIds()
                 })
         };
 

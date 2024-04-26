@@ -5,13 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:warrantFiltering="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=local:TechnicianDashboardViewModel}">
 
     <TabControl Margin="5">
-
-        <TabItem Header="Nalozi">
+        
+        <TabItem Header="Nalozi" >
+            
             <Grid AllowDrop="True" 
                   Margin="5">
                 <Grid.RowDefinitions>
@@ -45,14 +47,22 @@
         </TabItem>
 
         <TabItem Header="Filteri">
-            
+
+            <warrantFiltering:WarrantFilterSelectionView DataContext="{Binding WarrantFilterSelectionViewModel}" />
+
         </TabItem>
 
         <i:Interaction.Triggers>
+            
             <i:EventTrigger EventName="Drop">
                 <i:InvokeCommandAction Command="{Binding WarrantDropCommand}" 
                                        PassEventArgsToCommand="True"/>
             </i:EventTrigger>
+            
+            <i:EventTrigger EventName="SelectionChanged">
+                <i:InvokeCommandAction Command="{Binding TabChangedCommand}" />
+            </i:EventTrigger>
+            
         </i:Interaction.Triggers>
         
     </TabControl>

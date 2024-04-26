@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
+using Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Features.WarrantManagement;
@@ -10,5 +11,6 @@ public static class Setup
         services
             .AddTransient<WarrantPreviewControlViewModelFactory>()
             .AddTransient<TechnicianDashboardViewModelFactory>()
-            .AddTransient<ProcedureLegendViewModel>();
+            .AddTransient<ProcedureLegendViewModel>()
+            .AddTransient<WarrantFilterSelectionViewModelFactory>();
 }

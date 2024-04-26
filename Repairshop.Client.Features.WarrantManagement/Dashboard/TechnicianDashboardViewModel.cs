@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Features.WarrantManagement.Configuration;
+using Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
 using System.Windows;
@@ -37,8 +39,9 @@ public partial class TechnicianDashboardViewModel
         INavigationService navigationService,
         IWarrantService warrantService,
         IWarrantNotificationService warrantNotificationService,
+        WarrantFilterSelectionViewModelFactory warrantFilterSelectionViewModelFactory,
         IReadOnlyCollection<TechnicianViewModel> availableTechnicians,
-        Guid? selectedTechnicianId)
+        TechnicianDashboardConfiguration configuration)
     {
         _warrantPreviewControlViewModelFactory = warrantPreviewControlViewModelFactory;
         _loadingIndicatorService = loadingIndicatorService;
@@ -50,7 +53,10 @@ public partial class TechnicianDashboardViewModel
         AvailableTechnicians = availableTechnicians;
 
         SelectedTechnician =
-            availableTechnicians.FirstOrDefault(x => x.Id == selectedTechnicianId);
+            availableTechnicians.FirstOrDefault(x => x.Id == configuration.TechnicianId);
+
+        WarrantFilterSelectionViewModel = 
+            warrantFilterSelectionViewModelFactory.Create(configuration.ProcedureFilters);
     }
 
     public TechnicianViewModel? SelectedTechnician
@@ -72,11 +78,14 @@ public partial class TechnicianDashboardViewModel
     public IEnumerable<WarrantPreviewControlViewModel> Warrants
     {
         get => _warrants
+            .Where(x => !GetFilteredProcedureIds().Contains(x.Warrant.Procedure.Id!.Value))
             .OrderBy(x => x.Warrant.IsUrgent)
             .ThenBy(x => x.Warrant.Deadline);
 
         set => SetProperty(ref _warrants, value);
     }
+
+    public WarrantFilterSelectionViewModel WarrantFilterSelectionViewModel { get; private set; }
 
     [RelayCommand]
     public async Task WarrantDrop(DragEventArgs e)
@@ -102,6 +111,14 @@ public partial class TechnicianDashboardViewModel
         _navigationService.NavigateToView<DashboardView>();
     }
 
+    [RelayCommand]
+    public void OnTabChanged()
+    {
+        // Refresh warrants when navigated back to warrants tab,
+        // in case filters were changed in the filters tab
+        OnPropertyChanged(nameof(Warrants));
+    }
+
     public void Dispose()
     {
         _warrantAddedSubscription?.Dispose();
@@ -112,6 +129,9 @@ public partial class TechnicianDashboardViewModel
             warrant.Dispose();
         }   
     }
+
+    public IReadOnlyCollection<Guid> GetFilteredProcedureIds() =>
+        WarrantFilterSelectionViewModel.FilteredProcedureIds;
 
     private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant)
     {

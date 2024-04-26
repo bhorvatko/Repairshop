@@ -1,4 +1,6 @@
 ﻿using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Features.WarrantManagement.Configuration;
+using Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
 
@@ -12,6 +14,7 @@ public class TechnicianDashboardViewModelFactory
     private readonly WarrantPreviewControlViewModelFactory _warrantPreviewControlViewModelFactory;
     private readonly INavigationService _navigationService;
     private readonly IWarrantNotificationService _warrantNotificationService;
+    private readonly WarrantFilterSelectionViewModelFactory _warrantFilterSelectionViewModelFactory;
 
     public TechnicianDashboardViewModelFactory(
         ILoadingIndicatorService loadingIndicatorService, 
@@ -19,7 +22,8 @@ public class TechnicianDashboardViewModelFactory
         IWarrantService warrantService, 
         WarrantPreviewControlViewModelFactory warrantPreviewControlViewModelFactory,
         INavigationService navigationService,
-        IWarrantNotificationService warrantNotificationService)
+        IWarrantNotificationService warrantNotificationService,
+        WarrantFilterSelectionViewModelFactory warrantFilterSelectionViewModelFactory)
     {
         _loadingIndicatorService = loadingIndicatorService;
         _technicianService = technicianService;
@@ -27,10 +31,11 @@ public class TechnicianDashboardViewModelFactory
         _warrantPreviewControlViewModelFactory = warrantPreviewControlViewModelFactory;
         _navigationService = navigationService;
         _warrantNotificationService = warrantNotificationService;
+        _warrantFilterSelectionViewModelFactory = warrantFilterSelectionViewModelFactory;
     }
 
-    public async Task<IReadOnlyCollection<TechnicianDashboardViewModel>> CreateViewModel(
-        IEnumerable<Guid?> technicianIds)
+    public async Task<IReadOnlyCollection<TechnicianDashboardViewModel>> CreateViewModels(
+        IEnumerable<TechnicianDashboardConfiguration> configurations)
     {
         IEnumerable<TechnicianViewModel> technicians = 
             Enumerable.Empty<TechnicianViewModel>();
@@ -50,8 +55,8 @@ public class TechnicianDashboardViewModelFactory
         technicians = 
             technicians.Append(TechnicianViewModel.CreateUnassignedTechnician(unassignedWarrants));
 
-        return technicianIds
-            .Select(technicianId => 
+        return configurations
+            .Select(configuration => 
                 new TechnicianDashboardViewModel(
                     _warrantPreviewControlViewModelFactory, 
                     _loadingIndicatorService,
@@ -59,8 +64,9 @@ public class TechnicianDashboardViewModelFactory
                     _navigationService,
                     _warrantService,
                     _warrantNotificationService,
+                    _warrantFilterSelectionViewModelFactory,
                     technicians.ToList(),
-                    technicianId))
+                    configuration))
             .ToList();
     }
 }

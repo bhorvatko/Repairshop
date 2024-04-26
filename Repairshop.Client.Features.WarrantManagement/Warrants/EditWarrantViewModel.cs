@@ -3,18 +3,21 @@ using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
+using System.ComponentModel.DataAnnotations;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public partial class EditWarrantViewModel
-    : ObservableObject
+    : ObservableValidator
 {
     private readonly IDialogService _dialogService;
 
     [ObservableProperty]
+    [Required]
     private string _subject = string.Empty;
 
     [ObservableProperty]
+    [Required]
     private DateTime _deadline = DateTime.Now;
 
     [ObservableProperty]
@@ -79,5 +82,12 @@ public partial class EditWarrantViewModel
         {
             Steps = sequence.ToList();
         }
+    }
+
+    public bool Validate()
+    {
+        ValidateAllProperties();
+
+        return !HasErrors;
     }
 }

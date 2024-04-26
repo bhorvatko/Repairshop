@@ -11,7 +11,7 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" MinWidth="100" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -28,12 +28,14 @@
                Content="Subjekt" />
         
         <TextBox Grid.Row="0" Grid.Column="1" 
+                 Margin="5"
                  Text="{Binding ElementName=editWarrantControl, Path=ViewModel.Subject}" />
 
         <Label Grid.Row="1" Grid.Column="0" 
                Content="Rok" />
         
         <xctk:DateTimePicker Grid.Row="1" Grid.Column="1" 
+                             Margin="5"
                              Value="{Binding ElementName=editWarrantControl, Path=ViewModel.Deadline}" 
                              Format="Custom" 
                              FormatString="dd/MM/yyyy HH:mm"/>
@@ -42,22 +44,35 @@
                Content="Hitni nalog" />
         
         <CheckBox Grid.Row="2" Grid.Column="1" 
+                  VerticalAlignment="Center"
+                  Margin="5"
                   IsChecked="{Binding ElementName=editWarrantControl, Path=ViewModel.IsUrgent}" />
 
         <Label Grid.Row="3" Grid.Column="0" 
-               Content="Tok naloga" />
+               Content="Tok naloga" 
+               VerticalAlignment="Center"/>
 
-        <StackPanel Grid.Row="3" Grid.Column="1"
-                    Orientation="Horizontal">
-            <local:WarrantStepSequencePreviewControl Procedures="{Binding ElementName=editWarrantControl, Path=ViewModel.SequenceProcedures}" />
-
-            <Button Content="Uredi" 
-                    Command="{Binding ElementName=editWarrantControl, Path=ViewModel.EditWarrantSequenceCommand}"/>
-
-            <Button Content="Primjeni šablonu"
+        <DockPanel Grid.Row="3" Grid.Column="1"
+                   Margin="5"
+                   LastChildFill="True">
+            
+            <Button DockPanel.Dock="Right" 
+                    Content="Primjeni šablonu"
+                    Padding="5"
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.ApplyWarrantTemplateCommand}" />
 
-        </StackPanel>
+            <Button DockPanel.Dock="Right" 
+                    Content="Uredi" 
+                    Margin="0, 0, 5, 0"
+                    Padding="5"
+                    Command="{Binding ElementName=editWarrantControl, Path=ViewModel.EditWarrantSequenceCommand}"/>
+
+            
+            <local:WarrantStepSequencePreviewControl Procedures="{Binding ElementName=editWarrantControl, Path=ViewModel.SequenceProcedures}" 
+                                                     DockPanel.Dock="Left"
+                                                     Margin="0, 0, 5, 0"/>
+
+        </DockPanel>
 
         <Label Grid.Row="4" Grid.Column="0" 
                Content="Trenutačni korak" 

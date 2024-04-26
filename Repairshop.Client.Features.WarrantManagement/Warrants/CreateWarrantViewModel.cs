@@ -51,4 +51,9 @@ public partial class CreateWarrantViewModel
     public string GetSubmitText() => "Kreiraj nalog";
 
     public Task SubmitForm() => CreateWarrant();
+
+    public bool ValidateForm()
+    {
+        return EditWarrantViewModel.Validate();
+    }
 }

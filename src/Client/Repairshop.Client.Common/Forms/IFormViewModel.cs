@@ -4,4 +4,5 @@ public interface IFormViewModel
 {
     Task SubmitForm();
     string GetSubmitText();
+    bool ValidateForm();
 }

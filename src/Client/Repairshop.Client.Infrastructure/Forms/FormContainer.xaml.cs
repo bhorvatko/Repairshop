@@ -19,6 +19,8 @@ public partial class FormContainer
     public string SubmitText => 
         _viewModel?.GetSubmitText() ?? string.Empty;
 
+    public bool FormValid { get; private set; }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public void ShowWithContent(FormBase formContent)
@@ -33,7 +35,10 @@ public partial class FormContainer
 
     private async void Submit(object sender, RoutedEventArgs e)
     {
+        if (_viewModel?.ValidateForm() != true) return;
+
         await _viewModel!.SubmitForm();
+
         Close();
     }
 }

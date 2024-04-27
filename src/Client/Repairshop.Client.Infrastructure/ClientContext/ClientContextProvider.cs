@@ -1,6 +1,9 @@
-﻿namespace Repairshop.Client.Infrastructure.ClientContext;
+﻿using Repairshop.Client.Common.ClientContext;
+
+namespace Repairshop.Client.Infrastructure.ClientContext;
 
 internal class ClientContextProvider
+    : IClientContextProvider
 {
     public string ClientContext { get; private set; }
 
@@ -8,4 +11,6 @@ internal class ClientContextProvider
     {
         ClientContext = clientContext;
     }
+
+    public string GetClientContext() => ClientContext;
 }

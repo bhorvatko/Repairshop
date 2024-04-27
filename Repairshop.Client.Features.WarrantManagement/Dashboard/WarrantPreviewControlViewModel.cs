@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Repairshop.Client.Common.ClientContext;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
+using Repairshop.Shared.Common.ClientContext;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -17,15 +19,18 @@ public partial class WarrantPreviewControlViewModel
 
     private readonly INavigationService _navigationService;
     private readonly IWarrantService _warrantService;
+    private readonly IClientContextProvider _clientContextProvider;
 
     public WarrantPreviewControlViewModel(
         WarrantSummaryViewModel warrant,
         INavigationService navigationService,
-        IWarrantService warrantService)
+        IWarrantService warrantService,
+        IClientContextProvider clientContextProvider)
     {
         Warrant = warrant;
         _navigationService = navigationService;
         _warrantService = warrantService;
+        _clientContextProvider = clientContextProvider;
 
         _animationClock.Tick += UpdateLabelContent;
     }
@@ -38,6 +43,12 @@ public partial class WarrantPreviewControlViewModel
     [RelayCommand]
     public async Task UpdateWarrant()
     {
+        // Only Front office can edit warrants
+        if (_clientContextProvider.GetClientContext() != RepairshopClientContext.FrontOffice)
+        {
+            return;
+        }
+
         WarrantViewModel warrant =
             await _warrantService.GetWarrant(Warrant.Id);
 

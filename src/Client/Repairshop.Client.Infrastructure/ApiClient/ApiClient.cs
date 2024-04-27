@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Options;
-using Repairshop.Client.Infrastructure.ClientContext;
+using Repairshop.Client.Common.ClientContext;
 using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Common.Notifications;
 using RestSharp;
@@ -10,13 +10,13 @@ internal class ApiClient
 {
     private readonly ApiOptions _apiOptions;
     private readonly RestClient _restClient;
-    private readonly ClientContextProvider _clientContextProvider;
+    private readonly IClientContextProvider _clientContextProvider;
     private readonly HubConnection _hubConnection;
 
     public ApiClient(
         IOptions<ApiOptions> apiOptions, 
         RestClient restClient,
-        ClientContextProvider clientContextProvider,
+        IClientContextProvider clientContextProvider,
         HubConnection hubConnection)
     {
         _apiOptions = apiOptions.Value;
@@ -99,7 +99,7 @@ internal class ApiClient
             .AddHeader("X-API-KEY", _apiOptions.ApiKey)
             .AddHeader(
                 ClientContextConstants.ClientContextHeader,
-                _clientContextProvider.ClientContext);
+                _clientContextProvider.GetClientContext());
 
         if (_hubConnection.ConnectionId is not null)
         {

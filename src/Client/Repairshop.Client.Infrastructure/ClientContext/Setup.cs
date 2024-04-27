@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Repairshop.Client.Common.ClientContext;
 
 namespace Repairshop.Client.Infrastructure.ClientContext;
 
@@ -8,6 +9,6 @@ internal static class Setup
         this IServiceCollection services,
         string clientContext) =>
         services
-            .AddTransient<ClientContextProvider>(_ => new ClientContextProvider(clientContext));
+            .AddTransient<IClientContextProvider>(_ => new ClientContextProvider(clientContext));
 
 }

@@ -1,5 +1,5 @@
-﻿using Repairshop.Client.Features.WarrantManagement.Dashboard;
-using Repairshop.Client.Infrastructure.ClientContext;
+﻿using Repairshop.Client.Common.ClientContext;
+using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
@@ -8,9 +8,9 @@ namespace Repairshop.Client.Infrastructure.Services;
 
 internal class WarrantSummaryViewModelFactory
 {
-    private readonly ClientContextProvider _clientContextProvider;
+    private readonly IClientContextProvider _clientContextProvider;
 
-    public WarrantSummaryViewModelFactory(ClientContextProvider clientContextProvider)
+    public WarrantSummaryViewModelFactory(IClientContextProvider clientContextProvider)
     {
         _clientContextProvider = clientContextProvider;
     }
@@ -41,5 +41,5 @@ internal class WarrantSummaryViewModelFactory
         GetClientContext() == RepairshopClientContext.Workshop;
 
     private string GetClientContext() =>
-        _clientContextProvider.ClientContext;
+        _clientContextProvider.GetClientContext();
 }

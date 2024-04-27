@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.UserNotifications;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 
@@ -10,19 +11,19 @@ public partial class CreateWarrantViewModel
     : ObservableObject, IFormViewModel
 {
     private readonly IWarrantService _warrantService;
-    private readonly IMessageDialogService _messageDialogService;
     private readonly INavigationService _navigationService;
+    private readonly IToastNotificationService _toastNotificationService;
 
     public CreateWarrantViewModel(
         EditWarrantViewModel editWarrantViewModel,
         IWarrantService warrantService,
-        IMessageDialogService messageDialogService,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        IToastNotificationService toastNotificationService)
     {
         EditWarrantViewModel = editWarrantViewModel;
         _warrantService = warrantService;
-        _messageDialogService = messageDialogService;
         _navigationService = navigationService;
+        _toastNotificationService = toastNotificationService;
     }
 
     public EditWarrantViewModel EditWarrantViewModel { get; private set; }
@@ -41,11 +42,9 @@ public partial class CreateWarrantViewModel
                     ProcedureId = x.Procedure.Id!.Value
                 }));
 
-        _messageDialogService.ShowMessage(
-            "Uspjeh!",
-            "Novi nalog uspješno kreiran!");
-
         _navigationService.NavigateToView<DashboardView>();
+
+        await _toastNotificationService.ShowSuccess("Nalog uspješno kreiran!");
     }
 
     public string GetSubmitText() => "Kreiraj nalog";

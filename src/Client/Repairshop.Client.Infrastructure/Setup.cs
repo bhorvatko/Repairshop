@@ -9,6 +9,7 @@ using Repairshop.Client.Infrastructure.MessageDialog;
 using Repairshop.Client.Infrastructure.Navigation;
 using Repairshop.Client.Infrastructure.Notifications;
 using Repairshop.Client.Infrastructure.Services;
+using Repairshop.Client.Infrastructure.UserNotifications;
 using Repairshop.Client.Infrastructure.UserSettings;
 
 namespace Repairshop.Client.Infrastructure;
@@ -30,5 +31,6 @@ public static class Setup
             .AddClientContext(clientContext)
             .AddUserSettings()
             .AddNotifications()
-            .AddForms();
+            .AddForms()
+            .AddUserNotifications();
 }

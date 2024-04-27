@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Repairshop.Client.FrontDesk"
         xmlns:nav="clr-namespace:Repairshop.Client.Infrastructure.Navigation;assembly=Repairshop.Client.Infrastructure"
+        xmlns:userNotifications="clr-namespace:Repairshop.Client.Infrastructure.UserNotifications;assembly=Repairshop.Client.Infrastructure"
         mc:Ignorable="d"
         Title="Repairshop" Height="1024" Width="1280"
         d:DataContext="{d:DesignInstance Type=local:MainViewModel}">
@@ -43,11 +44,17 @@
 
         </DockPanel>
 
+        <userNotifications:ToastNotificationContainer DataContext="{Binding ToastNotificationContainerViewModel}" 
+                                                      Panel.ZIndex="500"
+                                                      VerticalAlignment="Bottom"
+                                                      HorizontalAlignment="Right"
+                                                      Margin="50" />
+
         <Grid Panel.ZIndex="1000"
               Visibility="{Binding LoadingIndicatorVisibility}">
 
             <Grid.Background>
-                <SolidColorBrush Color="Black" Opacity=".5" />
+                <SolidColorBrush Color="White" Opacity=".5" />
             </Grid.Background>
 
             <Label Content="Učitavanje..."

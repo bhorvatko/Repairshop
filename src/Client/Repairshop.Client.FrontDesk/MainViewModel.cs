@@ -7,6 +7,7 @@ using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.Technicians;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
+using Repairshop.Client.Infrastructure.UserNotifications;
 using System.Windows;
 
 namespace Repairshop.Client.FrontDesk;
@@ -21,13 +22,17 @@ public partial class MainViewModel
 
     public MainViewModel(
         INavigationService navigationService,
-        IFormService formService)
+        IFormService formService,
+        ToastNotificationContainerViewModel toastNotificationContainerViewModel)
     {
         _navigationService = navigationService;
         _formService = formService;
+       
+        ToastNotificationContainerViewModel = toastNotificationContainerViewModel;
     }
 
     public Visibility LoadingIndicatorVisibility { get => _loadingIndicatorVisibility; set => SetProperty(ref _loadingIndicatorVisibility, value); }
+    public ToastNotificationContainerViewModel ToastNotificationContainerViewModel { get; private set; }
 
     [RelayCommand]
     public void NavigateToDashboard()

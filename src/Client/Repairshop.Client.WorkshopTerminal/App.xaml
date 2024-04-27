@@ -1,0 +1,10 @@
+﻿<bootstrapping:AppBase x:Class="Repairshop.Client.WorkshopTerminal.App"
+             x:TypeArguments="local:MainWindow, local:MainViewModel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Repairshop.Client.WorkshopTerminal"
+             xmlns:bootstrapping="clr-namespace:Repairshop.Client.Infrastructure.Bootstrapping;assembly=Repairshop.Client.Infrastructure">
+    <Application.Resources>
+         
+    </Application.Resources>
+</bootstrapping:AppBase>

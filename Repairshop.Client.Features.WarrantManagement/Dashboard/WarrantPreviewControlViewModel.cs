@@ -88,8 +88,10 @@ public partial class WarrantPreviewControlViewModel
         {
             WarrantPreviewControl source = (WarrantPreviewControl)e.Source;
 
-            WarrantPreviewControlViewModel sourceViewModel = 
-                (WarrantPreviewControlViewModel)source.DataContext;
+            WarrantPreviewControlViewModel? sourceViewModel = 
+                source.DataContext as WarrantPreviewControlViewModel;
+
+            if (sourceViewModel is null) return;
 
             DragDrop.DoDragDrop(source, sourceViewModel.Warrant, DragDropEffects.Move);
         }

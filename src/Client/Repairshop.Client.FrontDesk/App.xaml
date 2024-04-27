@@ -1,8 +1,10 @@
-﻿<Application x:Class="Repairshop.Client.FrontDesk.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Repairshop.Client.FrontDesk">
+﻿<bootstrapping:AppBase x:Class="Repairshop.Client.FrontDesk.App"
+                       x:TypeArguments="local:MainWindow, local:MainViewModel"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:local="clr-namespace:Repairshop.Client.FrontDesk"
+                       xmlns:bootstrapping="clr-namespace:Repairshop.Client.Infrastructure.Bootstrapping;assembly=Repairshop.Client.Infrastructure">
     <Application.Resources>
          
     </Application.Resources>
-</Application>
+</bootstrapping:AppBase>

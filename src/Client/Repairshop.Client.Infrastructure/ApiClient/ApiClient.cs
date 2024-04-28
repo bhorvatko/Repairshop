@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Options;
 using Repairshop.Client.Common.ClientContext;
 using Repairshop.Shared.Common.ClientContext;
+using Repairshop.Shared.Common.HealthChecks;
 using Repairshop.Shared.Common.Notifications;
 using RestSharp;
+using System.Net;
 
 namespace Repairshop.Client.Infrastructure.ApiClient;
 internal class ApiClient
@@ -41,6 +43,15 @@ internal class ApiClient
         }
 
         return response;
+    }
+
+    public async Task<bool> CheckHealth()
+    {
+        RestRequest restRequest = CreateRequest(HealthCheckConstants.HeathlCheckEndpoint);
+
+        RestResponse response = await _restClient.ExecuteAsync(restRequest);
+  
+        return response.IsSuccessful && response.StatusCode == HttpStatusCode.OK;
     }
 
     public async Task<TResponse> Get<TResponse>(string resource)

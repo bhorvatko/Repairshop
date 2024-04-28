@@ -57,7 +57,7 @@
                 <SolidColorBrush Color="White" Opacity=".5" />
             </Grid.Background>
 
-            <Label Content="Učitavanje..."
+            <Label Content="{Binding LoadingIndicatorText}"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    FontSize="30" />

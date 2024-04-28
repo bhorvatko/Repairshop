@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Repairshop.Shared.Common.HealthChecks;
 
 namespace Repairshop.Server.Infrastructure.HealthChecks;
 
@@ -14,7 +15,7 @@ internal static class Setup
 
     public static WebApplication UseApiHealthChecks(this WebApplication app)
     {
-        app.MapHealthChecks("/api/health");
+        app.MapHealthChecks($"/{HealthCheckConstants.HeathlCheckEndpoint}");
 
         return app;
     }

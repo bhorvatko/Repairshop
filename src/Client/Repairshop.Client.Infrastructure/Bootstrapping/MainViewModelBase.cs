@@ -7,15 +7,20 @@ namespace Repairshop.Client.Infrastructure.Bootstrapping;
 public abstract partial class MainViewModelBase
     : ObservableObject, IMainViewModel
 {
-    [ObservableProperty]
     private Visibility _loadingIndicatorVisibility = Visibility.Visible;
 
-    public void ShowLoadingIndicator()
+    public virtual Visibility LoadingIndicatorVisibility 
+    { 
+        get => _loadingIndicatorVisibility; 
+        set => SetProperty(ref _loadingIndicatorVisibility, value); 
+    }
+
+    public virtual void ShowLoadingIndicator()
     {
         LoadingIndicatorVisibility = Visibility.Visible;
     }
 
-    public void HideLoadingIndicator()
+    public virtual void HideLoadingIndicator()
     {
         LoadingIndicatorVisibility = Visibility.Collapsed;
     }

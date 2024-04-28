@@ -37,8 +37,12 @@ public partial class WarrantPreviewControlViewModel
 
     public WarrantSummaryViewModel Warrant { get; set; }
     public bool PlayUpdateAnimation { get; set; }
+
+    public string DeadlineDescription =>
+        Warrant.IsUrgent ? "Hitni nalog" : Warrant.Deadline.ToString();
+
     public string LabelContent => 
-        _animationClock.State ? Warrant.Title : Warrant.Deadline.ToString();
+        _animationClock.State ? Warrant.Title : DeadlineDescription;
 
     [RelayCommand]
     public async Task UpdateWarrant()

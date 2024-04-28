@@ -79,7 +79,7 @@ public partial class TechnicianDashboardViewModel
     {
         get => _warrants
             .Where(x => !GetFilteredProcedureIds().Contains(x.Warrant.Procedure.Id!.Value))
-            .OrderBy(x => x.Warrant.IsUrgent)
+            .OrderByDescending(x => x.Warrant.IsUrgent)
             .ThenBy(x => x.Warrant.Deadline);
 
         set => SetProperty(ref _warrants, value);

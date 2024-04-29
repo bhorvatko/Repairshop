@@ -42,7 +42,7 @@ internal class GetWarrantModelsSpecification
                 x.CurrentStep.PreviousTransition != null
                     ? x.CurrentStep.PreviousTransition.PreviousStep.Id
                     : null,
-            Procedure = new ProcedureModel()
+            Procedure = new ProcedureSummaryModel()
             {
                 Id = x.CurrentStep!.Procedure.Id,
                 Color = x.CurrentStep!.Procedure.Color,

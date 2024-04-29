@@ -62,6 +62,7 @@ public class AdvanceWarrantTests
 
         // Act
         await _client.PostAsJsonAsync("Warrants/Advance", request);
+        await Task.Delay(100);
 
         // Assert
         notification.Should().NotBeNull();

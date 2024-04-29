@@ -8,15 +8,15 @@ namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 /// </summary>
 public partial class WarrantStepSequencePreviewControl : UserControl
 {
-    public IEnumerable<Procedure> Procedures
+    public IEnumerable<ProcedureSummaryViewModel> Procedures
     {
-        get { return (IEnumerable<Procedure>)GetValue(ProceduresProperty); }
+        get { return (IEnumerable<ProcedureSummaryViewModel>)GetValue(ProceduresProperty); }
         set { SetValue(ProceduresProperty, value); }
     }
 
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty ProceduresProperty =
-        DependencyProperty.Register(nameof(Procedures), typeof(IEnumerable<Procedure>), typeof(WarrantStepSequencePreviewControl));
+        DependencyProperty.Register(nameof(Procedures), typeof(IEnumerable<ProcedureSummaryViewModel>), typeof(WarrantStepSequencePreviewControl));
 
     public WarrantStepSequencePreviewControl()
     {

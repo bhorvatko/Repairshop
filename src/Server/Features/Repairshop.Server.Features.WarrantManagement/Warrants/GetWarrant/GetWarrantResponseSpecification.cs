@@ -27,7 +27,7 @@ internal class GetWarrantResponseSpecification
                     s.PreviousTransition != null
                         ? s.PreviousTransition.CanBePerformedByWorkshop
                         : false,
-                Procedure = new ProcedureModel() 
+                Procedure = new ProcedureSummaryModel() 
                 {
                     Id = s.ProcedureId,
                     Color = s.Procedure.Color,

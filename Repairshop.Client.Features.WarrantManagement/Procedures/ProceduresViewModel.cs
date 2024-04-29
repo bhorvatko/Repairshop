@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Extensions;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
@@ -13,9 +14,12 @@ public partial class ProceduresViewModel
     private readonly IProcedureService _procedureService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
 
-    private IEnumerable<Procedure> _procedures = Enumerable.Empty<Procedure>();
+    [ObservableProperty]
+    private IReadOnlyCollection<ProcedureViewModel> _procedures = 
+        new List<ProcedureViewModel>();
+
     private Visibility _editProcedureVisibility = Visibility.Collapsed;
-    private Procedure? _selectedProcedure;
+    private ProcedureViewModel? _selectedProcedure;
 
     public ProceduresViewModel(
         IProcedureService procedureService,
@@ -25,10 +29,9 @@ public partial class ProceduresViewModel
         _loadingIndicatorService = loadingIndicatorService;
     }
 
-    public IEnumerable<Procedure> Procedures { get => _procedures; set => SetProperty(ref _procedures, value); }
     public Visibility EditProcedureVisibility { get => _editProcedureVisibility; set => SetProperty(ref _editProcedureVisibility, value); }
 
-    public Procedure? SelectedProcedure
+    public ProcedureViewModel? SelectedProcedure
     {
         get => _selectedProcedure;
         set
@@ -44,24 +47,33 @@ public partial class ProceduresViewModel
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
-            Procedure newProcedure = Procedure.CreateNew();
+            ProcedureViewModel newProcedure = ProcedureViewModel.CreateNew();
 
             await _procedureService.CreateProcedure(
                 newProcedure.Name,
                 ColorToRgb(newProcedure.BackgroundColor));
 
-            Procedures = Procedures.Concat(new[] { newProcedure });
+            Procedures = Procedures.Concat(new[] { newProcedure }).ToList();
         });
     }
 
     [RelayCommand]
-    public Task DeleteProcedure(Procedure procedure)
+    public async Task DeleteProcedure(ProcedureViewModel procedure)
     {
-        throw new NotImplementedException();
+        if (SelectedProcedure is null || SelectedProcedure.Id is null)
+        {
+            return;
+        }
+
+        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
+        {
+            await _procedureService.DeleteProcedure(SelectedProcedure.Id.Value);
+            Procedures = Procedures.Where(p => p.Id != SelectedProcedure.Id).ToList();
+        });
     }
 
     [RelayCommand]
-    public async Task SaveProcedure(Procedure procedure)
+    public async Task SaveProcedure(ProcedureViewModel procedure)
     {
         if (SelectedProcedure is null || SelectedProcedure.Id is null)
         {

@@ -28,7 +28,7 @@ public class WarrantViewModel
         Guid id,
         bool isUrgent,
         DateTime deadline,
-        Procedure procedure,
+        ProcedureSummaryViewModel procedure,
         string title,
         IEnumerable<WarrantStep> steps)
     {

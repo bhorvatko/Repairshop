@@ -14,6 +14,7 @@ namespace Repairshop.Server.IntegrationTests.Common;
 
 [Collection(TestConstants.Collections.IntegrationTests)]
 public class IntegrationTestBase
+    : IDisposable
 {
     protected HttpClient _client;
     protected WarrantManagementDbContext _dbContext;
@@ -46,6 +47,12 @@ public class IntegrationTestBase
                     options.Headers.Add("X-API-KEY", TestConstants.ApiKey);
                 })
             .Build();
+    }
+
+    public void Dispose()
+    {
+        _hubConnection.StopAsync().Wait();
+        _hubConnection.DisposeAsync();
     }
 
     protected Task SubscribeToNotification<TNotification>(Action<TNotification> handler)

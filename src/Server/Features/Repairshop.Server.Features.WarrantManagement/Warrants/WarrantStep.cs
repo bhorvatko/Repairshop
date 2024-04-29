@@ -16,6 +16,7 @@ public class WarrantStep
     public WarrantStepTransition? NextTransition { get; private set; }
     public WarrantStepTransition? PreviousTransition { get; private set; }
     public Guid WarrantId { get; private set; }
+    public Warrant Warrant { get; private set; }
 
     public WarrantStep? NextStep => NextTransition?.NextStep;
     public WarrantStep? PreviousStep => PreviousTransition?.PreviousStep;

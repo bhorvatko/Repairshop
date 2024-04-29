@@ -12,8 +12,8 @@ public partial class ProcedureLegendViewModel
     private readonly ILoadingIndicatorService _loadingIndicatorService;
 
     [ObservableProperty]
-    private IReadOnlyCollection<Procedure> _procedures =
-        new List<Procedure>();
+    private IReadOnlyCollection<ProcedureSummaryViewModel> _procedures =
+        new List<ProcedureSummaryViewModel>();
 
     public ProcedureLegendViewModel(
         IProcedureService procedureService, 
@@ -28,7 +28,7 @@ public partial class ProcedureLegendViewModel
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
-            Procedures = (await _procedureService.GetProcedures()).ToList();
+            Procedures = (await _procedureService.GetProcedureSummaries()).ToList();
         });
     }
 }

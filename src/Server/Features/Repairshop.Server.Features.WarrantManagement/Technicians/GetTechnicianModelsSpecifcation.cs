@@ -46,7 +46,7 @@ internal class GetTechnicianModelsSpecifcation
                     w.CurrentStep.PreviousTransition != null
                         ? w.CurrentStep.PreviousTransition.PreviousStep.Id
                         : null,
-                Procedure = new ProcedureModel()
+                Procedure = new ProcedureSummaryModel()
                 {
                     Id = w.CurrentStep!.Procedure.Id,
                     Color = w.CurrentStep!.Procedure.Color,

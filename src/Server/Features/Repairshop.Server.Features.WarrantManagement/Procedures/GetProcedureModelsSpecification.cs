@@ -16,7 +16,13 @@ public class GetProcedureModelsSpecification
             {
                 Id = x.Id,
                 Name = x.Name,
-                Color = x.Color
+                Color = x.Color,
+                UsedByWarrants = x
+                    .WarrantSteps
+                    .Select(x => x.Warrant.Title),
+                UsedByWarrantTemplates = x
+                    .WarrantTemplateSteps
+                    .Select(x => x.WarrantTemplate.Name)
             });
     }
 }

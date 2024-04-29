@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Repairshop.Server.Features.WarrantManagement.Procedures;
+using Repairshop.Server.Features.WarrantManagement.Warrants;
+using Repairshop.Server.Features.WarrantManagement.WarrantTemplates;
 using Repairshop.Server.IntegrationTests.Common;
 using Repairshop.Server.Tests.Shared.Features.WarrantManagement;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
@@ -37,13 +40,13 @@ public class ProcedureTests
     }
 
     [Fact]
-    public async Task Getting_procedures_should_return_all_procedures()
+    public async Task Get_procedure_summaries()
     {
         _dbContext.Add(ProcedureHelper.Create(name: "P1", color: "000000"));
         _dbContext.SaveChanges();
 
-        GetProceduresResponse response = 
-            (await _client.GetFromJsonAsync<GetProceduresResponse>("Procedures"))!;
+        GetProcedureSummariesResponse response = 
+            (await _client.GetFromJsonAsync<GetProcedureSummariesResponse>("Procedures/Summaries"))!;
 
         response.Procedures.Should().HaveCount(1);
         response.Procedures.Single().Name.Should().Be("P1");
@@ -76,5 +79,68 @@ public class ProcedureTests
         updatedProcedure.Id.Should().Be(request.Id);
         updatedProcedure.Name.Should().Be("new");
         updatedProcedure.Color.Value.Should().Be("123456");
+    }
+
+    [Fact]
+    public async Task Deleting_a_procedure()
+    {
+        // Arrange
+        Procedure procedure = ProcedureHelper.Create();
+
+        _dbContext.Add(procedure);
+        _dbContext.SaveChanges(); 
+
+        IEnumerable<Procedure> proceduresBeforeAct =
+            _dbContext.Set<Procedure>().AsNoTracking().ToList();
+
+        // Act
+        await _client.DeleteAsync($"Procedures/{procedure.Id}");
+
+        // Assert
+        IEnumerable<Procedure> proceduresAfterAct =
+            _dbContext.Set<Procedure>().AsNoTracking().ToList();
+
+        proceduresBeforeAct.Should().HaveCount(1);
+        proceduresAfterAct.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task Get_procedures()
+    {
+        // Arrange
+        Procedure procedure = ProcedureHelper.Create();
+
+        IEnumerable<WarrantStep> warrantSteps = 
+            await WarrantStepHelper.CreateStepSequence(new[] { procedure });
+
+        Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(
+            _dbContext,
+            steps: warrantSteps);
+
+        IEnumerable<WarrantTemplateStep> templateSteps =
+            await WarrantTemplateStepHelper.CreateStepSequence(new[] { procedure });
+
+        WarrantTemplate warrantTemplate =
+            await WarrantTemplateHelper.Create(steps: templateSteps);
+
+        _dbContext.Add(warrantTemplate);
+        _dbContext.SaveChanges();
+
+        // Act
+        GetProceduresResponse response =
+            (await _client.GetFromJsonAsync<GetProceduresResponse>("Procedures"))!;
+
+        // Assert
+        response.Procedures.Should().HaveCount(1);
+        response.Procedures.Single().Name.Should().Be(procedure.Name);
+        response.Procedures.Single().Color.Should().Be(procedure.Color);
+
+        response.Procedures.Single()
+            .UsedByWarrants
+            .Should().BeEquivalentTo(new[] { warrant.Title });
+
+        response.Procedures.Single()
+            .UsedByWarrantTemplates
+            .Should().BeEquivalentTo(new[] { warrantTemplate.Name });
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Repairshop.Server.Features.WarrantManagement.Procedures;
+﻿using Repairshop.Server.Features.WarrantManagement.Warrants;
+using Repairshop.Server.Features.WarrantManagement.WarrantTemplates;
+
+namespace Repairshop.Server.Features.WarrantManagement.Procedures;
 
 public class Procedure
 {
@@ -19,6 +22,12 @@ public class Procedure
     public Guid Id { get; private set; }
     public ColorCode Color { get; private set; }
     public string Name { get; private set; }
+
+    public IReadOnlyCollection<WarrantStep> WarrantSteps { get; private set; } =
+        new List<WarrantStep>();
+
+    public IReadOnlyCollection<WarrantTemplateStep> WarrantTemplateSteps { get; private set; } =
+        new List<WarrantTemplateStep>();
 
     public static Procedure Create(
         string name,

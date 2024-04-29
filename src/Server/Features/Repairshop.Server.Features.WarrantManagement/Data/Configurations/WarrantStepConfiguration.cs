@@ -17,7 +17,7 @@ internal class WarrantStepConfiguration
 
         builder
             .HasOne(x => x.Procedure)
-            .WithMany()
+            .WithMany(x => x.WarrantSteps)
             .HasForeignKey(x => x.ProcedureId);
 
         builder

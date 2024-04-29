@@ -71,6 +71,7 @@ public class RollbackWarrantTests
 
         // Act
         await _client.PostAsJsonAsync("Warrants/Rollback", request);
+        await Task.Delay(100);
 
         // Assert
         notification.Should().NotBeNull();

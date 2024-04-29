@@ -15,5 +15,10 @@ internal class WarrantTemplateStepConfiguration
 
         builder.Property(x => x.Id)
             .ValueGeneratedNever();
+
+        builder
+            .HasOne(x => x.Procedure)
+            .WithMany(x => x.WarrantTemplateSteps)
+            .HasForeignKey(x => x.ProcedureId);
     }
 }

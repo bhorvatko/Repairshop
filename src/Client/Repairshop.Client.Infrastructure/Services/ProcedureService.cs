@@ -1,4 +1,5 @@
 ﻿using Repairshop.Client.Features.WarrantManagement.Procedures;
+using Repairshop.Client.Infrastructure.Services.Extensions;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
 
 namespace Repairshop.Client.Infrastructure.Services;
@@ -7,6 +8,7 @@ internal class ProcedureService
     : IProcedureService
 {
     private const string ProceduresEndpoint = "Procedures";
+    private const string ProcedureSummariesEndpoint = $"{ProceduresEndpoint}/Summaries";
 
     private readonly ApiClient.ApiClient _apiClient;
 
@@ -26,14 +28,25 @@ internal class ProcedureService
             });
     }
 
-    public async Task<IEnumerable<Procedure>> GetProcedures()
+    public async Task<IEnumerable<ProcedureSummaryViewModel>> GetProcedureSummaries()
     {
-        GetProceduresResponse response = 
-            await _apiClient.Get<GetProceduresResponse>(ProceduresEndpoint);
+        GetProcedureSummariesResponse response = 
+            await _apiClient.Get<GetProcedureSummariesResponse>(ProcedureSummariesEndpoint);
 
         return response
             .Procedures
             .Select(x => x.ToViewModel());
+    }
+
+    public async Task<IReadOnlyCollection<ProcedureViewModel>> GetProcedures()
+    {
+        GetProceduresResponse response =
+            await _apiClient.Get<GetProceduresResponse>(ProceduresEndpoint);
+
+        return response
+            .Procedures
+            .Select(x => x.ToViewModel())
+            .ToList();
     }
 
     public async Task UpdateProcedure(Guid id, string name, string color)
@@ -50,4 +63,7 @@ internal class ProcedureService
                 ProceduresEndpoint, 
                 request);
     }
+
+    public Task DeleteProcedure(Guid id) => 
+        _apiClient.Delete($"{ProceduresEndpoint}/{id}");
 }

@@ -104,6 +104,14 @@ internal class ApiClient
         return response;
     }
 
+    public async Task Delete(string resource)
+    {
+        RestRequest restRequest =
+            CreateRequest(resource);
+
+        await _restClient.DeleteAsync(restRequest);
+    }
+
     private RestRequest CreateRequest(string resource)
     {
         RestRequest request = new RestRequest(resource)

@@ -20,7 +20,7 @@ internal static class WarrantExtensions
             IsUrgent = warrantEntity.IsUrgent,
             Title = warrantEntity.Title,
             TechnicianId = warrantEntity.TechnicianId,
-            Procedure = new ProcedureModel()
+            Procedure = new ProcedureSummaryModel()
             {
                 Id = procedure.Id,
                 Color = procedure.Color,

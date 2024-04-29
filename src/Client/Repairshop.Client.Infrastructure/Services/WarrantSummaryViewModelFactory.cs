@@ -1,5 +1,6 @@
 ﻿using Repairshop.Client.Common.ClientContext;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
+using Repairshop.Client.Infrastructure.Services.Extensions;
 using Repairshop.Shared.Common.ClientContext;
 using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;

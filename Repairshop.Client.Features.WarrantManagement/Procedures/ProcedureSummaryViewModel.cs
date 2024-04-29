@@ -3,13 +3,13 @@ using System.Windows.Media;
 
 namespace Repairshop.Client.Features.WarrantManagement.Procedures;
 
-public class Procedure
+public class ProcedureSummaryViewModel
     : ObservableObject
 {
     private Color _backgroundColor;
     private string _name;
 
-    private Procedure(
+    protected ProcedureSummaryViewModel(
         string name,
         Color backgroundColor,
         Guid? id = null)
@@ -38,24 +38,12 @@ public class Procedure
     public Brush ForegroundColorBrush => ConvertToBrush(GetForegroundColor());
     public Guid? Id { get; private set; }
 
-    public static Procedure CreateNew()
-    {
-        Color backgroundColor = 
-            Color.FromArgb(
-                255,
-                (byte)Random.Shared.Next(255),
-                (byte)Random.Shared.Next(255),
-                (byte)Random.Shared.Next(255));
-
-        return new Procedure("Nova procedura", backgroundColor);
-    }
-
-    public static Procedure Create(
+    public static ProcedureSummaryViewModel Create(
         Guid id,
         string name,
         string color)
     {
-        return new Procedure(
+        return new ProcedureSummaryViewModel(
             name, 
             (Color)ColorConverter.ConvertFromString("#" + color),
             id);

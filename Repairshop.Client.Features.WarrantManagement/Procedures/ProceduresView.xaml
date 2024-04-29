@@ -85,7 +85,15 @@
                             Command="{Binding DeleteProcedureCommand}" 
                             CommandParameter="{Binding SelectedProcedure}"
                             BorderThickness="0" 
-                            Background="Transparent">
+                            Background="Transparent"
+                            IsEnabled="{Binding SelectedProcedure.CanBeDeleted}"
+                            ToolTipService.ShowOnDisabled="True">
+
+                        <Button.ToolTip>
+                            <ToolTip 
+                                Content="{Binding SelectedProcedure.CannotBeDeletedMessage}"
+                                Visibility="{Binding SelectedProcedure.CannotBeDeletedTooltipVisibility}"/>
+                        </Button.ToolTip>
 
                         <materialIcons:MaterialIcon Kind="Delete" />
 

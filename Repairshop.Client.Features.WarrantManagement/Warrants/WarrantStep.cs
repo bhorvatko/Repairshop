@@ -10,7 +10,7 @@ public class WarrantStep
     private bool _canBeTransitionedToByWorkshop;
 
     private WarrantStep(
-        Procedure procedure, 
+        ProcedureSummaryViewModel procedure, 
         bool canBeTransitionedToByFrontDesk, 
         bool canBeTransitionedToByWorkshop)
     {
@@ -19,7 +19,7 @@ public class WarrantStep
         CanBeTransitionedToByWorkshop = canBeTransitionedToByWorkshop;
     }
 
-    public Procedure Procedure { get; private set; }
+    public ProcedureSummaryViewModel Procedure { get; private set; }
 
     public bool CanBeTransitionedToByFrontDesk
     { 
@@ -49,13 +49,13 @@ public class WarrantStep
         }
     }
 
-    public static WarrantStep CreateNew(Procedure procedure)
+    public static WarrantStep CreateNew(ProcedureSummaryViewModel procedure)
     {
         return new WarrantStep(procedure, true, true);
     }
 
     public static WarrantStep Create(
-        Procedure procedure,
+        ProcedureSummaryViewModel procedure,
         bool canBeTransitionedToByFrontDesk,
         bool canBeTransitionedToByWorkshop)
     {

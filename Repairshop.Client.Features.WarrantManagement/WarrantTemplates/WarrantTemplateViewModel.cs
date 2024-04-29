@@ -9,6 +9,6 @@ public class WarrantTemplateViewModel
     public required string Name { get; set; }
     public required IReadOnlyCollection<WarrantStep> Steps { get; set; }
 
-    public IReadOnlyCollection<Procedure> Procedures => 
+    public IReadOnlyCollection<ProcedureSummaryViewModel> Procedures => 
         Steps.Select(x => x.Procedure).ToList();
 }

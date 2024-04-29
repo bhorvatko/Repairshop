@@ -8,9 +8,9 @@ namespace Repairshop.Client.Features.WarrantManagement.Procedures;
 public partial class ProcedurePreview 
     : UserControl
 {
-    public Procedure Procedure
+    public ProcedureSummaryViewModel Procedure
     {
-        get => (Procedure)GetValue(ProcedureProperty);
+        get => (ProcedureSummaryViewModel)GetValue(ProcedureProperty);
         set
         {
             SetValue(ProcedureProperty, value);
@@ -18,7 +18,7 @@ public partial class ProcedurePreview
     }
 
     public static readonly DependencyProperty ProcedureProperty = 
-        DependencyProperty.Register(nameof(Procedure), typeof(Procedure), typeof(ProcedurePreview));
+        DependencyProperty.Register(nameof(Procedure), typeof(ProcedureSummaryViewModel), typeof(ProcedurePreview));
 
     public ProcedurePreview()
     {

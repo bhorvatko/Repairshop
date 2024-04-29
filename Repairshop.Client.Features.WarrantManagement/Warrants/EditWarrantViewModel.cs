@@ -35,7 +35,7 @@ public partial class EditWarrantViewModel
     }
 
     [NotEmpty]
-    public IEnumerable<Procedure> SequenceProcedures => Steps.Select(x => x.Procedure);
+    public IEnumerable<ProcedureSummaryViewModel> SequenceProcedures => Steps.Select(x => x.Procedure);
 
     public IEnumerable<WarrantStep> Steps
     {

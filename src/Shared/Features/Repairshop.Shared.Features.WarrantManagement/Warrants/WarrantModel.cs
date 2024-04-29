@@ -9,7 +9,7 @@ public class WarrantModel
     public required DateTime Deadline { get; set; }
     public required bool IsUrgent { get; set; }
     public required Guid? TechnicianId { get; set; }
-    public required ProcedureModel Procedure { get; set; }
+    public required ProcedureSummaryModel Procedure { get; set; }
     public required bool CanBeAdvancedByWorkshop { get; set; }
     public required bool CanBeAdvancedByFrontOffice { get; set; }
     public required bool CanBeRolledBackByWorkshop { get; set; }

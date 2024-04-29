@@ -4,11 +4,11 @@ namespace Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFilterin
 
 public class ProcedureFilterViewModel
 {
-    public Procedure Procedure { get; set; }
+    public ProcedureSummaryViewModel Procedure { get; set; }
     public bool Selected { get; set; }
 
     public ProcedureFilterViewModel(
-        Procedure procedure,
+        ProcedureSummaryViewModel procedure,
         bool selected)
     {
         Procedure = procedure;

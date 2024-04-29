@@ -21,7 +21,7 @@ internal class WarrantConfiguration
 
         builder
             .HasMany(x => x.Steps)
-            .WithOne()
+            .WithOne(x => x.Warrant)
             .HasForeignKey(x => x.WarrantId);
 
         builder

@@ -27,9 +27,31 @@ public class ProcedureController
         return Ok(response);
     }
 
+    [HttpGet]
+    [Route("Summaries")]
+    public async Task<IActionResult> GetProcedreSummaries(
+        [FromQuery] GetProcedureSummariesRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
     [HttpPut]
     public async Task<IActionResult> UpdateProcedure(
         [FromBody] UpdateProcedureRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteProcedure(
+        [FromRoute] DeleteProcedureRequest request,
         CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(request, cancellationToken);

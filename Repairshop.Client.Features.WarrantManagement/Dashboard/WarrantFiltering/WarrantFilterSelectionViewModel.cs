@@ -33,12 +33,12 @@ public partial class WarrantFilterSelectionViewModel
     {
         if (Procedures is not null) return;
 
-        Procedures = (await _procedureService.GetProcedures())
+        Procedures = (await _procedureService.GetProcedureSummaries())
             .Select(CreateProcedureFilterViewModel)
             .ToList();
     }
 
-    private ProcedureFilterViewModel CreateProcedureFilterViewModel(Procedure procedure) =>
+    private ProcedureFilterViewModel CreateProcedureFilterViewModel(ProcedureSummaryViewModel procedure) =>
         new ProcedureFilterViewModel(
             procedure,
             !_initialFilteredProcedureIds.Any(x => x == procedure.Id));

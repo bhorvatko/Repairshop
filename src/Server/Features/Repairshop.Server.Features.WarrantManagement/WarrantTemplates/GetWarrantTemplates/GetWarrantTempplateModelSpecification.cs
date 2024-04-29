@@ -19,7 +19,7 @@ internal class GetWarrantTempplateModelSpecification
                 {
                     CanBeTransitionedToByFrontOffice = s.CanBeTransitionedToByFrontOffice,
                     CanBeTransitionedToByWorkshop = s.CanBeTransitionedToByWorkshop,
-                    Procedure = new ProcedureModel()
+                    Procedure = new ProcedureSummaryModel()
                     {
                         Id = s.Procedure.Id,
                         Name = s.Procedure.Name,

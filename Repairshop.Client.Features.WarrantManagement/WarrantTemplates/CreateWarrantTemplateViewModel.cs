@@ -40,7 +40,7 @@ public partial class CreateWarrantTemplateViewModel
         _navigationService = navigationService;
     }
 
-    public IEnumerable<Procedure> Procedures =>
+    public IEnumerable<ProcedureSummaryViewModel> Procedures =>
         Steps.Select(x => x.Procedure);
 
     [RelayCommand]

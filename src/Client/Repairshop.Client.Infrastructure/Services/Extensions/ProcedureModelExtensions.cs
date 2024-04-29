@@ -4,7 +4,11 @@ namespace Repairshop.Shared.Features.WarrantManagement.Procedures;
 
 internal static class ProcedureModelExtensions
 {
-    public static Procedure ToViewModel(this ProcedureModel model) =>
-        Procedure.Create(model.Id, model.Name, model.Color);
-
+    public static ProcedureViewModel ToViewModel(this ProcedureModel model) =>
+        ProcedureViewModel.Create(
+            model.Id,
+            model.Name,
+            model.Color,
+            model.UsedByWarrants,
+            model.UsedByWarrantTemplates);
 }

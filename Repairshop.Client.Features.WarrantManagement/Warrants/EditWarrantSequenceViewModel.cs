@@ -13,13 +13,13 @@ public partial class EditWarrantSequenceViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AvailableProcedures))]
-    private IEnumerable<Procedure> _allProcedures = Enumerable.Empty<Procedure>();
+    private IEnumerable<ProcedureSummaryViewModel> _allProcedures = Enumerable.Empty<ProcedureSummaryViewModel>();
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AvailableProcedures))]
     private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
 
-    private Procedure? _selectedProcedure;
+    private ProcedureSummaryViewModel? _selectedProcedure;
 
     public EditWarrantSequenceViewModel(
         IEnumerable<WarrantStep> initialSteps,
@@ -34,15 +34,15 @@ public partial class EditWarrantSequenceViewModel
 
     public event IDialogViewModel<IEnumerable<WarrantStep>>.DialogFinishedEventHandler? DialogFinished;
 
-    public IEnumerable<Procedure> AvailableProcedures => AllProcedures.ExceptBy(Steps.Select(x => x.Procedure.Id), x => x.Id);
-    public Procedure? SelectedProcedure { get => _selectedProcedure; set => SetProperty(ref _selectedProcedure, value); }
+    public IEnumerable<ProcedureSummaryViewModel> AvailableProcedures => AllProcedures.ExceptBy(Steps.Select(x => x.Procedure.Id), x => x.Id);
+    public ProcedureSummaryViewModel? SelectedProcedure { get => _selectedProcedure; set => SetProperty(ref _selectedProcedure, value); }
 
     [RelayCommand]
     public async Task LoadProcedures()
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
-            AllProcedures = await _procedureService.GetProcedures();
+            AllProcedures = await _procedureService.GetProcedureSummaries();
         });
     }
 

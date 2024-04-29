@@ -49,7 +49,7 @@ public class GetWarrantsTests
                 && x.Id == assignedWarrant.Id
                 && x.IsUrgent == assignedWarrant.IsUrgent
                 && x.Deadline == assignedWarrant.Deadline);
-        response.Warrants.Single().Procedure.Should().Match<ProcedureModel>(x =>
+        response.Warrants.Single().Procedure.Should().Match<ProcedureSummaryModel>(x =>
             x.Id == assignedWarrant.CurrentStep!.ProcedureId
                 && x.Color == assignedWarrant.CurrentStep!.Procedure.Color
                 && x.Name == assignedWarrant.CurrentStep!.Procedure.Name);
@@ -77,7 +77,7 @@ public class GetWarrantsTests
                 && x.Id == warrant.Id
                 && x.IsUrgent == warrant.IsUrgent
                 && x.Deadline == warrant.Deadline);
-        response.Warrants.Single().Procedure.Should().Match<ProcedureModel>(x =>
+        response.Warrants.Single().Procedure.Should().Match<ProcedureSummaryModel>(x =>
             x.Id == warrant.CurrentStep!.ProcedureId
                 && x.Color == warrant.CurrentStep!.Procedure.Color
                 && x.Name == warrant.CurrentStep!.Procedure.Name);

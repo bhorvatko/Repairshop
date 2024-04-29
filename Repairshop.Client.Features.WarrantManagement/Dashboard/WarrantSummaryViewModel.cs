@@ -10,7 +10,7 @@ public class WarrantSummaryViewModel
         Guid id,
         bool isUrgent,
         DateTime deadline,
-        Procedure procedure,
+        ProcedureSummaryViewModel procedure,
         string title,
         bool canBeRolledBack,
         bool canBeAdvanced,
@@ -33,7 +33,7 @@ public class WarrantSummaryViewModel
     public Guid Id { get; private set; }
     public bool IsUrgent { get; private set; }
     public DateTime Deadline { get; private set; }
-    public Procedure Procedure { get; private set; }
+    public ProcedureSummaryViewModel Procedure { get; private set; }
     public string Title { get; private set; }
     public bool CanBeRolledBack { get; private set; }
     public bool CanBeAdvanced { get; private set; }
@@ -51,7 +51,7 @@ public class WarrantSummaryViewModel
         Guid id,
         bool isUrgent,
         DateTime deadline,
-        Procedure procedure,
+        ProcedureSummaryViewModel procedure,
         string title,
         bool canBeRolledBack,
         bool canBeAdvanced,

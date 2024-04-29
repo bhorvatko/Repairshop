@@ -15,10 +15,12 @@ public class WarrantTemplateStep
     public delegate Task<IEnumerable<Procedure>> GetProceduresByIdDelegate(IEnumerable<Guid> ids);
 
     public Guid Id { get; private set; }
+    public Guid ProcedureId { get; private set; }
     public Procedure Procedure { get; private set; }
     public bool CanBeTransitionedToByWorkshop { get; private set; }
     public bool CanBeTransitionedToByFrontOffice { get; private set; }
     public Guid WarrantTemplateId { get; private set; }
+    public WarrantTemplate WarrantTemplate { get; private set; }
 
     public static async Task<IReadOnlyCollection<WarrantTemplateStep>> CreateStepSequence(
         IEnumerable<CreateWarrantStepArgs> stepArgs,

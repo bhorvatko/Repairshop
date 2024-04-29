@@ -8,6 +8,7 @@
             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:nav="clr-namespace:Repairshop.Client.Common.Navigation;assembly=Repairshop.Client.Common"
+            xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
             mc:Ignorable="d"
             d:DataContext="{d:DesignInstance Type=local:ProceduresViewModel}">
 
@@ -79,10 +80,16 @@
                            FontSize="20" 
                            FontWeight="Bold"
                            Content="Uređivanje procedure" />
+
                     <Button Grid.Column="1" 
                             Command="{Binding DeleteProcedureCommand}" 
                             CommandParameter="{Binding SelectedProcedure}"
-                            Content="Obriši"  />
+                            BorderThickness="0" 
+                            Background="Transparent">
+
+                        <materialIcons:MaterialIcon Kind="Delete" />
+
+                    </Button>
                 </Grid>
 
                 <Grid Grid.Row="2">

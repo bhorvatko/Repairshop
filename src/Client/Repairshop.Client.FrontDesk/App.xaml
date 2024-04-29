@@ -5,6 +5,10 @@
                        xmlns:local="clr-namespace:Repairshop.Client.FrontDesk"
                        xmlns:bootstrapping="clr-namespace:Repairshop.Client.Infrastructure.Bootstrapping;assembly=Repairshop.Client.Infrastructure">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Repairshop.Client.Common;component/Styles/CommonStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </bootstrapping:AppBase>

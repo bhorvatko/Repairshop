@@ -27,8 +27,8 @@ public partial class TechnicianDashboardViewModel
     private IEnumerable<TechnicianViewModel> _availableTechnicians = 
         Enumerable.Empty<TechnicianViewModel>();
 
-    private IEnumerable<WarrantPreviewControlViewModel> _warrants = 
-        Enumerable.Empty<WarrantPreviewControlViewModel>();
+    private IReadOnlyCollection<WarrantPreviewControlViewModel> _warrants = 
+        new List<WarrantPreviewControlViewModel>();
 
     private TechnicianViewModel? _selectedTechnician = null;
 
@@ -69,9 +69,7 @@ public partial class TechnicianDashboardViewModel
             Warrants = value?
                 .Warrants
                 .Select(CreateWarrantPreviewControlViewModel)
-                ?? Enumerable.Empty<WarrantPreviewControlViewModel>();
-
-            SetSubscriptions(value?.Id);
+                ?? Enumerable.Empty<WarrantPreviewControlViewModel>();        
         }
     }
 
@@ -82,7 +80,7 @@ public partial class TechnicianDashboardViewModel
             .OrderByDescending(x => x.Warrant.IsUrgent)
             .ThenBy(x => x.Warrant.Deadline);
 
-        set => SetProperty(ref _warrants, value);
+        set => SetProperty(ref _warrants, value.ToList());
     }
 
     public WarrantFilterSelectionViewModel WarrantFilterSelectionViewModel { get; private set; }
@@ -133,6 +131,18 @@ public partial class TechnicianDashboardViewModel
     public IReadOnlyCollection<Guid> GetFilteredProcedureIds() =>
         WarrantFilterSelectionViewModel.FilteredProcedureIds;
 
+    [RelayCommand]
+    private async Task OnSelectedTechnicianChanged()
+    {
+        await SetSubscriptions(SelectedTechnician?.Id);
+    }
+
+    [RelayCommand]
+    private async Task OnLoaded()
+    {
+        await SetSubscriptions(SelectedTechnician?.Id);
+    }
+
     private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant)
     {
         WarrantPreviewControlViewModel addedWarrantViewModel =
@@ -170,24 +180,24 @@ public partial class TechnicianDashboardViewModel
     private WarrantPreviewControlViewModel CreateWarrantPreviewControlViewModel(WarrantSummaryViewModel warrant) =>
         _warrantPreviewControlViewModelFactory.CreateViewModel(warrant);
 
-    private void SetSubscriptions(Guid? technicianId)
+    private async Task SetSubscriptions(Guid? technicianId)
     {
         _warrantAddedSubscription?.Dispose();
         _warrantRemovedSubscription?.Dispose();
         _warrantUpdatedSubscription?.Dispose();
 
         _warrantAddedSubscription =
-            _warrantNotificationService.SubscribeToWarrantAddedNotifications(
+            await _warrantNotificationService.SubscribeToWarrantAddedNotifications(
                 technicianId,
                 OnWarrantAdded);
 
         _warrantRemovedSubscription =
-            _warrantNotificationService.SubscribeToWarrantRemovedNotifications(
+            await _warrantNotificationService.SubscribeToWarrantRemovedNotifications(
                 technicianId,
                 OnWarrantRemoved);
 
         _warrantUpdatedSubscription =
-            _warrantNotificationService.SubscribeToWarrantUpdatedNotifications(
+            await _warrantNotificationService.SubscribeToWarrantUpdatedNotifications(
                 technicianId,
                 OnWarrantUpdated);
     }

@@ -4,15 +4,15 @@ namespace Repairshop.Client.Features.WarrantManagement.Interfaces;
 
 public interface IWarrantNotificationService
 {
-    IDisposable SubscribeToWarrantAddedNotifications(
+    Task<IDisposable> SubscribeToWarrantAddedNotifications(
         Guid? technicianId, 
         Action<WarrantSummaryViewModel> onWarrantAdded);
 
-    IDisposable SubscribeToWarrantRemovedNotifications(
+    Task<IDisposable> SubscribeToWarrantRemovedNotifications(
         Guid? technicianId, 
         Action<Guid> onWarrantRemoved);
 
-    IDisposable SubscribeToWarrantUpdatedNotifications(
+    Task<IDisposable> SubscribeToWarrantUpdatedNotifications(
         Guid? technicianId, 
         Action<WarrantSummaryViewModel> onWarrantUpdated);
 }

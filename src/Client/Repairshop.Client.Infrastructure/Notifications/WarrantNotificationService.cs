@@ -10,7 +10,7 @@ using System.Reactive.Subjects;
 namespace Repairshop.Client.Infrastructure.Notifications;
 
 internal class WarrantNotificationService
-    : IWarrantNotificationService
+    : IWarrantNotificationService, IAsyncDisposable
 {
     private readonly Subject<WarrantCreatedNotification> _warrantAddedSubject;
     private readonly Subject<WarrantAssignedNotification> _warrantAssignedSubject;
@@ -32,10 +32,12 @@ internal class WarrantNotificationService
         _hubConnection.StartAsync().Wait();
     }
 
-    public IDisposable SubscribeToWarrantAddedNotifications(
+    public async Task<IDisposable> SubscribeToWarrantAddedNotifications(
         Guid? technicianId,
         Action<WarrantSummaryViewModel> onWarrantAdded)
     {
+        await EnsureHubConnectionIsOpen();
+
         IObservable<WarrantSummaryViewModel> warrantAssignedObservable =
             _warrantAssignedSubject
                 .Where(x => x.ToTechnicianId == technicianId)
@@ -52,22 +54,38 @@ internal class WarrantNotificationService
         return resultingObservable.Subscribe(onWarrantAdded);
     }
 
-    public IDisposable SubscribeToWarrantRemovedNotifications(
+    public async Task<IDisposable> SubscribeToWarrantRemovedNotifications(
         Guid? technicianId, 
         Action<Guid> onWarrantRemoved)
     {
+        await EnsureHubConnectionIsOpen();
+
         return _warrantAssignedSubject
             .Where(x => x.FromTechnicianId == technicianId)
             .Select(x => x.Warrant.Id)
             .Subscribe(onWarrantRemoved);
     }
 
-    public IDisposable SubscribeToWarrantUpdatedNotifications(Guid? technicianId, Action<WarrantSummaryViewModel> onWarrantUpdated)
+    public async Task<IDisposable> SubscribeToWarrantUpdatedNotifications(Guid? technicianId, Action<WarrantSummaryViewModel> onWarrantUpdated)
     {
+        await EnsureHubConnectionIsOpen();
+
         return _warrantProcedureChangedSubject
             .Where(x => x.Warrant.TechnicianId == technicianId)
             .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
             .Subscribe(onWarrantUpdated);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_hubConnection.State is not HubConnectionState.Disconnected)
+        {
+            await _hubConnection.StopAsync();
+        }
+
+        _warrantAddedSubject.Dispose();
+        _warrantAssignedSubject.Dispose();
+        _warrantProcedureChangedSubject.Dispose();
     }
 
     private Subject<TSubject> CreateSubject<TSubject>()
@@ -79,5 +97,13 @@ internal class WarrantNotificationService
             subject.OnNext);
 
         return subject;
+    }
+
+    private async Task EnsureHubConnectionIsOpen()
+    {
+        if (_hubConnection.State is HubConnectionState.Disconnected)
+        {
+            await _hubConnection.StartAsync();
+        }
     }
 }

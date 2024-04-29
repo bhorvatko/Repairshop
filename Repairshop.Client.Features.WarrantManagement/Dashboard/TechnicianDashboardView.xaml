@@ -10,6 +10,12 @@
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=local:TechnicianDashboardViewModel}">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <TabControl Margin="5">
         
         <TabItem Header="Nalozi" >
@@ -25,7 +31,15 @@
                           DisplayMemberPath="Name"
                           ItemsSource="{Binding AvailableTechnicians}"
                           SelectedItem="{Binding SelectedTechnician, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          Margin="0, 0, 0, 5" />
+                          Margin="0, 0, 0, 5">
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding SelectedTechnicianChangedCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    
+                </ComboBox>
 
                 <ListView Grid.Row="1"
                           ItemsSource="{Binding Warrants}"

@@ -9,7 +9,8 @@ internal static class Setup
     {
         services
             .AddTransient<IToastNotificationService, ToastNotificationService>()
-            .AddSingleton<ToastNotificationContainerViewModel>();
+            .AddSingleton<ToastNotificationContainerViewModel>()
+            .AddSingleton<ISoundNotificationService, SoundNotificationService>();
 
         return services;
     }

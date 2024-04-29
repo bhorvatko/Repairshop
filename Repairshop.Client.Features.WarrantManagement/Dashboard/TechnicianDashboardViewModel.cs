@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.UserNotifications;
 using Repairshop.Client.Features.WarrantManagement.Configuration;
 using Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
@@ -18,6 +19,7 @@ public partial class TechnicianDashboardViewModel
     private readonly INavigationService _navigationService;
     private readonly IWarrantService _warrantService;
     private readonly IWarrantNotificationService _warrantNotificationService;
+    private readonly ISoundNotificationService _soundNotificationService;
 
     private IDisposable? _warrantAddedSubscription;
     private IDisposable? _warrantRemovedSubscription;
@@ -40,6 +42,7 @@ public partial class TechnicianDashboardViewModel
         IWarrantService warrantService,
         IWarrantNotificationService warrantNotificationService,
         WarrantFilterSelectionViewModelFactory warrantFilterSelectionViewModelFactory,
+        ISoundNotificationService soundNotificationService,
         IReadOnlyCollection<TechnicianViewModel> availableTechnicians,
         TechnicianDashboardConfiguration configuration)
     {
@@ -49,6 +52,7 @@ public partial class TechnicianDashboardViewModel
         _navigationService = navigationService;
         _warrantService = warrantService;
         _warrantNotificationService = warrantNotificationService;
+        _soundNotificationService = soundNotificationService;
 
         AvailableTechnicians = availableTechnicians;
 
@@ -143,7 +147,7 @@ public partial class TechnicianDashboardViewModel
         await SetSubscriptions(SelectedTechnician?.Id);
     }
 
-    private void OnWarrantAdded(WarrantSummaryViewModel addedWarrant)
+    private async Task OnWarrantAdded(WarrantSummaryViewModel addedWarrant)
     {
         WarrantPreviewControlViewModel addedWarrantViewModel =
             CreateWarrantPreviewControlViewModel(addedWarrant);
@@ -151,21 +155,25 @@ public partial class TechnicianDashboardViewModel
         addedWarrantViewModel.PlayUpdateAnimation = true;
 
         Warrants = Warrants.Append(addedWarrantViewModel);
+
+        await _soundNotificationService.PlaySoundNotification();
     }
 
-    private void OnWarrantRemoved(Guid removedWarrantId)
+    private Task OnWarrantRemoved(Guid removedWarrantId)
     {
         WarrantPreviewControlViewModel? warrantToBeRemoved = 
             Warrants.FirstOrDefault(x => x.Warrant.Id == removedWarrantId);
 
-        if (warrantToBeRemoved is null) return;
+        if (warrantToBeRemoved is null) return Task.CompletedTask;
 
         warrantToBeRemoved.Dispose();
 
         Warrants = Warrants.Except(new[] { warrantToBeRemoved });
+
+        return Task.CompletedTask;
     }
 
-    private void OnWarrantUpdated(WarrantSummaryViewModel updatedWarrant)
+    private async Task OnWarrantUpdated(WarrantSummaryViewModel updatedWarrant)
     {
         WarrantPreviewControlViewModel updatedWarrantViewModel =
             CreateWarrantPreviewControlViewModel(updatedWarrant);
@@ -175,6 +183,8 @@ public partial class TechnicianDashboardViewModel
         Warrants = Warrants
             .Where(x => x.Warrant.Id != updatedWarrant.Id)
             .Append(updatedWarrantViewModel);
+
+        await _soundNotificationService.PlaySoundNotification();
     }
 
     private WarrantPreviewControlViewModel CreateWarrantPreviewControlViewModel(WarrantSummaryViewModel warrant) =>

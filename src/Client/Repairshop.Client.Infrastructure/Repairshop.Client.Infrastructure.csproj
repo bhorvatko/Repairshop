@@ -23,4 +23,19 @@
     <ProjectReference Include="..\Repairshop.Client.Common\Repairshop.Client.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="UserNotifications\UserNotificationResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserNotificationResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="UserNotifications\UserNotificationResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserNotificationResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.UserNotifications;
 using Repairshop.Client.Features.WarrantManagement.Configuration;
 using Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
@@ -15,6 +16,7 @@ public class TechnicianDashboardViewModelFactory
     private readonly INavigationService _navigationService;
     private readonly IWarrantNotificationService _warrantNotificationService;
     private readonly WarrantFilterSelectionViewModelFactory _warrantFilterSelectionViewModelFactory;
+    private readonly ISoundNotificationService _soundNotificationService;
 
     public TechnicianDashboardViewModelFactory(
         ILoadingIndicatorService loadingIndicatorService, 
@@ -23,7 +25,8 @@ public class TechnicianDashboardViewModelFactory
         WarrantPreviewControlViewModelFactory warrantPreviewControlViewModelFactory,
         INavigationService navigationService,
         IWarrantNotificationService warrantNotificationService,
-        WarrantFilterSelectionViewModelFactory warrantFilterSelectionViewModelFactory)
+        WarrantFilterSelectionViewModelFactory warrantFilterSelectionViewModelFactory,
+        ISoundNotificationService soundNotificationService)
     {
         _loadingIndicatorService = loadingIndicatorService;
         _technicianService = technicianService;
@@ -32,6 +35,7 @@ public class TechnicianDashboardViewModelFactory
         _navigationService = navigationService;
         _warrantNotificationService = warrantNotificationService;
         _warrantFilterSelectionViewModelFactory = warrantFilterSelectionViewModelFactory;
+        _soundNotificationService = soundNotificationService;
     }
 
     public async Task<IReadOnlyCollection<TechnicianDashboardViewModel>> CreateViewModels(
@@ -65,6 +69,7 @@ public class TechnicianDashboardViewModelFactory
                     _warrantService,
                     _warrantNotificationService,
                     _warrantFilterSelectionViewModelFactory,
+                    _soundNotificationService,
                     technicians.ToList(),
                     configuration))
             .ToList();

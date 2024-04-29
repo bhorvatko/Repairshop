@@ -34,7 +34,7 @@ internal class WarrantNotificationService
 
     public async Task<IDisposable> SubscribeToWarrantAddedNotifications(
         Guid? technicianId,
-        Action<WarrantSummaryViewModel> onWarrantAdded)
+        Func<WarrantSummaryViewModel, Task> onWarrantAdded)
     {
         await EnsureHubConnectionIsOpen();
 
@@ -51,29 +51,35 @@ internal class WarrantNotificationService
                 ? Observable.Merge(warrantAssignedObservable, warrantCreatedObservable)
                 : warrantAssignedObservable;
 
-        return resultingObservable.Subscribe(onWarrantAdded);
+        return resultingObservable
+            .SelectMany(x => Observable.FromAsync(() => onWarrantAdded(x)))
+            .Subscribe();
     }
 
     public async Task<IDisposable> SubscribeToWarrantRemovedNotifications(
         Guid? technicianId, 
-        Action<Guid> onWarrantRemoved)
+        Func<Guid, Task> onWarrantRemoved)
     {
         await EnsureHubConnectionIsOpen();
 
         return _warrantAssignedSubject
             .Where(x => x.FromTechnicianId == technicianId)
             .Select(x => x.Warrant.Id)
-            .Subscribe(onWarrantRemoved);
+            .SelectMany(x => Observable.FromAsync(() => onWarrantRemoved(x)))
+            .Subscribe();
     }
 
-    public async Task<IDisposable> SubscribeToWarrantUpdatedNotifications(Guid? technicianId, Action<WarrantSummaryViewModel> onWarrantUpdated)
+    public async Task<IDisposable> SubscribeToWarrantUpdatedNotifications(
+        Guid? technicianId,
+        Func<WarrantSummaryViewModel, Task> onWarrantUpdated)
     {
         await EnsureHubConnectionIsOpen();
 
         return _warrantProcedureChangedSubject
             .Where(x => x.Warrant.TechnicianId == technicianId)
             .Select(x => _warrantSummaryViewModelFactory.Create(x.Warrant))
-            .Subscribe(onWarrantUpdated);
+            .SelectMany(x => Observable.FromAsync(() => onWarrantUpdated(x)))
+            .Subscribe();
     }
 
     public async ValueTask DisposeAsync()

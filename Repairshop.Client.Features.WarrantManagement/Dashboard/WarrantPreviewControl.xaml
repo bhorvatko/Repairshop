@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
@@ -72,14 +73,24 @@
         </TextBlock>
 
         <Button Grid.Column="1"
-                Content="&lt;"
                 Visibility="{Binding Warrant.CanBeRolledBackVisibility}"
-                Command="{Binding RollbackWarrantCommand}"/>
+                Command="{Binding RollbackWarrantCommand}">
+
+            <materialDesign:PackIcon
+                Kind="ChevronLeft"
+                Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
+            
+        </Button>
 
         <Button Grid.Column="2"
-                Content=">" 
                 Visibility="{Binding Warrant.CanBeAdvancedVisibility}"
-                Command="{Binding AdvanceWarrantCommand}" />
+                Command="{Binding AdvanceWarrantCommand}">
+            
+            <materialDesign:PackIcon 
+                Kind="ChevronRight" 
+                Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"/>
+            
+        </Button>
 
     </Grid>
 </UserControl>

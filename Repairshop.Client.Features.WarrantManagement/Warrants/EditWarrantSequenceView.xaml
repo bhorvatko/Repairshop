@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Warrants"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
+             MinWidth="600"
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=local:EditWarrantSequenceViewModel}">
 
@@ -24,27 +26,45 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             
-            <GroupBox Grid.Column="0"
-                  Header="Procedure">
-                <ListBox ItemsSource="{Binding AvailableProcedures}"
-                         SelectedItem="{Binding SelectedProcedure}">
+            <GroupBox 
+                Grid.Column="0"
+                Header="Procedure"
+                Margin="5">
+                <ListBox 
+                    ItemsSource="{Binding AvailableProcedures}"
+                    SelectedItem="{Binding SelectedProcedure}"
+                    HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Name}" 
-                               Background="{Binding BackgroundColorBrush}" 
-                               Foreground="{Binding ForegroundColorBrush}"/>
+                            <Label 
+                                DockPanel.Dock="Left"
+                                Content="{Binding Name}" 
+                                Background="{Binding BackgroundColorBrush}" 
+                                Foreground="{Binding ForegroundColorBrush}"
+                                FontSize="20"
+                                Padding="10"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </GroupBox>
 
             <Button Grid.Column="1" 
-                    Content="--"
-                    Command="{Binding AddStepCommand}"/>
+                    Command="{Binding AddStepCommand}" >
+                
+                <materialdesign:PackIcon
+                    Kind="ChevronRight"
+                    Height="20"
+                    Width="20"/>
+                
+            </Button>
 
-            <GroupBox Grid.Column="2"
-                  Header="Koraci naloga">
-                <ListBox ItemsSource="{Binding Steps}">
+            <GroupBox 
+                Grid.Column="2"
+                Header="Koraci naloga"
+                Margin="5">
+                <ListBox 
+                    ItemsSource="{Binding Steps}"
+                    HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -54,9 +74,29 @@
                                     <CheckBox Content="Recepcija"
                                           IsChecked="{Binding CanBeTransitionedToByFrontDesk}" />
                                 </StackPanel>
-                                <Label Content="{Binding Procedure.Name}"
-                               Background="{Binding Procedure.BackgroundColorBrush}"
-                               Foreground="{Binding Procedure.ForegroundColorBrush}" />
+                                <DockPanel 
+                                    Background="{Binding Procedure.BackgroundColorBrush}"
+                                    LastChildFill="True">
+                                    <Button
+                                        DockPanel.Dock="Right"
+                                        Margin="5"
+                                        Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RemoveStepCommand}"
+                                        CommandParameter="{Binding .}">
+                                        
+                                        <materialdesign:PackIcon 
+                                            Kind="Delete"
+                                            Foreground="{Binding Procedure.ForegroundColorBrush}"/>
+                                        
+                                    </Button>
+                                    <Label 
+                                        DockPanel.Dock="Left"
+                                        Content="{Binding Procedure.Name}"
+                                        Foreground="{Binding Procedure.ForegroundColorBrush}" 
+                                        FontSize="20"
+                                        Padding="10"/>
+
+                                </DockPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -66,6 +106,8 @@
 
         <Button DockPanel.Dock="Bottom"
                 Content="OK"
+                Margin="5"
+                Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                 Command="{Binding FinishEditingCommand}" />
     </DockPanel>
 </UserControl>

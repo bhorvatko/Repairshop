@@ -17,7 +17,7 @@ public partial class EditWarrantSequenceViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(AvailableProcedures))]
-    private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
+    private IReadOnlyCollection<WarrantStep> _steps = new List<WarrantStep>();
 
     private ProcedureSummaryViewModel? _selectedProcedure;
 
@@ -57,6 +57,12 @@ public partial class EditWarrantSequenceViewModel
     {
         if (SelectedProcedure is null) return;
 
-        Steps = Steps.Append(WarrantStep.CreateNew(SelectedProcedure));
+        Steps = Steps.Append(WarrantStep.CreateNew(SelectedProcedure)).ToList();
+    }
+
+    [RelayCommand]
+    public void RemoveStep(WarrantStep step)
+    {
+        Steps = Steps.Where(x => x != step).ToList();
     }
 }

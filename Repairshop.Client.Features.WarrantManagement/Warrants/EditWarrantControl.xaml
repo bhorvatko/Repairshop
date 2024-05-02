@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Warrants"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
@@ -33,20 +34,25 @@
 
         <Label Grid.Row="1" Grid.Column="0" 
                Content="Rok" />
-        
+
         <xctk:DateTimePicker Grid.Row="1" Grid.Column="1" 
                              Margin="5"
                              Value="{Binding ElementName=editWarrantControl, Path=ViewModel.Deadline}" 
                              Format="Custom" 
                              FormatString="dd/MM/yyyy HH:mm"/>
 
-        <Label Grid.Row="2" Grid.Column="0" 
-               Content="Hitni nalog" />
-        
-        <CheckBox Grid.Row="2" Grid.Column="1" 
-                  VerticalAlignment="Center"
-                  Margin="5"
-                  IsChecked="{Binding ElementName=editWarrantControl, Path=ViewModel.IsUrgent}" />
+        <Label 
+            Grid.Row="2" Grid.Column="0" 
+            Content="Hitni nalog"
+            VerticalAlignment="Center" />
+
+        <ToggleButton 
+            Grid.Row="2" Grid.Column="1" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            Margin="5"
+            IsChecked="{Binding ElementName=editWarrantControl, Path=ViewModel.IsUrgent}"
+            Style="{DynamicResource MaterialDesignSwitchToggleButton}"/>
 
         <Label Grid.Row="3" Grid.Column="0" 
                Content="Tok naloga" 
@@ -59,12 +65,14 @@
             <Button DockPanel.Dock="Right" 
                     Content="Primjeni šablonu"
                     Padding="5"
+                    Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.ApplyWarrantTemplateCommand}" />
 
             <Button DockPanel.Dock="Right" 
                     Content="Uredi" 
                     Margin="0, 0, 5, 0"
                     Padding="5"
+                    Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.EditWarrantSequenceCommand}"/>
 
             

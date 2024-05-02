@@ -17,22 +17,23 @@
     
     <Grid>
 
-        <ListView ItemsSource="{Binding Procedures}"
-                  HorizontalContentAlignment="Stretch"
-                  IsEnabled="False"
-                  BorderThickness="0">
+        <ItemsControl 
+            ItemsSource="{Binding Procedures}"
+            HorizontalContentAlignment="Stretch"
+            BorderThickness="0">
 
-            <ListView.ItemTemplate>
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"
                                Background="{Binding BackgroundColorBrush}"
                                Foreground="{Binding ForegroundColorBrush}"
                                FontSize="15" 
-                               Padding="10" />
+                               Padding="10" 
+                               Margin="5"/>
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </ItemsControl.ItemTemplate>
             
-        </ListView>
+        </ItemsControl>
         
     </Grid>
 </UserControl>

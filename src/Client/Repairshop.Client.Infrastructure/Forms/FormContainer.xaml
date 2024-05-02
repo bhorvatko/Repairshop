@@ -26,6 +26,7 @@
                 VerticalAlignment="Bottom"
                 Margin="5"
                 Padding="5"
+                Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                 Content="{Binding ElementName=formContainer, Path=SubmitText}"/>
         
     </DockPanel>

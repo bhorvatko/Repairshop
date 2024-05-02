@@ -53,7 +53,7 @@ public partial class CreateWarrantTemplateViewModel
                 IEnumerable<WarrantStep>>(
                 vm =>
                 {
-                    vm.Steps = Steps;
+                    vm.Steps = Steps.ToList();
                 });
 
         if (sequence is not null)

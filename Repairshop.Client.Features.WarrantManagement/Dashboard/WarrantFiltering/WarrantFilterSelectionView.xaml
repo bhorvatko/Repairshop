@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"             
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -21,7 +22,8 @@
                   HorizontalContentAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="{Binding Procedure.BackgroundColorBrush}" >
+                    <Grid Background="{Binding Procedure.BackgroundColorBrush}"
+                          Margin="5">
                         
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -34,10 +36,11 @@
                                FontSize="15"
                                Padding="10"/>
 
-                        <CheckBox Grid.Column="1"
-                                  IsChecked="{Binding Selected}" 
-                                  VerticalAlignment="Center"
-                                  Padding="5" />
+                        <ToggleButton Grid.Column="1"
+                                      IsChecked="{Binding Selected}"
+                                      VerticalAlignment="Center"
+                                      Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
+
 
                     </Grid>
                 </DataTemplate>

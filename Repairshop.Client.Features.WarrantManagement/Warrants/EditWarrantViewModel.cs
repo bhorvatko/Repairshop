@@ -63,7 +63,7 @@ public partial class EditWarrantViewModel
                 IEnumerable<WarrantStep>>(
                 vm =>
                 {
-                    vm.Steps = Steps;
+                    vm.Steps = Steps.ToList();
                 });
 
         if (sequence is not null)

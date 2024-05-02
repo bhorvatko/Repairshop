@@ -28,8 +28,6 @@ internal class WarrantNotificationService
         _warrantAddedSubject = CreateSubject<WarrantCreatedNotification>();
         _warrantAssignedSubject = CreateSubject<WarrantAssignedNotification>();
         _warrantProcedureChangedSubject = CreateSubject<WarrantProcedureChangedNotification>();
-
-        _hubConnection.StartAsync().Wait();
     }
 
     public async Task<IDisposable> SubscribeToWarrantAddedNotifications(

@@ -27,7 +27,7 @@
         <Label Grid.Row="0" Grid.Column="0" 
                VerticalAlignment="Center"
                Content="Subjekt" />
-        
+
         <TextBox Grid.Row="0" Grid.Column="1" 
                  Margin="5"
                  Text="{Binding ElementName=editWarrantControl, Path=ViewModel.Subject}" />

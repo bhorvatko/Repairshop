@@ -11,23 +11,23 @@
              Name="warrantStepSequecePreviewControl">
     <Grid>
 
-        <ListView ItemsSource="{Binding ElementName=warrantStepSequecePreviewControl, Path=Procedures}"
-                  IsEnabled="False">
-            <ListView.ItemsPanel>
+        <ItemsControl ItemsSource="{Binding ElementName=warrantStepSequecePreviewControl, Path=Procedures}">
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+            </ItemsControl.ItemsPanel>
 
-            <ListView.ItemTemplate>
+            <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="procedures:Procedure">
                     <Rectangle Fill="{Binding BackgroundColorBrush}" 
                                Width="20" 
-                               Height="20"/>
+                               Height="20"
+                               Margin="5"/>
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </ItemsControl.ItemTemplate>
 
-        </ListView>
+        </ItemsControl>
         
     </Grid>
 </UserControl>

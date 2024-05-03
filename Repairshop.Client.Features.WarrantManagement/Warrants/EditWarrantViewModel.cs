@@ -14,7 +14,7 @@ public partial class EditWarrantViewModel
     private readonly IDialogService _dialogService;
 
     [ObservableProperty]
-    [Required]
+    [Required(ErrorMessage = "Unesite subjekt naloga")]
     private string _subject = string.Empty;
 
     [ObservableProperty]

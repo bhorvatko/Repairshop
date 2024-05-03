@@ -45,7 +45,9 @@
         <Button DockPanel.Dock="Bottom"
                 Content="Primjeni šablonu"
                 Command="{Binding ApplyCommand}"
-                IsEnabled="{Binding ApplyButtonEnabled}" />
+                IsEnabled="{Binding ApplyButtonEnabled}"
+                Margin="5"
+                Style="{DynamicResource MaterialDesignRaisedDarkButton}"/>
 
     </DockPanel>
 </UserControl>

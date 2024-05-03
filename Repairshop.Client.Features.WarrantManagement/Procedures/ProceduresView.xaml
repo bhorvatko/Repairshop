@@ -7,8 +7,8 @@
             xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Procedures"
             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+            xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             xmlns:nav="clr-namespace:Repairshop.Client.Common.Navigation;assembly=Repairshop.Client.Common"
-            xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
             mc:Ignorable="d"
             d:DataContext="{d:DesignInstance Type=local:ProceduresViewModel}">
 
@@ -84,8 +84,7 @@
                     <Button Grid.Column="1" 
                             Command="{Binding DeleteProcedureCommand}" 
                             CommandParameter="{Binding SelectedProcedure}"
-                            BorderThickness="0" 
-                            Background="Transparent"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
                             IsEnabled="{Binding SelectedProcedure.CanBeDeleted}"
                             ToolTipService.ShowOnDisabled="True">
 
@@ -95,7 +94,7 @@
                                 Visibility="{Binding SelectedProcedure.CannotBeDeletedTooltipVisibility}"/>
                         </Button.ToolTip>
 
-                        <materialIcons:MaterialIcon Kind="Delete" />
+                        <materialdesign:PackIcon Kind="Delete" />
 
                     </Button>
                 </Grid>

@@ -18,14 +18,16 @@ public partial class EditWarrantViewModel
     private string _subject = string.Empty;
 
     [ObservableProperty]
-    [Required]
-    private DateTime _deadline = DateTime.Now;
-
-    [ObservableProperty]
     private bool _isUrgent = false;
 
     [ObservableProperty]
     private WarrantStep? _currentStep;
+
+    [ObservableProperty]
+    private DateTime _deadlineDate = DateTime.Today;
+
+    [ObservableProperty]
+    private DateTime _deadlineTime = DateTime.Now;
 
     private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
 
@@ -50,6 +52,16 @@ public partial class EditWarrantViewModel
             {
                 CurrentStep = _steps.FirstOrDefault();
             }
+        }
+    }
+
+    public DateTime Deadline
+    {
+        get => DeadlineDate.Date + DeadlineTime.TimeOfDay;
+        set
+        {
+            DeadlineDate = value.Date;
+            DeadlineTime = new DateTime(value.TimeOfDay.Ticks);
         }
     }
 

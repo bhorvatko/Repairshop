@@ -5,4 +5,5 @@ public interface ITechnicianService
     Task CreateTechnician(string name);
     Task AssignWarrant(Guid technicianId, Guid warrantId);
     Task UpdateTechnician(Guid technicianId, string name);
+    Task DeleteTechnician(Guid technicianId);
 }

@@ -187,4 +187,35 @@ public class TechnicianTests
 
         updatedTechnician.Name.Should().Be("Updated");
     }
+
+    [Fact]
+    public async Task Deleting_a_technician()
+    {
+        // Arrange
+        Technician technician = TechnicianHelper.Create();
+
+        Warrant warrant = 
+            await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
+
+        _dbContext.Add(technician);
+        _dbContext.SaveChanges();
+
+        IReadOnlyCollection<Technician> techniciansBeforeDeleting =
+            _dbContext.Set<Technician>().AsNoTracking().ToList();
+
+        // Act
+        await _client.DeleteAsync($"Technicians/{technician.Id}");
+
+        // Assert
+        IReadOnlyCollection<Technician> techniciansAfterDeleting = 
+            _dbContext.Set<Technician>().AsNoTracking().ToList();
+
+        techniciansBeforeDeleting.Should().HaveCount(1);
+        techniciansAfterDeleting.Should().BeEmpty();
+
+        Warrant unassignedWarrant =
+            _dbContext.Set<Warrant>().AsNoTracking().Single();
+
+        unassignedWarrant.TechnicianId.Should().BeNull();
+    }
 }

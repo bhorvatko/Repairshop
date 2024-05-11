@@ -13,6 +13,7 @@ public partial class TechnicianMaintenanceViewModel
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly ITechnicianService _technicianService;
     private readonly IFormService _formService;
+    private readonly IMessageDialogService _messageDialogService;
 
     [ObservableProperty]
     private IReadOnlyCollection<TechnicianViewModel> _technicians =
@@ -21,11 +22,13 @@ public partial class TechnicianMaintenanceViewModel
     public TechnicianMaintenanceViewModel(
         ILoadingIndicatorService loadingIndicatorService,
         ITechnicianService technicianService,
-        IFormService formService)
+        IFormService formService,
+        IMessageDialogService messageDialogService)
     {
         _loadingIndicatorService = loadingIndicatorService;
         _technicianService = technicianService;
         _formService = formService;
+        _messageDialogService = messageDialogService;
     }
 
     [RelayCommand]
@@ -44,9 +47,20 @@ public partial class TechnicianMaintenanceViewModel
     }
 
     [RelayCommand]
-    private void OnDeleteTechnician(TechnicianViewModel technician)
+    private async Task OnDeleteTechnician(TechnicianViewModel technician)
     {
-        throw new NotImplementedException();
+        string confirmationMessage = "Jeste li sigurni da želite obrisati tehničara? Svi nalozi će biti premješteni u nedodjeljene";
+
+        if (!_messageDialogService.GetConfirmation(confirmationMessage))
+        {
+            return;
+        }
+
+        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
+        {
+            await _technicianService.DeleteTechnician(technician.Id!.Value);
+            await LoadTechnicians();
+        });
     }
 
     private async Task LoadTechnicians()

@@ -19,4 +19,12 @@ public class MessageDialogService
             caption: title,
             button: MessageBoxButton.OK,
             icon: MessageBoxImage.Information);
+
+    public bool GetConfirmation(string message) =>
+        MessageBox.Show(
+            messageBoxText: message,
+            caption: "Potvrda",
+            button: MessageBoxButton.YesNo,
+            icon: MessageBoxImage.Question) 
+            == MessageBoxResult.Yes;
 }

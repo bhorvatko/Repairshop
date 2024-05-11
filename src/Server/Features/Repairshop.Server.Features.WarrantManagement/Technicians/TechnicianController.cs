@@ -46,4 +46,15 @@ public class TechnicianController
 
         return Ok(response);
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteTechnician(
+        [FromRoute] DeleteTechnicianRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

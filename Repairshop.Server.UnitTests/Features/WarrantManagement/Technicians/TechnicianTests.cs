@@ -39,4 +39,22 @@ public class TechnicianTests
             .Throw<DomainArgumentException>()
             .Where(x => x.InvalidArgument == warrant);
     }
+
+    [Fact]
+    public async Task Unassigning_all_warrants()
+    {
+        // Arrange
+        Technician technician = TechnicianHelper.Create();
+        Warrant warrant = await WarrantHelper.Create();
+
+        technician.AssignWarrant(warrant);
+
+        // Act
+        technician.UnassignAllWarrants();
+
+        // Assert
+        technician.Warrants.Should().BeEmpty();
+        warrant.Technician.Should().BeNull();
+        warrant.TechnicianId.Should().BeNull();
+    }
 }

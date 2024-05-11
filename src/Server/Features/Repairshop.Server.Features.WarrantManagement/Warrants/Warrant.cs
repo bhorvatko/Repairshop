@@ -111,6 +111,7 @@ public class Warrant
     public void UnassignWarrant()
     {
         TechnicianId = null;
+        Technician = null;
     }
 
     public void AssignTo(Technician technician)

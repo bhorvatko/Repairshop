@@ -47,4 +47,14 @@ public class Technician
     {
         Name = name;
     }
+
+    public void UnassignAllWarrants()
+    {
+        foreach (Warrant warrant in Warrants)
+        {
+            warrant.UnassignWarrant();
+        }
+
+        Warrants = new List<Warrant>();
+    }
 }

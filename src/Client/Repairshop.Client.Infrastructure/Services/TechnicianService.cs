@@ -66,4 +66,9 @@ internal class TechnicianService
             TechniciansEndpoint,
             request);
     }
+
+    public async Task DeleteTechnician(Guid technicianId)
+    {
+        await _apiClient.Delete($"{TechniciansEndpoint}/{technicianId}");
+    }
 }

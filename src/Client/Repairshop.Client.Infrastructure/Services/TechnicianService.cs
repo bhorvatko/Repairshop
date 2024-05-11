@@ -53,4 +53,17 @@ internal class TechnicianService
             AssignWarrantEndpoint,
             request);
     }
+
+    public async Task UpdateTechnician(Guid technicianId, string name)
+    {
+        UpdateTechnicianRequest request = new()
+        {
+            TechnicianId = technicianId,
+            Name = name
+        };
+
+        await _apiClient.Put<UpdateTechnicianRequest, UpdateTechnicianResponse>(
+            TechniciansEndpoint,
+            request);
+    }
 }

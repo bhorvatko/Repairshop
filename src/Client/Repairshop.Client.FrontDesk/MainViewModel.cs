@@ -88,6 +88,12 @@ public partial class MainViewModel
         _navigationService.NavigateToView<CreateWarrantTemplateView>();
     }
 
+    [RelayCommand]
+    public void NavigateToTechnicianMaintenanceView()
+    {
+        _navigationService.NavigateToView<TechnicianMaintenanceView>();
+    }
+
     public void Dispose()
     {
         _serverAvailabilitySubscription.Dispose();

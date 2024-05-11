@@ -23,4 +23,18 @@ internal class FormService
 
         formContainer.ShowWithContent(form);
     }
+
+    public void ShowForm<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
+        where TForm : FormBase
+        where TViewModel : IFormViewModel
+    {
+        FormContainer formContainer = new FormContainer();
+
+        FormBase form =
+            _serviceProvider.GetRequiredService<TForm>();
+
+        viewModelConfig((TViewModel)form.DataContext);
+
+        formContainer.ShowWithContent(form);
+    }
 }

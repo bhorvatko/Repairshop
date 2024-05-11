@@ -42,4 +42,9 @@ public class Technician
 
         AddEvent(WarrantAssignedEvent.Create(warrant, Id, previousTechnicianId));
     }
+
+    public void Update(string name)
+    {
+        Name = name;
+    }
 }

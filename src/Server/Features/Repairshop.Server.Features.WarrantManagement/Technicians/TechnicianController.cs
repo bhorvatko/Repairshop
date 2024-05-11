@@ -36,4 +36,14 @@ public class TechnicianController
 
         return Ok(response);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateTechnicain(
+        [FromBody] UpdateTechnicianRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

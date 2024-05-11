@@ -29,9 +29,8 @@
                 <MenuItem Header="Upravljanje">
                     <MenuItem Header="Procedure" 
                               Command="{Binding NavigateToProceduresViewCommand}"/>
-                    <MenuItem Header="Tehničari">
-                        <MenuItem Header="Dodaj..." 
-                                  Command="{Binding NavigateToAddTechnicianViewCommand}"/>
+                    <MenuItem Header="Tehničari"
+                              Command="{Binding NavigateToTechnicianMaintenanceViewCommand}">
                     </MenuItem>
                     <MenuItem Header="Šablone">
                         <MenuItem Header="Dodaj..."

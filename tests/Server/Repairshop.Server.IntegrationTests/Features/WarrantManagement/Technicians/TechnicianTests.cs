@@ -163,4 +163,28 @@ public class TechnicianTests
             x.Name == technician.Name
                 && x.Id == technician.Id);
     }
+
+    [Fact]
+    public async Task Updating_a_technician()
+    {
+        // Arrange
+        Technician technician = TechnicianHelper.Create(name: "Original");
+
+        _dbContext.Add(technician);
+        _dbContext.SaveChanges();
+
+        UpdateTechnicianRequest request = new()
+        {
+            TechnicianId = technician.Id,
+            Name = "Updated"
+        };
+
+        // Act
+        await _client.PutAsJsonAsync("Technicians", request);
+
+        // Assert
+        Technician updatedTechnician = _dbContext.Set<Technician>().AsNoTracking().Single();
+
+        updatedTechnician.Name.Should().Be("Updated");
+    }
 }

@@ -1,11 +1,11 @@
-﻿using Repairshop.Client.Common.Navigation;
+﻿using Repairshop.Client.Common.Forms;
 
 namespace Repairshop.Client.Features.WarrantManagement.Technicians;
 /// <summary>
 /// Interaction logic for AddTechnicianView.xaml
 /// </summary>
 public partial class AddTechnicianView
-    : ViewBase<AddTechnicianViewModel>
+    : FormBase
 {
     public AddTechnicianView(AddTechnicianViewModel viewModel)
         : base(viewModel)

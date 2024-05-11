@@ -63,6 +63,14 @@ public partial class TechnicianMaintenanceViewModel
         });
     }
 
+    [RelayCommand]
+    private async Task OnAddTechnician()
+    {
+        _formService.ShowForm<AddTechnicianView>();
+
+        await LoadTechnicians();
+    }
+
     private async Task LoadTechnicians()
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>

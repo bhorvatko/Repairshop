@@ -1,32 +1,30 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using Repairshop.Client.Common.Interfaces;
-using Repairshop.Client.Common.Navigation;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 
 namespace Repairshop.Client.Features.WarrantManagement.Technicians;
 
 public partial class AddTechnicianViewModel
-    : ViewModelBase
+    : ObservableObject, IFormViewModel
 {
     private readonly ITechnicianService _technicianService;
-    private readonly ILoadingIndicatorService _loadingIndicatorService;
 
     public AddTechnicianViewModel(
-        ITechnicianService technicianService, 
-        ILoadingIndicatorService loadingIndicatorService)
+        ITechnicianService technicianService,
+        EditTechnicianViewModel editTechnicianViewModel)
     {
         _technicianService = technicianService;
-        _loadingIndicatorService = loadingIndicatorService;
+
+        EditTechnicianViewModel = editTechnicianViewModel;
     }
 
-    public string Name { get; set; } = string.Empty;
+    public EditTechnicianViewModel EditTechnicianViewModel { get; private set; }
 
-    [RelayCommand]
-    public async Task CreateTechnician()
-    {
-        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
-        {
-            await _technicianService.CreateTechnician(Name);
-        });
-    }
+    public string GetSubmitText() => "Kreiraj tehničara";
+
+    public Task SubmitForm() =>
+        _technicianService
+            .CreateTechnician(EditTechnicianViewModel.Name);
+
+    public bool ValidateForm() => EditTechnicianViewModel.Validate();
 }

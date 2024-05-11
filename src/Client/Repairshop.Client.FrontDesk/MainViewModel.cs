@@ -77,12 +77,6 @@ public partial class MainViewModel
     }
 
     [RelayCommand]
-    public void NavigateToAddTechnicianView()
-    {
-        _navigationService.NavigateToView<AddTechnicianView>();
-    }
-
-    [RelayCommand]
     public void NavigateToCreateWarrantTemplateView()
     {
         _navigationService.NavigateToView<CreateWarrantTemplateView>();

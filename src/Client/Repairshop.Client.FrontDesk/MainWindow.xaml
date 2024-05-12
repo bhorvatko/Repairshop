@@ -1,49 +1,63 @@
 ﻿<nav:MainView x:Class="Repairshop.Client.FrontDesk.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:local="clr-namespace:Repairshop.Client.FrontDesk"
-        xmlns:nav="clr-namespace:Repairshop.Client.Infrastructure.Navigation;assembly=Repairshop.Client.Infrastructure"
-        xmlns:userNotifications="clr-namespace:Repairshop.Client.Infrastructure.UserNotifications;assembly=Repairshop.Client.Infrastructure"
-        mc:Ignorable="d"
-        Title="Repairshop" Height="1024" Width="1280"
-        d:DataContext="{d:DesignInstance Type=local:MainViewModel}">
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+              xmlns:local="clr-namespace:Repairshop.Client.FrontDesk"
+              xmlns:nav="clr-namespace:Repairshop.Client.Infrastructure.Navigation;assembly=Repairshop.Client.Infrastructure"
+              xmlns:userNotifications="clr-namespace:Repairshop.Client.Infrastructure.UserNotifications;assembly=Repairshop.Client.Infrastructure"
+              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+              mc:Ignorable="d"
+              Title="Repairshop"
+              Height="1024"
+              Width="1280"
+              d:DataContext="{d:DesignInstance Type=local:MainViewModel}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding NavigateToDashboardCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
+
     <Grid>
 
-        <DockPanel>
+        <md:DrawerHost IsLeftDrawerOpen="{Binding SideMenuOpen}"
+                       OpenMode="Modal">
 
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="Glavni ekran" 
-                          Command="{Binding NavigateToDashboardCommand}" />
-                <MenuItem Header="Novi nalog"
-                          Command="{Binding NavigateToCreateWarrantViewCommand}" />
-                <MenuItem Header="Upravljanje">
-                    <MenuItem Header="Procedure" 
-                              Command="{Binding NavigateToProceduresViewCommand}"/>
-                    <MenuItem Header="Tehničari"
-                              Command="{Binding NavigateToTechnicianMaintenanceViewCommand}">
-                    </MenuItem>
-                    <MenuItem Header="Šablone">
-                        <MenuItem Header="Dodaj..."
-                                  Command="{Binding NavigateToCreateWarrantTemplateViewCommand}" />
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
+            <md:DrawerHost.LeftDrawerContent>
+                <ListBox ItemsSource="{Binding NavigationItems}"
+                         Style="{StaticResource MaterialDesignNavigationPrimaryListBox}"
+                         SelectedItem="{Binding SelectedNavigationItem}">
+                    <ListBox.Resources>
+                        <Style TargetType="ScrollBar"
+                               BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
+                    </ListBox.Resources>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:NavigationItem}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </md:DrawerHost.LeftDrawerContent>
+            
+            
+            <DockPanel>
 
-            <ContentControl x:Name="contentControl" />
+                <md:ColorZone DockPanel.Dock="Top"
+                              HorizontalContentAlignment="Left"
+                              Mode="PrimaryDark">
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                  IsChecked="{Binding SideMenuOpen}" />
+                </md:ColorZone>
 
-        </DockPanel>
+                <ContentControl x:Name="contentControl" />
 
-        <userNotifications:ToastNotificationContainer DataContext="{Binding ToastNotificationContainerViewModel}" 
+            </DockPanel>
+
+        </md:DrawerHost>
+
+        <userNotifications:ToastNotificationContainer DataContext="{Binding ToastNotificationContainerViewModel}"
                                                       Panel.ZIndex="500"
                                                       VerticalAlignment="Bottom"
                                                       HorizontalAlignment="Right"
@@ -53,7 +67,8 @@
               Visibility="{Binding LoadingIndicatorVisibility}">
 
             <Grid.Background>
-                <SolidColorBrush Color="White" Opacity=".5" />
+                <SolidColorBrush Color="White"
+                                 Opacity=".5" />
             </Grid.Background>
 
             <Label Content="{Binding LoadingIndicatorText}"
@@ -62,6 +77,6 @@
                    FontSize="30" />
 
         </Grid>
-        
+
     </Grid>
 </nav:MainView>

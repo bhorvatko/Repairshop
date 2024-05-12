@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Configuration;
+using Repairshop.Client.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
@@ -11,6 +13,7 @@ public partial class DashboardViewModel
 {
     private readonly TechnicianDashboardViewModelFactory _technicianDashboardViewModelFactory;
     private readonly IUserSettingsProvider<WarrantManagementConfiguration> _userSettingsProvider;
+    private readonly IFormService _formService;
 
     [ObservableProperty]
     private ProcedureLegendViewModel _procedureLegendViewModel;
@@ -21,10 +24,12 @@ public partial class DashboardViewModel
     public DashboardViewModel(
         TechnicianDashboardViewModelFactory technicianDashboardViewModelFactory,
         IUserSettingsProvider<WarrantManagementConfiguration> userSettingsProvider,
-        ProcedureLegendViewModel procedureLegendViewModel)
+        ProcedureLegendViewModel procedureLegendViewModel,
+        IFormService formService)
     {
         _technicianDashboardViewModelFactory = technicianDashboardViewModelFactory;
         _userSettingsProvider = userSettingsProvider;
+        _formService = formService;
 
         ProcedureLegendViewModel = procedureLegendViewModel;
     }
@@ -88,5 +93,11 @@ public partial class DashboardViewModel
         {
             technicianDashboardViewModel.Dispose();
         }
+    }
+
+    [RelayCommand]
+    private void OnAddWarrant()
+    {
+        _formService.ShowForm<CreateWarrantView>();
     }
 }

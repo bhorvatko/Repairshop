@@ -22,7 +22,6 @@ public partial class MainViewModel
     private const string _serverDownText = "Server je trenutačno nedostupan...";
 
     private readonly INavigationService _navigationService;
-    private readonly IFormService _formService;
 
     private IDisposable _serverAvailabilitySubscription;
 
@@ -36,19 +35,24 @@ public partial class MainViewModel
     [NotifyPropertyChangedFor(nameof(LoadingIndicatorText))]
     private bool _serverDown;
 
+    [ObservableProperty]
+    private bool _sideMenuOpen;
+
+    private NavigationItem _selectedNavigationItem;
+
     public MainViewModel(
         INavigationService navigationService,
-        IFormService formService,
         ToastNotificationContainerViewModel toastNotificationContainerViewModel,
         IServerAvailabilityProvider serverAvailabilityProvider)
     {
         _navigationService = navigationService;
-        _formService = formService;
        
         ToastNotificationContainerViewModel = toastNotificationContainerViewModel;
 
         _serverAvailabilitySubscription = 
             serverAvailabilityProvider.SubscribeToServerAvailability(OnServerAvailabilityChanged);
+    
+        _selectedNavigationItem = NavigationItems.First();
     }
 
     public ToastNotificationContainerViewModel ToastNotificationContainerViewModel { get; private set; }
@@ -58,31 +62,42 @@ public partial class MainViewModel
 
     public override Visibility LoadingIndicatorVisibility => (Loading || ServerDown).ToVisibility();
 
+    public IEnumerable<NavigationItem> NavigationItems => new List<NavigationItem>
+    {
+        new NavigationItem("Nalozi", NavigateToDashboard),
+        new NavigationItem("Procedure", NavigateToProceduresView),
+        new NavigationItem("Tehničari", NavigateToTechnicianMaintenanceView),
+        new NavigationItem("Predlošci naloga", NavigateToCreateWarrantTemplateView)
+    };
+
+    public NavigationItem SelectedNavigationItem
+    {
+        get => _selectedNavigationItem;
+        set
+        {
+            _selectedNavigationItem = value;
+            value.NavigationAction.Invoke();
+
+            SideMenuOpen = false;
+        }
+    }
+
     [RelayCommand]
     public void NavigateToDashboard()
     {
         _navigationService.NavigateToView<DashboardView>();
     }
 
-    [RelayCommand]
     public void NavigateToProceduresView()
     {
         _navigationService.NavigateToView<ProceduresView>();
     }
 
-    [RelayCommand]
-    public void NavigateToCreateWarrantView()
-    {
-        _formService.ShowForm<CreateWarrantView>();
-    }
-
-    [RelayCommand]
     public void NavigateToCreateWarrantTemplateView()
     {
         _navigationService.NavigateToView<CreateWarrantTemplateView>();
     }
 
-    [RelayCommand]
     public void NavigateToTechnicianMaintenanceView()
     {
         _navigationService.NavigateToView<TechnicianMaintenanceView>();

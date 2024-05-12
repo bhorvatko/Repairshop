@@ -13,6 +13,8 @@ public abstract class MainView
         IMainViewModel viewModel)
     {
         DataContext = viewModel;
+
+        Style = Application.Current.Resources["MaterialDesignWindow"] as Style;
     }
 
     public abstract ContentControl MainContentControl { get; }

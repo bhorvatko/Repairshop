@@ -7,6 +7,7 @@
             xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard"
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:nav="clr-namespace:Repairshop.Client.Common.Navigation;assembly=Repairshop.Client.Common"
+            xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800"
             d:DataContext="{d:DesignInstance Type=local:DashboardViewModel}">
@@ -38,8 +39,18 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <local:ProcedureLegend Grid.Column="1" 
-                               DataContext="{Binding ProcedureLegendViewModel}" />
+        <DockPanel LastChildFill="True"
+                   Grid.Column="1">
+
+            <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                    Command="{Binding AddWarrantCommand}"
+                    DockPanel.Dock="Bottom"
+                    Margin="15">
+                <md:PackIcon Kind="Add" />
+            </Button>
+
+            <local:ProcedureLegend DataContext="{Binding ProcedureLegendViewModel}" />
+        </DockPanel>
 
     </Grid>
 </nav:ViewBase>

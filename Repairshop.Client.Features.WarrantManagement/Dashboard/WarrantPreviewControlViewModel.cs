@@ -39,7 +39,7 @@ public partial class WarrantPreviewControlViewModel
     public bool PlayUpdateAnimation { get; set; }
 
     public string DeadlineDescription =>
-        Warrant.IsUrgent ? "Hitni nalog" : Warrant.Deadline.ToString();
+        Warrant.IsUrgent ? "Hitni nalog" : Warrant.Deadline.ToString("dd.MM HH:mm");
 
     public string LabelContent => 
         _animationClock.State ? Warrant.Title : DeadlineDescription;

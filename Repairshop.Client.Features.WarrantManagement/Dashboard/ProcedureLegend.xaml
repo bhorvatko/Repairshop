@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:ProcedureLegendViewModel}">
@@ -24,12 +25,14 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"
-                               Background="{Binding BackgroundColorBrush}"
-                               Foreground="{Binding ForegroundColorBrush}"
-                               FontSize="15" 
-                               Padding="10" 
-                               Margin="5"/>
+                    <md:Card Background="{Binding BackgroundColorBrush}"
+                             Margin="5">
+                        <TextBlock Text="{Binding Name}"
+                                   Foreground="{Binding ForegroundColorBrush}"
+                                   FontSize="15"
+                                   Padding="10"
+                                   Margin="5" />
+                    </md:Card>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             

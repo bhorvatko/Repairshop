@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"             
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:WarrantFilterSelectionViewModel}">
@@ -22,27 +23,31 @@
                   HorizontalContentAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="{Binding Procedure.BackgroundColorBrush}"
-                          Margin="5">
-                        
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" 
-                               Content="{Binding Procedure.Name}"
-                               Foreground="{Binding Procedure.ForegroundColorBrush}" 
-                               FontSize="15"
-                               Padding="10"/>
+                    <md:Card Background="{Binding Procedure.BackgroundColorBrush}"
+                             Margin="5">
+                        <Grid>
 
-                        <ToggleButton Grid.Column="1"
-                                      IsChecked="{Binding Selected}"
-                                      VerticalAlignment="Center"
-                                      Style="{DynamicResource MaterialDesignSwitchToggleButton}" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                   Content="{Binding Procedure.Name}"
+                                   Foreground="{Binding Procedure.ForegroundColorBrush}"
+                                   FontSize="15"
+                                   Padding="10" />
+
+                            <ToggleButton Grid.Column="1"
+                                          IsChecked="{Binding Selected}"
+                                          VerticalAlignment="Center"
+                                          Style="{DynamicResource MaterialDesignSwitchToggleButton}"/>
 
 
-                    </Grid>
+                        </Grid>
+
+                    </md:Card>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

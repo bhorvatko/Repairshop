@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"  
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Dashboard"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
@@ -28,69 +28,71 @@
         </Style>
 
     </UserControl.Resources>
-    
-    <Grid Background="{Binding Warrant.Procedure.BackgroundColorBrush}">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        
-        <Grid.Style>
-            <Style TargetType="{x:Type Grid}">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding PlayUpdateAnimation}"
-                                 Value="True">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard Name="flash" 
-                                             Storyboard="{StaticResource flashAnimation}" />
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <StopStoryboard BeginStoryboardName="flash" />
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
+    <md:Card Background="{Binding Warrant.Procedure.BackgroundColorBrush}">
 
-        <TextBlock Grid.Column="0"
-                   Text="{Binding LabelContent}"
-                   Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"
-                   FontSize="20"
-                   Padding="10">
+        <Grid>
 
-            <TextBlock.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick"
-                              Command="{Binding UpdateWarrantCommand}" />
-            </TextBlock.InputBindings>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding PlayUpdateAnimation}"
+                                     Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard Name="flash"
+                                                 Storyboard="{StaticResource flashAnimation}" />
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <StopStoryboard BeginStoryboardName="flash" />
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock Grid.Column="0"
+                       Text="{Binding LabelContent}"
+                       Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"
+                       FontSize="20"
+                       Padding="10">
+
+                <TextBlock.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding UpdateWarrantCommand}" />
+                </TextBlock.InputBindings>
             
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding UpdateWarrantCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-        </TextBlock>
+            </TextBlock>
 
-        <Button Grid.Column="1"
-                Visibility="{Binding Warrant.CanBeRolledBackVisibility}"
-                Command="{Binding RollbackWarrantCommand}">
+            <Button Grid.Column="1"
+                    Visibility="{Binding Warrant.CanBeRolledBackVisibility}"
+                    Command="{Binding RollbackWarrantCommand}">
 
-            <materialDesign:PackIcon
-                Kind="ChevronLeft"
-                Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
-            
-        </Button>
+                <md:PackIcon Kind="ChevronLeft"
+                             Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
 
-        <Button Grid.Column="2"
-                Visibility="{Binding Warrant.CanBeAdvancedVisibility}"
-                Command="{Binding AdvanceWarrantCommand}">
-            
-            <materialDesign:PackIcon 
-                Kind="ChevronRight" 
-                Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"/>
-            
-        </Button>
+            </Button>
 
-    </Grid>
+            <Button Grid.Column="2"
+                    Visibility="{Binding Warrant.CanBeAdvancedVisibility}"
+                    Command="{Binding AdvanceWarrantCommand}">
+
+                <md:PackIcon Kind="ChevronRight"
+                             Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
+
+            </Button>
+
+        </Grid>
+    </md:Card>
+    
 </UserControl>

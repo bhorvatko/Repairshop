@@ -56,6 +56,9 @@ internal class ApiClient
 
     public async Task<TResponse> Get<TResponse>(string resource)
     {
+        // Simulate delay
+        await Task.Delay(2000);
+
         RestRequest restRequest = CreateRequest(resource);
 
         TResponse? response = await _restClient.GetAsync<TResponse>(restRequest);
@@ -76,6 +79,9 @@ internal class ApiClient
         TRequest request)
         where TRequest : class
     {
+        // Simulate delay
+        await Task.Delay(2000);
+
         RestRequest restRequest =
             CreateRequest(resource).AddJsonBody(request);
 
@@ -91,6 +97,9 @@ internal class ApiClient
 
     public async Task<TResponse> Put<TResponse>(string resource)
     {
+        // Simulate delay
+        await Task.Delay(2000);
+
         RestRequest restRequest =
             CreateRequest(resource);
 
@@ -106,6 +115,9 @@ internal class ApiClient
 
     public async Task Delete(string resource)
     {
+        // Simulate delay
+        await Task.Delay(2000);
+
         RestRequest restRequest =
             CreateRequest(resource);
 

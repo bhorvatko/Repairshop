@@ -40,8 +40,8 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </md:DrawerHost.LeftDrawerContent>
-            
-            
+
+
             <DockPanel>
 
                 <md:ColorZone DockPanel.Dock="Top"
@@ -71,10 +71,18 @@
                                  Opacity=".5" />
             </Grid.Background>
 
-            <Label Content="{Binding LoadingIndicatorText}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontSize="30" />
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             IsIndeterminate="True"
+                             Height="100"
+                             Width="100" />
+
+                <Label Content="{Binding LoadingIndicatorText}"
+                       FontSize="25" 
+                       Margin="20"/>
+            </StackPanel>
 
         </Grid>
 

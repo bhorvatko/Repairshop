@@ -2,9 +2,11 @@
 
 public interface IFormService
 {
-    void ShowForm<TForm>() where TForm : FormBase;
+    void ShowFormAsDialog<TForm>() where TForm : FormBase;
 
-    void ShowForm<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
+    void ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
         where TForm : FormBase
         where TViewModel : IFormViewModel;
+
+    void ShowForm<TForm>() where TForm : FormBase;
 }

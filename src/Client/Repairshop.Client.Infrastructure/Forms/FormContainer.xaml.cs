@@ -2,13 +2,15 @@
 using Repairshop.Client.Common.Forms;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+
 
 namespace Repairshop.Client.Infrastructure.Forms;
 /// <summary>
 /// Interaction logic for FormContainer.xaml
 /// </summary>
 public partial class FormContainer 
-    : Window, INotifyPropertyChanged
+    : UserControl, INotifyPropertyChanged
 {
     private IFormViewModel? _viewModel;
 
@@ -17,24 +19,30 @@ public partial class FormContainer
         InitializeComponent();
     }
 
-    public string SubmitText => 
+    public bool SubmissionInProgress { get; private set; }
+    public bool EnableForm => !SubmissionInProgress;
+    public Visibility ProgressBarVisibility => SubmissionInProgress.ToVisibility();
+
+    public string SubmitText =>
         _viewModel?.GetSubmitText() ?? string.Empty;
 
-    public bool SubmissionInProgress { get; private set; }
-    public Visibility ProgressBarVisibility => SubmissionInProgress.ToVisibility();
-    public bool EnableForm => !SubmissionInProgress;
+    public FormBase? FormContent
+    {
+        get => (FormBase)FormContentControl.Content;
+        set
+        {
+            FormContentControl.Content = value;
+
+            _viewModel = value?.ViewModel;
+
+            PropertyChanged?.Invoke(this, new(nameof(SubmitText)));
+            PropertyChanged?.Invoke(this, new(nameof(FormContent)));
+        }
+    }
+
+    public Action? OnSubmissionFinished { get; set; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    public void ShowWithContent(FormBase formContent)
-    {
-        FormContentControl.Content = formContent;
-        _viewModel = formContent.ViewModel;
-
-        PropertyChanged?.Invoke(this, new(nameof(SubmitText)));
-
-        ShowDialog();
-    }
 
     private async void Submit(object sender, RoutedEventArgs e)
     {
@@ -46,7 +54,7 @@ public partial class FormContainer
 
         SetSubmissionInProgress(false);
 
-        Close();
+        OnSubmissionFinished?.Invoke();
     }
 
     private void SetSubmissionInProgress(bool value)

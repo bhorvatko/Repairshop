@@ -13,10 +13,15 @@ internal class FormService
         _serviceProvider = serviceProvider;
     }
 
-    public void ShowForm<TForm>()
+    public void ShowForm<TForm>() where TForm : FormBase
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ShowFormAsDialog<TForm>()
         where TForm : FormBase
     {
-        FormContainer formContainer = new FormContainer();
+        FormDialog formContainer = new FormDialog();
 
         FormBase form =
             _serviceProvider.GetRequiredService<TForm>();
@@ -24,11 +29,11 @@ internal class FormService
         formContainer.ShowWithContent(form);
     }
 
-    public void ShowForm<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
+    public void ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
         where TForm : FormBase
         where TViewModel : IFormViewModel
     {
-        FormContainer formContainer = new FormContainer();
+        FormDialog formContainer = new FormDialog();
 
         FormBase form =
             _serviceProvider.GetRequiredService<TForm>();

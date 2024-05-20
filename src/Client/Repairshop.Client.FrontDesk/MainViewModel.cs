@@ -77,8 +77,6 @@ public partial class MainViewModel
         {
             _selectedNavigationItem = value;
             value.NavigationAction.Invoke();
-
-            SideMenuOpen = false;
         }
     }
 

@@ -22,40 +22,44 @@
 
     <Grid>
 
-        <md:DrawerHost IsLeftDrawerOpen="{Binding SideMenuOpen}"
-                       OpenMode="Modal">
+        <DockPanel LastChildFill="True">
 
-            <md:DrawerHost.LeftDrawerContent>
-                <ListBox ItemsSource="{Binding NavigationItems}"
-                         Style="{StaticResource MaterialDesignNavigationPrimaryListBox}"
-                         SelectedItem="{Binding SelectedNavigationItem}">
-                    <ListBox.Resources>
-                        <Style TargetType="ScrollBar"
-                               BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
-                    </ListBox.Resources>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:NavigationItem}">
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </md:DrawerHost.LeftDrawerContent>
+            <md:ColorZone DockPanel.Dock="Top"
+                          HorizontalContentAlignment="Left"
+                          Mode="PrimaryDark">
+                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                              IsChecked="{Binding SideMenuOpen}" />
+            </md:ColorZone>
 
+            <md:DrawerHost IsLeftDrawerOpen="{Binding SideMenuOpen}"
+                           OpenMode="Standard"
+                           DockPanel.Dock="Bottom">
 
-            <DockPanel>
+                <md:DrawerHost.LeftDrawerContent>
+                    <Border BorderThickness="0, 0, 1, 0"
+                            BorderBrush="LightGray">
+                        <ListBox ItemsSource="{Binding NavigationItems}"
+                                 Style="{StaticResource MaterialDesignNavigationPrimaryListBox}"
+                                 SelectedItem="{Binding SelectedNavigationItem}"
+                                 MinWidth="256">
+                            <ListBox.Resources>
+                                <Style TargetType="ScrollBar"
+                                       BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
+                            </ListBox.Resources>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type local:NavigationItem}">
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </md:DrawerHost.LeftDrawerContent>
 
-                <md:ColorZone DockPanel.Dock="Top"
-                              HorizontalContentAlignment="Left"
-                              Mode="PrimaryDark">
-                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                                  IsChecked="{Binding SideMenuOpen}" />
-                </md:ColorZone>
+                <ContentControl x:Name="contentControl"
+                                Margin="32, 0, 32, 0" />
 
-                <ContentControl x:Name="contentControl" />
-
-            </DockPanel>
-
-        </md:DrawerHost>
+            </md:DrawerHost>
+        </DockPanel>
 
         <userNotifications:ToastNotificationContainer DataContext="{Binding ToastNotificationContainerViewModel}"
                                                       Panel.ZIndex="500"
@@ -80,8 +84,8 @@
                              Width="100" />
 
                 <Label Content="{Binding LoadingIndicatorText}"
-                       FontSize="25" 
-                       Margin="20"/>
+                       FontSize="25"
+                       Margin="20" />
             </StackPanel>
 
         </Grid>

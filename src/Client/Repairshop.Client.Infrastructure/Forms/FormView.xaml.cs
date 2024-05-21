@@ -13,8 +13,6 @@ public partial class FormView : UserControl, IViewBase
     {
         InitializeComponent();
 
-        FormContainer.FormContent = formContent;
-
-        FormContainer.OnSubmissionFinished = onSubmissionFinished;
+        Content = new FormContainer(formContent, onSubmissionFinished);
     }
 }

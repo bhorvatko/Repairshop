@@ -23,7 +23,7 @@ public partial class UpdateTechnicianViewModel
 
     public EditTechnicianViewModel EditTechnicianViewModel { get; private set; }
 
-    public string GetSubmitText() => "Ažuriraj tehničara";
+    public string GetSubmitText() => "AŽURIRAJ TEHNIČARA";
 
     public Task SubmitForm() =>
         _technicianService

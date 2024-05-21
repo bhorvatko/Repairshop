@@ -37,7 +37,7 @@ public partial class TechnicianMaintenanceViewModel
     [RelayCommand]
     private async Task OnEditTechnician(TechnicianViewModel technician)
     {
-        _formService.ShowFormAsDialog<UpdateTechnicianView, UpdateTechnicianViewModel>(viewModel =>
+        await _formService.ShowFormAsDialog<UpdateTechnicianView, UpdateTechnicianViewModel>(viewModel =>
         {
             viewModel.TechnicianId = technician.Id!.Value;
             viewModel.EditTechnicianViewModel.Name = technician.Name;
@@ -66,7 +66,7 @@ public partial class TechnicianMaintenanceViewModel
     [RelayCommand]
     private async Task OnAddTechnician()
     {
-        _formService.ShowFormAsDialog<AddTechnicianView>();
+        await _formService.ShowFormAsDialog<AddTechnicianView>();
 
         await LoadTechnicians();
     }

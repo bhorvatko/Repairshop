@@ -22,44 +22,48 @@
 
     <Grid>
 
-        <DockPanel LastChildFill="True">
+        <md:DialogHost>
+            <DockPanel LastChildFill="True">
 
-            <md:ColorZone DockPanel.Dock="Top"
-                          HorizontalContentAlignment="Left"
-                          Mode="PrimaryDark">
-                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
-                              IsChecked="{Binding SideMenuOpen}" />
-            </md:ColorZone>
 
-            <md:DrawerHost IsLeftDrawerOpen="{Binding SideMenuOpen}"
-                           OpenMode="Standard"
-                           DockPanel.Dock="Bottom">
+                <md:ColorZone DockPanel.Dock="Top"
+                              HorizontalContentAlignment="Left"
+                              Mode="PrimaryDark">
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                  IsChecked="{Binding SideMenuOpen}" />
+                </md:ColorZone>
 
-                <md:DrawerHost.LeftDrawerContent>
-                    <Border BorderThickness="0, 0, 1, 0"
-                            BorderBrush="LightGray">
-                        <ListBox ItemsSource="{Binding NavigationItems}"
-                                 Style="{StaticResource MaterialDesignNavigationPrimaryListBox}"
-                                 SelectedItem="{Binding SelectedNavigationItem}"
-                                 MinWidth="256">
-                            <ListBox.Resources>
-                                <Style TargetType="ScrollBar"
-                                       BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
-                            </ListBox.Resources>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type local:NavigationItem}">
-                                    <TextBlock Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Border>
-                </md:DrawerHost.LeftDrawerContent>
+                <md:DrawerHost IsLeftDrawerOpen="{Binding SideMenuOpen}"
+                               OpenMode="Standard"
+                               DockPanel.Dock="Bottom">
 
-                <ContentControl x:Name="contentControl"
-                                Margin="32, 0, 32, 32" />
+                    <md:DrawerHost.LeftDrawerContent>
+                        <Border BorderThickness="0, 0, 1, 0"
+                                BorderBrush="LightGray">
+                            <ListBox ItemsSource="{Binding NavigationItems}"
+                                     Style="{StaticResource MaterialDesignNavigationPrimaryListBox}"
+                                     SelectedItem="{Binding SelectedNavigationItem}"
+                                     MinWidth="256">
+                                <ListBox.Resources>
+                                    <Style TargetType="ScrollBar"
+                                           BasedOn="{StaticResource MaterialDesignScrollBarMinimal}" />
+                                </ListBox.Resources>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type local:NavigationItem}">
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Border>
+                    </md:DrawerHost.LeftDrawerContent>
 
-            </md:DrawerHost>
-        </DockPanel>
+                    <ContentControl x:Name="contentControl"
+                                    Margin="32, 0, 32, 32" />
+
+                </md:DrawerHost>
+
+            </DockPanel>
+        </md:DialogHost>
 
         <userNotifications:ToastNotificationContainer DataContext="{Binding ToastNotificationContainerViewModel}"
                                                       Panel.ZIndex="500"

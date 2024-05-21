@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 
@@ -29,28 +30,31 @@ internal class FormService
         _navigationService.NavigateToView<FormView>(formView);
     }
 
-    public void ShowFormAsDialog<TForm>()
+    public async Task ShowFormAsDialog<TForm>()
         where TForm : FormBase
     {
-        FormDialog formContainer = new FormDialog();
-
         FormBase form =
             _serviceProvider.GetRequiredService<TForm>();
 
-        formContainer.ShowWithContent(form);
+        FormContainer formContainer =
+            new FormContainer(form, () => DialogHost.Close(null));
+
+        await DialogHost.Show(formContainer);
     }
 
-    public void ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
+    public async Task ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
         where TForm : FormBase
         where TViewModel : IFormViewModel
     {
-        FormDialog formContainer = new FormDialog();
 
         FormBase form =
             _serviceProvider.GetRequiredService<TForm>();
 
         viewModelConfig((TViewModel)form.DataContext);
 
-        formContainer.ShowWithContent(form);
+        FormContainer formContainer = 
+            new FormContainer(form, () => DialogHost.Close(null));
+
+        await DialogHost.Show(formContainer);
     }
 }

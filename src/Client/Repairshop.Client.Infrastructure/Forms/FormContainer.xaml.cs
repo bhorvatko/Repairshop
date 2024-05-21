@@ -14,9 +14,12 @@ public partial class FormContainer
 {
     private IFormViewModel? _viewModel;
 
-    public FormContainer()
+    public FormContainer(FormBase form, Action onSubmissionFinished)
     {
         InitializeComponent();
+
+        FormContent = form;
+        OnSubmissionFinished = onSubmissionFinished;
     }
 
     public bool SubmissionInProgress { get; private set; }
@@ -63,5 +66,10 @@ public partial class FormContainer
         PropertyChanged?.Invoke(this, new(nameof(SubmissionInProgress)));
         PropertyChanged?.Invoke(this, new(nameof(ProgressBarVisibility)));
         PropertyChanged?.Invoke(this, new(nameof(EnableForm)));
+    }
+
+    private void Close(object sender, RoutedEventArgs e)
+    {
+        OnSubmissionFinished?.Invoke();
     }
 }

@@ -8,4 +8,6 @@ public interface INavigationService
 
     void NavigateToView<TView, TViewModel>(Action<TViewModel> viewModelConfig)
         where TView : ViewBase<TViewModel>;
+
+    void NavigateToView<TView>(TView view);
 }

@@ -35,7 +35,7 @@ internal class NavigationService
         NavigateToView(view);
     }
 
-    private void NavigateToView<TView>(TView view)
+    public void NavigateToView<TView>(TView view)
     {
         IViewBase? currentView = _mainView().MainContentControl?.Content as IViewBase;
         IViewModel? currentViewModel = currentView?.DataContext as IViewModel;

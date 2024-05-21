@@ -56,7 +56,7 @@
                 </md:DrawerHost.LeftDrawerContent>
 
                 <ContentControl x:Name="contentControl"
-                                Margin="32, 0, 32, 0" />
+                                Margin="32, 0, 32, 32" />
 
             </md:DrawerHost>
         </DockPanel>

@@ -76,13 +76,13 @@
                    LastChildFill="True">
             
             <Button DockPanel.Dock="Right" 
-                    Content="Primjeni šablonu"
+                    Content="PREDLOŠCI"
                     Padding="5"
                     Style="{DynamicResource MaterialDesignRaisedDarkButton}"
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.ApplyWarrantTemplateCommand}" />
 
             <Button DockPanel.Dock="Right" 
-                    Content="Uredi" 
+                    Content="UREDI" 
                     Margin="0, 0, 5, 0"
                     Padding="5"
                     Style="{DynamicResource MaterialDesignRaisedDarkButton}"

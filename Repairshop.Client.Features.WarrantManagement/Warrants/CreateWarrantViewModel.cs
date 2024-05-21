@@ -47,7 +47,7 @@ public partial class CreateWarrantViewModel
         await _toastNotificationService.ShowSuccess("Nalog uspješno kreiran!");
     }
 
-    public string GetSubmitText() => "Kreiraj nalog";
+    public string GetSubmitText() => "KREIRAJ NALOG";
 
     public Task SubmitForm() => CreateWarrant();
 

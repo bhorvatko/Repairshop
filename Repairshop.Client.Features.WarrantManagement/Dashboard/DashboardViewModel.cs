@@ -98,6 +98,6 @@ public partial class DashboardViewModel
     [RelayCommand]
     private void OnAddWarrant()
     {
-        _formService.ShowFormAsDialog<CreateWarrantView>();
+        _formService.ShowForm<CreateWarrantView>();
     }
 }

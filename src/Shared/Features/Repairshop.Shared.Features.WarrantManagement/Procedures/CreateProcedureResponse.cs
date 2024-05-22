@@ -2,4 +2,5 @@
 
 public class CreateProcedureResponse
 {
+    public required Guid Id { get; set; }
 }

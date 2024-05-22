@@ -49,6 +49,8 @@ public class ProcedureSummaryViewModel
             id);
     }
 
+    public void SetId(Guid id) => Id = id;
+
     private Color GetForegroundColor() =>
         new[] { (int)BackgroundColor.R, (int)BackgroundColor.G, (int)BackgroundColor.B }.Average() > 255 / 2
             ? Color.FromRgb(0, 0, 0)

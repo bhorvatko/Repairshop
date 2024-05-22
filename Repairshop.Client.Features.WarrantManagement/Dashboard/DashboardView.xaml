@@ -45,7 +45,8 @@
             <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                     Command="{Binding AddWarrantCommand}"
                     DockPanel.Dock="Bottom"
-                    Margin="15">
+                    Margin="15"
+                    Visibility="{Binding AddWarrantButtonVisibility}">
                 <md:PackIcon Kind="Add" />
             </Button>
 

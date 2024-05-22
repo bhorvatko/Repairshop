@@ -49,9 +49,11 @@ public partial class ProceduresViewModel
         {
             ProcedureViewModel newProcedure = ProcedureViewModel.CreateNew();
 
-            await _procedureService.CreateProcedure(
+            Guid newProcedureId = await _procedureService.CreateProcedure(
                 newProcedure.Name,
                 ColorToRgb(newProcedure.BackgroundColor));
+
+            newProcedure.SetId(newProcedureId);
 
             Procedures = Procedures.Concat(new[] { newProcedure }).ToList();
         });

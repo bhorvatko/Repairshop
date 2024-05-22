@@ -23,6 +23,9 @@ internal class CreateProcedureRequestHandler
 
         await _procedures.AddAsync(procedure, cancellationToken);
 
-        return new CreateProcedureResponse();
+        return new CreateProcedureResponse()
+        {
+            Id = procedure.Id
+        };
     }
 }

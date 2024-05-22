@@ -1,10 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Repairshop.Client.Common.ClientContext;
+using Repairshop.Client.Common.Extensions;
 using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Configuration;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
+using Repairshop.Shared.Common.ClientContext;
+using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Dashboard;
 
@@ -14,7 +18,7 @@ public partial class DashboardViewModel
     private readonly TechnicianDashboardViewModelFactory _technicianDashboardViewModelFactory;
     private readonly IUserSettingsProvider<WarrantManagementConfiguration> _userSettingsProvider;
     private readonly IFormService _formService;
-
+    private readonly IClientContextProvider _clientContextProvider;
     [ObservableProperty]
     private ProcedureLegendViewModel _procedureLegendViewModel;
 
@@ -25,11 +29,13 @@ public partial class DashboardViewModel
         TechnicianDashboardViewModelFactory technicianDashboardViewModelFactory,
         IUserSettingsProvider<WarrantManagementConfiguration> userSettingsProvider,
         ProcedureLegendViewModel procedureLegendViewModel,
-        IFormService formService)
+        IFormService formService,
+        IClientContextProvider clientContextProvider)
     {
         _technicianDashboardViewModelFactory = technicianDashboardViewModelFactory;
         _userSettingsProvider = userSettingsProvider;
         _formService = formService;
+        _clientContextProvider = clientContextProvider;
 
         ProcedureLegendViewModel = procedureLegendViewModel;
     }
@@ -39,6 +45,9 @@ public partial class DashboardViewModel
         get => _technicianDashboards;
         set => SetTechnicianDashboards(value);
     }
+
+    public Visibility AddWarrantButtonVisibility => 
+        (_clientContextProvider.GetClientContext() == RepairshopClientContext.FrontOffice).ToVisibility();   
 
     [RelayCommand]
     public async Task LoadTechnicians()

@@ -31,6 +31,23 @@
 
     <md:Card Background="{Binding Warrant.Procedure.BackgroundColorBrush}">
 
+        <md:Card.Style>
+            <Style TargetType="{x:Type md:Card}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding PlayUpdateAnimation}"
+                                 Value="True">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard Name="flash"
+                                             Storyboard="{StaticResource flashAnimation}" />
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <StopStoryboard BeginStoryboardName="flash" />
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </md:Card.Style>
+
         <Grid>
 
             <Grid.ColumnDefinitions>
@@ -38,23 +55,6 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
-            <Grid.Style>
-                <Style TargetType="{x:Type Grid}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding PlayUpdateAnimation}"
-                                     Value="True">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard Name="flash"
-                                                 Storyboard="{StaticResource flashAnimation}" />
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <StopStoryboard BeginStoryboardName="flash" />
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
 
             <TextBlock Grid.Column="0"
                        Text="{Binding LabelContent}"

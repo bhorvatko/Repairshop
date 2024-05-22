@@ -2,7 +2,7 @@
 
 public interface IProcedureService
 {
-    Task CreateProcedure(string name, string color);
+    Task<Guid> CreateProcedure(string name, string color);
     Task<IEnumerable<ProcedureSummaryViewModel>> GetProcedureSummaries();
     Task<IReadOnlyCollection<ProcedureViewModel>> GetProcedures();
     Task UpdateProcedure(Guid id, string name, string color);

@@ -17,15 +17,18 @@ internal class ProcedureService
         _apiClient = apiClient;
     }
 
-    public async Task CreateProcedure(string name, string color)
+    public async Task<Guid> CreateProcedure(string name, string color)
     {
-        await _apiClient.Post<CreateProcedureRequest, CreateProcedureResponse>(
-            ProceduresEndpoint,
-            new CreateProcedureRequest()
-            {
-                Color = color,
-                Name = name
-            });
+        CreateProcedureResponse response = 
+            await _apiClient.Post<CreateProcedureRequest, CreateProcedureResponse>(
+                ProceduresEndpoint,
+                new CreateProcedureRequest()
+                {
+                    Color = color,
+                    Name = name
+                });
+
+        return response.Id;
     }
 
     public async Task<IEnumerable<ProcedureSummaryViewModel>> GetProcedureSummaries()

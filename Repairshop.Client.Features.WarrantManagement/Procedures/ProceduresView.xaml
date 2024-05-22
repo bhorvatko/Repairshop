@@ -136,7 +136,8 @@
                             Grid.ColumnSpan="2" 
                             Content="Spremi" 
                             Margin="5" 
-                            Command="{Binding SaveProcedureCommand}"/>
+                            Command="{Binding SaveProcedureCommand}"
+                            Style="{StaticResource MaterialDesignFlatButton}"/>
 
                 </Grid>
             </Grid>

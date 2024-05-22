@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Warrants"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -47,7 +47,7 @@
                 Grid.Column="0"
                 Margin="5"/>
 
-            <materialdesign:TimePicker 
+            <md:TimePicker 
                 SelectedTime="{Binding ElementName=editWarrantControl, Path=ViewModel.DeadlineTime}"
                 Grid.Column="1"
                 Margin="5"/>
@@ -71,21 +71,22 @@
                Content="Tok naloga" 
                VerticalAlignment="Center"/>
 
-        <DockPanel Grid.Row="3" Grid.Column="1"
+        <DockPanel Grid.Row="3"
+                   Grid.Column="1"
                    Margin="5"
                    LastChildFill="True">
-            
+
             <Button DockPanel.Dock="Right" 
                     Content="PREDLOŠCI"
                     Padding="5"
-                    Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.ApplyWarrantTemplateCommand}" />
 
             <Button DockPanel.Dock="Right" 
                     Content="UREDI" 
                     Margin="0, 0, 5, 0"
                     Padding="5"
-                    Style="{DynamicResource MaterialDesignRaisedDarkButton}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{Binding ElementName=editWarrantControl, Path=ViewModel.EditWarrantSequenceCommand}"/>
 
             

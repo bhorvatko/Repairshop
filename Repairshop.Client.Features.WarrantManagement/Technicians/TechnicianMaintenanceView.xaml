@@ -19,55 +19,65 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ItemsControl ItemsSource="{Binding Technicians}"
-                      Grid.IsSharedSizeScope="True"
-                      Grid.Row="0">
+        <DataGrid ItemsSource="{Binding Technicians}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserReorderColumns="False">
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ime"
+                                    Binding="{Binding Name}"
+                                    FontSize="16"
+                                    Width="*">
 
-                    <StackPanel>
-                        <Grid HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"
-                                                  SharedSizeGroup="nameColumn"
-                                                  MinWidth="200" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center"></Setter>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
 
-                            <Label Grid.Column="0"
-                                   Content="{Binding Name}"
-                                   FontSize="20" />
+                </DataGridTextColumn>
 
+                <DataGridTemplateColumn Header="Uredi">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <Button Grid.Column="1"
                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.EditTechnicianCommand}"
                                     CommandParameter="{Binding .}">
                                 <md:PackIcon Kind="Edit" />
                             </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
+                <DataGridTemplateColumn Header="Obriši">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <Button Grid.Column="2"
                                     Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteTechnicianCommand}"
                                     CommandParameter="{Binding .}">
                                 <md:PackIcon Kind="Delete" />
                             </Button>
-                        </Grid>
-                        <Separator Style="{DynamicResource MaterialDesignDarkSeparator}" />
-                    </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
+            </DataGrid.Columns>
 
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-
-        </ItemsControl>
+        </DataGrid>
 
         <Button Grid.Row="1"
                 Style="{DynamicResource MaterialDesignFloatingActionDarkButton}"

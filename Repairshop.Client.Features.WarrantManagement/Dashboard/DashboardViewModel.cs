@@ -105,8 +105,8 @@ public partial class DashboardViewModel
     }
 
     [RelayCommand]
-    private void OnAddWarrant()
+    private async Task OnAddWarrant()
     {
-        _formService.ShowFormAsDialog<CreateWarrantView>();
+        await _formService.ShowFormAsDialog<CreateWarrantView>();
     }
 }

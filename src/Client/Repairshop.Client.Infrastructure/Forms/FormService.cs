@@ -33,31 +33,32 @@ internal class FormService
         _navigationService.NavigateToView<FormView>(formView);
     }
 
-    public void ShowFormAsDialog<TForm>()
+    public Task ShowFormAsDialog<TForm>()
+        where TForm : FormBase =>
+        ShowFormAsDialogInternal<TForm>();
+
+    public Task ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
+        where TForm : FormBase
+        where TViewModel : IFormViewModel =>
+        ShowFormAsDialogInternal<TForm>(viewModel => viewModelConfig((TViewModel)viewModel));
+
+    private async Task ShowFormAsDialogInternal<TForm>(Action<object>? viewModelConfig = null)
         where TForm : FormBase
     {
         FormBase form =
             _serviceProvider.GetRequiredService<TForm>();
+
+        viewModelConfig?.Invoke(form.DataContext);
+
+        TaskCompletionSource taskCompletionSource = new TaskCompletionSource();
 
         FormContainer formContainer =
-            new FormContainer(form, () => _dialogHostManager.Close());
+            new FormContainer(form, () => taskCompletionSource.TrySetResult());
 
         _dialogHostManager.Show(formContainer);
-    }
 
-    public void ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
-        where TForm : FormBase
-        where TViewModel : IFormViewModel
-    {
+        await taskCompletionSource.Task;
 
-        FormBase form =
-            _serviceProvider.GetRequiredService<TForm>();
-
-        viewModelConfig((TViewModel)form.DataContext);
-
-        FormContainer formContainer = 
-            new FormContainer(form, () => _dialogHostManager.Close());
-
-        _dialogHostManager.Show(formContainer);
+        _dialogHostManager.Close();
     }
 }

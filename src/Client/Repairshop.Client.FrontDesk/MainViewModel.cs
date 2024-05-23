@@ -1,13 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.Extensions;
-using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.HealthChecks;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.Technicians;
-using Repairshop.Client.Features.WarrantManagement.Warrants;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 using Repairshop.Client.Infrastructure.Bootstrapping;
 using Repairshop.Client.Infrastructure.UserNotifications;
@@ -93,7 +91,7 @@ public partial class MainViewModel
 
     public void NavigateToCreateWarrantTemplateView()
     {
-        _navigationService.NavigateToView<CreateWarrantTemplateView>();
+        _navigationService.NavigateToView<WarrantTemplateMaintenanceView>();
     }
 
     public void NavigateToTechnicianMaintenanceView()

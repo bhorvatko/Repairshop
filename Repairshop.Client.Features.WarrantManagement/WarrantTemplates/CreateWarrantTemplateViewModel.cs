@@ -1,43 +1,40 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
-using Repairshop.Client.Common.Navigation;
-using Repairshop.Client.Features.WarrantManagement.Dashboard;
+using Repairshop.Client.Common.Validation;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
 public partial class CreateWarrantTemplateViewModel
-    : ViewModelBase
+    : ObservableValidator, IFormViewModel
 {
     private readonly IDialogService _dialogService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly IWarrantTemplateService _warrantTemplateService;
-    private readonly IMessageDialogService _messageDialogService;
-    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
+    [Required]
     public string _name = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(Procedures))]
+    [NotEmpty]
     public IEnumerable<WarrantStep> _steps =
         new List<WarrantStep>();
 
     public CreateWarrantTemplateViewModel(
         IDialogService dialogService,
         ILoadingIndicatorService loadingIndicatorService,
-        IWarrantTemplateService warrantTemplateService,
-        IMessageDialogService messageDialogService,
-        INavigationService navigationService)
+        IWarrantTemplateService warrantTemplateService)
     {
         _dialogService = dialogService;
         _loadingIndicatorService = loadingIndicatorService;
         _warrantTemplateService = warrantTemplateService;
-        _messageDialogService = messageDialogService;
-        _navigationService = navigationService;
     }
 
     public IEnumerable<ProcedureSummaryViewModel> Procedures =>
@@ -62,25 +59,29 @@ public partial class CreateWarrantTemplateViewModel
         }
     }
 
-    [RelayCommand]
-    public async Task CreateWarrantTemplate()
+    public async Task SubmitForm()
     {
-        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
-        {
-            await _warrantTemplateService.CreateWarrantTemplate(
-                Name,
-                Steps.Select(x => new CreateWarrantStepDto()
-                {
-                    CanBeTransitionedToByFrontDesk = x.CanBeTransitionedToByFrontDesk,
-                    CanBeTransitionedToByWorkshop = x.CanBeTransitionedToByWorkshop,
-                    ProcedureId = x.Procedure.Id!.Value
-                }));
+        await _loadingIndicatorService.ShowLoadingIndicatorForAction(CreateWarrantTemplate);
+    }
 
-            _messageDialogService.ShowMessage(
-                "Uspjeh!",
-                "Nova šablona uspješno kreirana!");
+    public string GetSubmitText() => "KREIRAJ PREDLOŽAK";
 
-            _navigationService.NavigateToView<DashboardView>();
-        });
+    public bool ValidateForm()
+    {
+        ValidateAllProperties();
+
+        return !HasErrors;
+    }
+
+    private async Task CreateWarrantTemplate()
+    {
+        await _warrantTemplateService.CreateWarrantTemplate(
+            Name,
+            Steps.Select(x => new CreateWarrantStepDto()
+            {
+                CanBeTransitionedToByFrontDesk = x.CanBeTransitionedToByFrontDesk,
+                CanBeTransitionedToByWorkshop = x.CanBeTransitionedToByWorkshop,
+                ProcedureId = x.Procedure.Id!.Value
+            }));
     }
 }

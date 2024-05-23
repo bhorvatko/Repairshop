@@ -1,17 +1,18 @@
-﻿<nav:ViewBase x:Class="Repairshop.Client.Features.WarrantManagement.Technicians.TechnicianMaintenanceView"
-              x:TypeArguments="local:TechnicianMaintenanceViewModel"
+﻿<nav:ViewBase x:Class="Repairshop.Client.Features.WarrantManagement.WarrantTemplates.WarrantTemplateMaintenanceView"
+              x:TypeArguments="local:WarrantTemplateMaintenanceViewModel"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Technicians"
+              xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.WarrantTemplates"
               xmlns:nav="clr-namespace:Repairshop.Client.Common.Navigation;assembly=Repairshop.Client.Common"
+              xmlns:warrants="clr-namespace:Repairshop.Client.Features.WarrantManagement.Warrants"
               mc:Ignorable="d"
               d:DesignHeight="450"
               d:DesignWidth="800"
-              d:DataContext="{d:DesignInstance local:TechnicianMaintenanceViewModel}">
+              d:DataContext="{d:DesignInstance local:WarrantTemplateMaintenanceViewModel}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -20,23 +21,27 @@
     </i:Interaction.Triggers>
 
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
-        <DataGrid ItemsSource="{Binding Technicians}"
+        
+        <DataGrid ItemsSource="{Binding WarrantTemplates}"
                   IsReadOnly="True"
                   AutoGenerateColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
-                  CanUserReorderColumns="False">
+                  CanUserReorderColumns="False"
+                  Grid.Row="0">
 
             <DataGrid.Columns>
+
                 <DataGridTextColumn Header="Ime"
                                     Binding="{Binding Name}"
                                     FontSize="16"
-                                    Width="*">
+                                    Width="Auto"
+                                    MinWidth="30">
 
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
@@ -47,12 +52,21 @@
 
                 </DataGridTextColumn>
 
+                <DataGridTemplateColumn Header="Tok naloga"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <warrants:WarrantStepSequencePreviewControl Procedures="{Binding Procedures}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn Header="Uredi">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Grid.Column="1"
                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.EditTechnicianCommand}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.EditWarrantTemplateCommand}"
                                     CommandParameter="{Binding .}">
                                 <md:PackIcon Kind="Edit" />
                             </Button>
@@ -65,7 +79,7 @@
                         <DataTemplate>
                             <Button Grid.Column="2"
                                     Style="{DynamicResource MaterialDesignFlatButton}"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteTechnicianCommand}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteWarrantTemplateCommand}"
                                     CommandParameter="{Binding .}">
                                 <md:PackIcon Kind="Delete" />
                             </Button>
@@ -78,13 +92,14 @@
         </DataGrid>
 
         <Button Grid.Row="1"
-                Style="{DynamicResource MaterialDesignFloatingActionDarkButton}"
+                Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
                 HorizontalAlignment="Right"
-                Margin="15"
-                Command="{Binding AddTechnicianCommand}">
+                Command="{Binding AddWarrantTemplateCommand}">
+            
             <md:PackIcon Kind="Add" />
+            
         </Button>
-    </Grid>
 
+    </Grid>
 
 </nav:ViewBase>

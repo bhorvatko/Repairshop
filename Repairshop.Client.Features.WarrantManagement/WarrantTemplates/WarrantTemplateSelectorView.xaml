@@ -16,7 +16,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
-    <DockPanel>
+    <DockPanel Margin="32">
 
         <ListView Grid.IsSharedSizeScope="True" 
                   DockPanel.Dock="Top"
@@ -32,7 +32,8 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0"
-                               Content="{Binding Name}" />
+                               Content="{Binding Name}"
+                               FontSize="20" />
 
                         <warrants:WarrantStepSequencePreviewControl Grid.Column="1"
                                                                     Procedures="{Binding Procedures}" />
@@ -42,12 +43,20 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Button DockPanel.Dock="Bottom"
-                Content="Primjeni šablonu"
-                Command="{Binding ApplyCommand}"
-                IsEnabled="{Binding ApplyButtonEnabled}"
-                Margin="5"
-                Style="{DynamicResource MaterialDesignRaisedDarkButton}"/>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0, 15, 0, 0">
+
+            <Button Content="ODUSTANI"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{Binding CancelCommand}" />
+
+            <Button Content="PRIMJENI PREDLOŽAK"
+                    Command="{Binding ApplyCommand}"
+                    IsEnabled="{Binding ApplyButtonEnabled}"
+                    Style="{DynamicResource MaterialDesignFlatButton}" />
+
+        </StackPanel>
 
     </DockPanel>
 </UserControl>

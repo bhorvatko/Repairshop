@@ -38,4 +38,10 @@ public partial class WarrantTemplateSelectorViewModel
 
         FinishDialog(SelectedWarrantTemplate.Steps);
     }
+
+    [RelayCommand]
+    public void Cancel()
+    {
+        CancelDialog();
+    }
 }

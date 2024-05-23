@@ -11,7 +11,7 @@ public interface IDialogViewModel<TResult, TDialogContent>
 public interface IDialogViewModel<TResult>
     : IDialogViewModel
 {
-    public delegate void DialogFinishedEventHandler(TResult result);
+    public delegate void DialogFinishedEventHandler(TResult? result);
 
     event DialogFinishedEventHandler DialogFinished;
 }

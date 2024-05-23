@@ -14,4 +14,9 @@ public class DialogViewModelBase<TResult, TDialogContent>
     {
         DialogFinished?.Invoke(result);
     }
+
+    protected void CancelDialog()
+    {
+        DialogFinished?.Invoke(default);
+    }
 }

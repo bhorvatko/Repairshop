@@ -64,4 +64,7 @@ public partial class EditWarrantSequenceViewModel
     {
         Steps = Steps.Where(x => x != step).ToList();
     }
+
+    [RelayCommand]
+    private void Cancel() => CancelDialog();
 }

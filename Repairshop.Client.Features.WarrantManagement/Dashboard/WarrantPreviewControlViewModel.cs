@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.ClientContext;
+using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
@@ -20,18 +21,20 @@ public partial class WarrantPreviewControlViewModel
     private readonly INavigationService _navigationService;
     private readonly IWarrantService _warrantService;
     private readonly IClientContextProvider _clientContextProvider;
+    private readonly IFormService _formService;
 
     public WarrantPreviewControlViewModel(
         WarrantSummaryViewModel warrant,
         INavigationService navigationService,
         IWarrantService warrantService,
-        IClientContextProvider clientContextProvider)
+        IClientContextProvider clientContextProvider,
+        IFormService formService)
     {
         Warrant = warrant;
         _navigationService = navigationService;
         _warrantService = warrantService;
         _clientContextProvider = clientContextProvider;
-
+        this._formService = formService;
         _animationClock.Tick += UpdateLabelContent;
     }
 
@@ -56,7 +59,7 @@ public partial class WarrantPreviewControlViewModel
         WarrantViewModel warrant =
             await _warrantService.GetWarrant(Warrant.Id);
 
-        _navigationService.NavigateToView<UpdateWarrantView, UpdateWarrantViewModel>(vm =>
+        await _formService.ShowFormAsDialog<UpdateWarrantView, UpdateWarrantViewModel>(vm =>
         {
             vm.WarrantId = warrant.Id;
             vm.EditWarrantViewModel.Subject = warrant.Title;

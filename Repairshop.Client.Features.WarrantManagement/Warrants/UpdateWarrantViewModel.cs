@@ -1,38 +1,35 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
-using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public partial class UpdateWarrantViewModel
-    : ViewModelBase
+    : IFormViewModel
 {
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly IWarrantService _warrantService;
-    private readonly IMessageDialogService _messageDialogService;
     private readonly INavigationService _navigationService;
 
     public UpdateWarrantViewModel(
         EditWarrantViewModel editWarrantViewModel,
         ILoadingIndicatorService loadingIndicatorService, 
         IWarrantService warrantService, 
-        IMessageDialogService messageDialogService, 
         INavigationService navigationService)
     {
         EditWarrantViewModel = editWarrantViewModel;
         _loadingIndicatorService = loadingIndicatorService;
         _warrantService = warrantService;
-        _messageDialogService = messageDialogService;
         _navigationService = navigationService;
     }
 
     public EditWarrantViewModel EditWarrantViewModel { get; private set; }
     public Guid WarrantId { get; set; }
 
-    [RelayCommand]
-    public async Task UpdateWarrant()
+    public string GetSubmitText() => "AŽURIRAJ NALOG";
+
+    public async Task SubmitForm()
     {
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
@@ -50,11 +47,12 @@ public partial class UpdateWarrantViewModel
                     }),
                 EditWarrantViewModel.CurrentStep?.Procedure.Id);
 
-            _messageDialogService.ShowMessage(
-                "Uspjeh!",
-                "Nalog uspješno ažuriran!");
-
             _navigationService.NavigateToView<DashboardView>();
         });
+    }
+
+    public bool ValidateForm()
+    {
+        return EditWarrantViewModel.Validate();
     }
 }

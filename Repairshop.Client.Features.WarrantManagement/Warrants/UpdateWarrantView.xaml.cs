@@ -1,11 +1,11 @@
-﻿using Repairshop.Client.Common.Navigation;
+﻿using Repairshop.Client.Common.Forms;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 /// <summary>
 /// Interaction logic for UpdateWarrantView.xaml
 /// </summary>
 public partial class UpdateWarrantView
-    : ViewBase<UpdateWarrantViewModel>
+    : FormBase
 {
     public UpdateWarrantView(UpdateWarrantViewModel viewModel)
         : base(viewModel)

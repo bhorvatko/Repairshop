@@ -1,7 +1,7 @@
-﻿using MaterialDesignThemes.Wpf;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Infrastructure.Navigation;
 
 namespace Repairshop.Client.Infrastructure.Forms;
 
@@ -10,13 +10,16 @@ internal class FormService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly INavigationService _navigationService;
+    private readonly DialogHostManager _dialogHostManager;
 
     public FormService(
         IServiceProvider serviceProvider,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        DialogHostManager dialogHostManager)
     {
         _serviceProvider = serviceProvider;
         _navigationService = navigationService;
+        _dialogHostManager = dialogHostManager;
     }
 
     public void ShowForm<TForm>() 
@@ -30,19 +33,19 @@ internal class FormService
         _navigationService.NavigateToView<FormView>(formView);
     }
 
-    public async Task ShowFormAsDialog<TForm>()
+    public void ShowFormAsDialog<TForm>()
         where TForm : FormBase
     {
         FormBase form =
             _serviceProvider.GetRequiredService<TForm>();
 
         FormContainer formContainer =
-            new FormContainer(form, () => DialogHost.Close(null));
+            new FormContainer(form, () => _dialogHostManager.Close());
 
-        await DialogHost.Show(formContainer);
+        _dialogHostManager.Show(formContainer);
     }
 
-    public async Task ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
+    public void ShowFormAsDialog<TForm, TViewModel>(Action<TViewModel> viewModelConfig)
         where TForm : FormBase
         where TViewModel : IFormViewModel
     {
@@ -53,8 +56,8 @@ internal class FormService
         viewModelConfig((TViewModel)form.DataContext);
 
         FormContainer formContainer = 
-            new FormContainer(form, () => DialogHost.Close(null));
+            new FormContainer(form, () => _dialogHostManager.Close());
 
-        await DialogHost.Show(formContainer);
+        _dialogHostManager.Show(formContainer);
     }
 }

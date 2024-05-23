@@ -8,40 +8,50 @@ internal class DialogService
     : IDialogService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly DialogHostManager _dialogHostManager;
 
-    public DialogService(IServiceProvider serviceProvider)
+    public DialogService(
+        IServiceProvider serviceProvider,
+        DialogHostManager dialogHostManager)
     {
         _serviceProvider = serviceProvider;
+        _dialogHostManager = dialogHostManager;
     }
 
-    public TResult? OpenDialog<TDialogContent, TResult>()
+    public Task<TResult?> OpenDialog<TDialogContent, TResult>()
+        where TResult : class
+        where TDialogContent : UserControl, IDialogContent =>
+        OpenDialog<TDialogContent, TResult>(_ => { });
+
+
+    public Task<TResult?> OpenDialog<TDialogContent, TViewModel, TResult>(Action<TViewModel> viewModelConfig)
+        where TResult : class
+        where TDialogContent : UserControl, IDialogContent
+        where TViewModel : IDialogViewModel<TResult> =>
+        OpenDialog<TDialogContent, TResult>(viewModel => viewModelConfig((TViewModel)viewModel));
+
+    private async Task<TResult?> OpenDialog<TDialogContent, TResult>(Action<object> viewModelConfig)
         where TResult : class
         where TDialogContent : UserControl, IDialogContent
     {
-        DialogContainer dialogContainer = new DialogContainer();
-
-        UserControl control = 
-            _serviceProvider.GetRequiredService<TDialogContent>();
-
-        dialogContainer.ShowWithContent<TResult>(control);
-
-        return dialogContainer.Result as TResult;
-    }
-
-    public TResult? OpenDialog<TDialogContent, TViewModel, TResult>(Action<TViewModel> viewModelConfig)
-        where TResult : class
-        where TDialogContent : UserControl, IDialogContent
-        where TViewModel : IDialogViewModel<TResult>
-    {
-        DialogContainer dialogContainer = new DialogContainer();
-
         UserControl control =
             _serviceProvider.GetRequiredService<TDialogContent>();
 
-        viewModelConfig((TViewModel)control.DataContext);
+        IDialogViewModel<TResult> viewModel = 
+            (IDialogViewModel<TResult>)control.DataContext;
 
-        dialogContainer.ShowWithContent<TResult>(control);
+        viewModelConfig(viewModel);
 
-        return dialogContainer.Result as TResult;
+        var taskCompletionSource = new TaskCompletionSource<TResult?>();
+
+        viewModel.DialogFinished += result => taskCompletionSource.TrySetResult(result);
+
+        _dialogHostManager.Show(control);
+
+        TResult? result = await taskCompletionSource.Task;
+
+        _dialogHostManager.Close();
+
+        return result;
     }
 }

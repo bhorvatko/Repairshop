@@ -66,10 +66,10 @@ public partial class EditWarrantViewModel
     }
 
     [RelayCommand]
-    public void EditWarrantSequence()
+    public async Task EditWarrantSequence()
     {
         IEnumerable<WarrantStep>? sequence = 
-            _dialogService.OpenDialog<
+            await _dialogService.OpenDialog<
                 EditWarrantSequenceView,
                 EditWarrantSequenceViewModel,
                 IEnumerable<WarrantStep>>(
@@ -85,10 +85,10 @@ public partial class EditWarrantViewModel
     }
 
     [RelayCommand]
-    public void ApplyWarrantTemplate()
+    public async Task ApplyWarrantTemplate()
     {
         IEnumerable<WarrantStep>? sequence =
-            _dialogService.OpenDialog<
+            await _dialogService.OpenDialog<
                 WarrantTemplateSelectorView,
                 IEnumerable<WarrantStep>>();
 

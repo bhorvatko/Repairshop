@@ -11,7 +11,9 @@ internal static class Setup
     {
         services
             .AddSingleton<Func<MainView>>(sp => () => sp.GetRequiredService<TMainView>())
-            .AddTransient<IDialogService, DialogService>(sp => new DialogService(sp))
+            .AddSingleton<DialogHostManager>()
+            .AddTransient<IDialogService, DialogService>(sp => 
+                new DialogService(sp, sp.GetRequiredService<DialogHostManager>()))
             .AddSingleton<INavigationService, NavigationService>();
 
         services.Scan(scan =>

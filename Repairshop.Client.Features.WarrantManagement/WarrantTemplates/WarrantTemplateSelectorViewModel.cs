@@ -1,14 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Repairshop.Client.Common.Interfaces;
+using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
 public partial class WarrantTemplateSelectorViewModel
-    : ObservableObject,
-        IDialogViewModel<IEnumerable<WarrantStep>, WarrantTemplateSelectorView>
+    : DialogViewModelBase<IEnumerable<WarrantStep>, WarrantTemplateSelectorView>
 {
     private readonly IWarrantTemplateService _warrantTemplateService;
 
@@ -24,8 +23,6 @@ public partial class WarrantTemplateSelectorViewModel
         _warrantTemplateService = warrantTemplateService;
     }
 
-    public event IDialogViewModel<IEnumerable<WarrantStep>>.DialogFinishedEventHandler? DialogFinished;
-
     public bool ApplyButtonEnabled => SelectedWarrantTemplate is not null;
 
     [RelayCommand]
@@ -39,6 +36,6 @@ public partial class WarrantTemplateSelectorViewModel
     {
         if (SelectedWarrantTemplate is null) return;
 
-        DialogFinished?.Invoke(SelectedWarrantTemplate.Steps);
+        FinishDialog(SelectedWarrantTemplate.Steps);
     }
 }

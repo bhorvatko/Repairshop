@@ -44,10 +44,10 @@ public partial class CreateWarrantTemplateViewModel
         Steps.Select(x => x.Procedure);
 
     [RelayCommand]
-    public void EditStepSequence()
+    public async Task EditStepSequence()
     {
         IEnumerable<WarrantStep>? sequence =
-            _dialogService.OpenDialog<
+            await _dialogService.OpenDialog<
                 EditWarrantSequenceView,
                 EditWarrantSequenceViewModel,
                 IEnumerable<WarrantStep>>(

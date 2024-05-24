@@ -80,7 +80,7 @@ public partial class TechnicianDashboardViewModel
     public IEnumerable<WarrantPreviewControlViewModel> Warrants
     {
         get => _warrants
-            .Where(x => !GetFilteredProcedureIds().Contains(x.Warrant.Procedure.Id!.Value))
+            .Where(x => !GetFilteredProcedureIds().Contains(x.Warrant.Procedure.Id))
             .OrderByDescending(x => x.Warrant.IsUrgent)
             .ThenBy(x => x.Warrant.Deadline);
 

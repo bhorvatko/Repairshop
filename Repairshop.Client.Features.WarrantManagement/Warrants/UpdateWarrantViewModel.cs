@@ -43,7 +43,7 @@ public partial class UpdateWarrantViewModel
                     {
                         CanBeTransitionedToByFrontDesk = x.CanBeTransitionedToByFrontDesk,
                         CanBeTransitionedToByWorkshop = x.CanBeTransitionedToByWorkshop,
-                        ProcedureId = x.Procedure.Id!.Value
+                        ProcedureId = x.Procedure.Id
                     }),
                 EditWarrantViewModel.CurrentStep?.Procedure.Id);
 

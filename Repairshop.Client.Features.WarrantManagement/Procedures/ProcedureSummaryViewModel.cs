@@ -12,7 +12,7 @@ public class ProcedureSummaryViewModel
     protected ProcedureSummaryViewModel(
         string name,
         Color backgroundColor,
-        Guid? id = null)
+        Guid id)
     {
         _name = name;
         _backgroundColor = backgroundColor;
@@ -36,7 +36,7 @@ public class ProcedureSummaryViewModel
     public Color ForegroundColor => GetForegroundColor();
     public Brush BackgroundColorBrush => ConvertToBrush(BackgroundColor);
     public Brush ForegroundColorBrush => ConvertToBrush(GetForegroundColor());
-    public Guid? Id { get; private set; }
+    public Guid Id { get; private set; }
 
     public static ProcedureSummaryViewModel Create(
         Guid id,

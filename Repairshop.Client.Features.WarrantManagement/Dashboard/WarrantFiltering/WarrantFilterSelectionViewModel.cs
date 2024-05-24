@@ -24,7 +24,7 @@ public partial class WarrantFilterSelectionViewModel
     public IReadOnlyCollection<Guid> FilteredProcedureIds =>
         Procedures?
             .Where(x => !x.Selected)
-            .Select(x => x.Procedure.Id!.Value)
+            .Select(x => x.Procedure.Id)
             .ToList()
             ?? _initialFilteredProcedureIds;
 

@@ -50,8 +50,7 @@
                 <DataGridTemplateColumn Header="Uredi">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Grid.Column="1"
-                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.EditTechnicianCommand}"
                                     CommandParameter="{Binding .}">
                                 <md:PackIcon Kind="Edit" />
@@ -63,8 +62,7 @@
                 <DataGridTemplateColumn Header="Obriši">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Grid.Column="2"
-                                    Style="{DynamicResource MaterialDesignFlatButton}"
+                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteTechnicianCommand}"
                                     CommandParameter="{Binding .}">
                                 <md:PackIcon Kind="Delete" />
@@ -80,7 +78,6 @@
         <Button Grid.Row="1"
                 Style="{DynamicResource MaterialDesignFloatingActionDarkButton}"
                 HorizontalAlignment="Right"
-                Margin="15"
                 Command="{Binding AddTechnicianCommand}">
             <md:PackIcon Kind="Add" />
         </Button>

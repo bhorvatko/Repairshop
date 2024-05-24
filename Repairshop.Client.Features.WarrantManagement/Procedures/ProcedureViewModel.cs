@@ -10,7 +10,7 @@ public class ProcedureViewModel
     protected ProcedureViewModel(
         string name, 
         Color backgroundColor,
-        Guid? id = null,
+        Guid id,
         IEnumerable<string>? usedByWarrants = null,
         IEnumerable<string>? usedByWarrantTemplates = null) 
         : base(name, backgroundColor, id)
@@ -47,18 +47,6 @@ public class ProcedureViewModel
 
     public Visibility CannotBeDeletedTooltipVisibility =>
         (!CanBeDeleted).ToVisibility();
-
-    public static ProcedureViewModel CreateNew()
-    {
-        Color backgroundColor =
-            Color.FromArgb(
-                255,
-                (byte)Random.Shared.Next(255),
-                (byte)Random.Shared.Next(255),
-                (byte)Random.Shared.Next(255));
-
-        return new ProcedureViewModel("Nova procedura", backgroundColor);
-    }
 
     public static ProcedureViewModel Create(
         Guid id,

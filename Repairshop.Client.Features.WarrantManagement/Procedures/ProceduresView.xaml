@@ -5,7 +5,6 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.Procedures"
-              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
               xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:nav="clr-namespace:Repairshop.Client.Common.Navigation;assembly=Repairshop.Client.Common"
@@ -20,130 +19,80 @@
 
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <StackPanel>
-            <ListView ItemsSource="{Binding Procedures}"
-                      Margin="5"
-                      SelectedItem="{Binding SelectedProcedure, Mode=TwoWay}"
-                      SelectionMode="Single"
-                      HorizontalContentAlignment="Stretch">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <local:ProcedurePreview Procedure="{Binding .}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+        <DataGrid ItemsSource="{Binding Procedures}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserReorderColumns="False"
+                  Grid.Row="0">
 
-            <Button Content="Dodaj novu proceduru"
-                    Margin="10"
-                    Background="White"
-                    Foreground="Gray"
-                    BorderBrush="Gray"
-                    Command="{Binding AddNewProcedureCommand}" />
-        </StackPanel>
+            <DataGrid.Columns>
 
-        <StackPanel Grid.Row="0"
-                    Grid.Column="1"
-                    Grid.RowSpan="3"
-                    Margin="10"
-                    Visibility="{Binding EditProcedureVisibility}">
+                <DataGridTemplateColumn Header="Procedura"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <md:Card Background="{Binding BackgroundColorBrush}">
+                                <Label Content="{Binding Name}"
+                                       Foreground="{Binding ForegroundColorBrush}" 
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                            </md:Card>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <StackPanel.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Margin"
-                            Value="5" />
-                    <Setter Property="VerticalContentAlignment"
-                            Value="Center" />
-                </Style>
-            </StackPanel.Resources>
+                <DataGridTextColumn Width="*"/>
 
-            <Grid>
+                <DataGridTemplateColumn Header="Uredi">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.UpdateProcedureCommand}"
+                                    CommandParameter="{Binding .}">
+                                <md:PackIcon Kind="Edit" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                <DataGridTemplateColumn Header="Obriši">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteProcedureCommand}"
+                                    CommandParameter="{Binding .}"
+                                    IsEnabled="{Binding CanBeDeleted}"
+                                    ToolTipService.ShowOnDisabled="True">
+                                
+                                <Button.ToolTip>
+                                    <ToolTip Content="{Binding CannotBeDeletedMessage}"
+                                             Visibility="{Binding CannotBeDeletedTooltipVisibility}" />
+                                </Button.ToolTip>
+                                
+                                <md:PackIcon Kind="Delete" />
+                                
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                <Grid Grid.Row="0"
-                      Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            </DataGrid.Columns>
+            
+        </DataGrid>
 
-                    <Label Grid.Column="0"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Content="Uređivanje procedure" />
-
-                    <Button Grid.Column="1"
-                            Command="{Binding DeleteProcedureCommand}"
-                            CommandParameter="{Binding SelectedProcedure}"
-                            Style="{DynamicResource MaterialDesignFlatButton}"
-                            IsEnabled="{Binding SelectedProcedure.CanBeDeleted}"
-                            ToolTipService.ShowOnDisabled="True">
-
-                        <Button.ToolTip>
-                            <ToolTip Content="{Binding SelectedProcedure.CannotBeDeletedMessage}"
-                                     Visibility="{Binding SelectedProcedure.CannotBeDeletedTooltipVisibility}" />
-                        </Button.ToolTip>
-
-                        <md:PackIcon Kind="Delete" />
-
-                    </Button>
-                </Grid>
-
-                <Grid Grid.Row="2">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
-                           VerticalContentAlignment="Center"
-                           Content="Naziv procedure" />
-                    <TextBox Grid.Row="0"
-                             Grid.Column="1"
-                             VerticalContentAlignment="Center"
-                             Text="{Binding SelectedProcedure.Name, UpdateSourceTrigger=PropertyChanged}" />
-
-                    <Label Grid.Row="1"
-                           Grid.Column="0"
-                           Content="Boja" />
-
-                    <xctk:ColorPicker Grid.Row="1"
-                                      Grid.Column="1"
-                                      Margin="5"
-                                      SelectedColor="{Binding SelectedProcedure.BackgroundColor}" />
-
-
-                    <Button Grid.Row="3"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Content="Spremi"
-                            Margin="5"
-                            Command="{Binding SaveProcedureCommand}"
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            HorizontalAlignment="Right" />
-
-                </Grid>
-            </Grid>
-
-        </StackPanel>
+        <Button Grid.Row="1"
+                Style="{DynamicResource MaterialDesignFloatingActionDarkButton}"
+                HorizontalAlignment="Right"
+                Command="{Binding AddNewProcedureCommand}">
+            <md:PackIcon Kind="Add" />
+        </Button>
 
     </Grid>
 </nav:ViewBase>

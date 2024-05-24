@@ -81,7 +81,7 @@ public partial class CreateWarrantTemplateViewModel
             {
                 CanBeTransitionedToByFrontDesk = x.CanBeTransitionedToByFrontDesk,
                 CanBeTransitionedToByWorkshop = x.CanBeTransitionedToByWorkshop,
-                ProcedureId = x.Procedure.Id!.Value
+                ProcedureId = x.Procedure.Id
             }));
     }
 }

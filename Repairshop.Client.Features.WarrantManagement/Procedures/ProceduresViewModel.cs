@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Repairshop.Client.Common.Extensions;
+using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
-using System.Drawing;
-using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Procedures;
 
@@ -13,81 +11,53 @@ public partial class ProceduresViewModel
 {
     private readonly IProcedureService _procedureService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
+    private readonly IFormService _formService;
 
     [ObservableProperty]
     private IReadOnlyCollection<ProcedureViewModel> _procedures = 
         new List<ProcedureViewModel>();
 
-    private Visibility _editProcedureVisibility = Visibility.Collapsed;
-    private ProcedureViewModel? _selectedProcedure;
-
     public ProceduresViewModel(
         IProcedureService procedureService,
-        ILoadingIndicatorService loadingIndicatorService)
+        ILoadingIndicatorService loadingIndicatorService,
+        IFormService formService)
     {
         _procedureService = procedureService;
         _loadingIndicatorService = loadingIndicatorService;
-    }
-
-    public Visibility EditProcedureVisibility { get => _editProcedureVisibility; set => SetProperty(ref _editProcedureVisibility, value); }
-
-    public ProcedureViewModel? SelectedProcedure
-    {
-        get => _selectedProcedure;
-        set
-        {
-            SetProperty(ref _selectedProcedure, value);
-
-            EditProcedureVisibility = (_selectedProcedure is not null).ToVisibility();
-        }
+        _formService = formService;
     }
 
     [RelayCommand]
     public async Task AddNewProcedure()
     {
-        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
-        {
-            ProcedureViewModel newProcedure = ProcedureViewModel.CreateNew();
+        await _formService.ShowFormAsDialog<CreateProcedureView>();
 
-            Guid newProcedureId = await _procedureService.CreateProcedure(
-                newProcedure.Name,
-                ColorToRgb(newProcedure.BackgroundColor));
+        await LoadProcedures();
+    }
 
-            newProcedure.SetId(newProcedureId);
+    [RelayCommand]
+    public async Task UpdateProcedure(ProcedureViewModel procedure)
+    {
+        await _formService
+            .ShowFormAsDialog<
+                UpdateProcedureView, 
+                UpdateProcedureViewModel>(vm =>
+                {
+                    vm.ProcedureId = procedure.Id;
+                    vm.EditProcedureViewModel.Name = procedure.Name;
+                    vm.EditProcedureViewModel.BackgroundColor = procedure.BackgroundColor;
+                });
 
-            Procedures = Procedures.Concat(new[] { newProcedure }).ToList();
-        });
+        await LoadProcedures();
     }
 
     [RelayCommand]
     public async Task DeleteProcedure(ProcedureViewModel procedure)
     {
-        if (SelectedProcedure is null || SelectedProcedure.Id is null)
-        {
-            return;
-        }
-
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
         {
-            await _procedureService.DeleteProcedure(SelectedProcedure.Id.Value);
-            Procedures = Procedures.Where(p => p.Id != SelectedProcedure.Id).ToList();
-        });
-    }
-
-    [RelayCommand]
-    public async Task SaveProcedure(ProcedureViewModel procedure)
-    {
-        if (SelectedProcedure is null || SelectedProcedure.Id is null)
-        {
-            return;
-        }
-
-        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
-        {
-            await _procedureService.UpdateProcedure(
-                SelectedProcedure.Id.Value,
-                SelectedProcedure.Name,
-                ColorToRgb(SelectedProcedure.BackgroundColor));
+            await _procedureService.DeleteProcedure(procedure.Id);
+            await LoadProcedures();
         });
     }
 
@@ -99,9 +69,4 @@ public partial class ProceduresViewModel
             Procedures = await _procedureService.GetProcedures();
         });
     }
-
-    private static string ColorToRgb(System.Windows.Media.Color color) =>
-        ColorTranslator.ToHtml(
-            Color.FromArgb(color.R, color.G, color.B))
-                .Replace("#", "");
 }

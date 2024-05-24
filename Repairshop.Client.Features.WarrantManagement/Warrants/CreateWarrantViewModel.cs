@@ -39,7 +39,7 @@ public partial class CreateWarrantViewModel
                 {
                     CanBeTransitionedToByFrontDesk = x.CanBeTransitionedToByFrontDesk,
                     CanBeTransitionedToByWorkshop = x.CanBeTransitionedToByWorkshop,
-                    ProcedureId = x.Procedure.Id!.Value
+                    ProcedureId = x.Procedure.Id
                 }));
 
         _navigationService.NavigateToView<DashboardView>();

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Common.Persistence;
+using Repairshop.Shared.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Server.Features.WarrantManagement.Warrants.GetWarrant;
@@ -19,17 +20,42 @@ internal class GetWarrantRequestHandler
         GetWarrantRequest request, 
         CancellationToken cancellationToken)
     {
-        GetWarrantResponseSpecification specification =
+        GetWarrantSpecification specification =
             new(request.Id);
 
-        GetWarrantResponse? warrantResponse = 
+        Warrant? warrant = 
             await _warrants.FirstOrDefaultAsync(specification, cancellationToken);
 
-        if (warrantResponse is null)
+        if (warrant is null)
         {
             throw new EntityNotFoundException<Warrant, Guid>(request.Id);
         }
 
-        return warrantResponse;
+        return new GetWarrantResponse()
+        {
+            Id = warrant.Id,
+            Deadline = warrant.Deadline,
+            IsUrgent = warrant.IsUrgent,
+            Title = warrant.Title,
+            WarrantSteps = warrant
+                .GetStepsInSequence()
+                .Select(s => new WarrantStepModel()
+                {
+                    CanBeTransitionedToByFrontOffice =
+                    s.PreviousTransition != null
+                        ? s.PreviousTransition.CanBePerformedByFrontOffice
+                        : false,
+                    CanBeTransitionedToByWorkshop =
+                    s.PreviousTransition != null
+                        ? s.PreviousTransition.CanBePerformedByWorkshop
+                        : false,
+                    Procedure = new ProcedureSummaryModel()
+                    {
+                        Id = s.ProcedureId,
+                        Color = s.Procedure.Color,
+                        Name = s.Procedure.Name,
+                    }
+                })
+        };
     }
 }

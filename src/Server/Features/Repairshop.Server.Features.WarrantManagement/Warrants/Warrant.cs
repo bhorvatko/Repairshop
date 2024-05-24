@@ -120,6 +120,23 @@ public class Warrant
         TechnicianId = technician.Id;
     }
 
+    public IEnumerable<WarrantStep> GetStepsInSequence()
+    {
+        IEnumerable<WarrantStep> stepsInSequence = 
+            Enumerable.Empty<WarrantStep>();
+
+        WarrantStep? currentStep = GetInitialStep();
+
+        while (currentStep is not null)
+        {
+            stepsInSequence = stepsInSequence.Append(currentStep);
+
+            currentStep = currentStep.NextStep;
+        }
+
+        return stepsInSequence;
+    }
+
     private void SetInitialStep() => SetCurrentStep(Steps.First());
 
     private void SetCurrentStep(WarrantStep step)
@@ -181,4 +198,7 @@ public class Warrant
             throw new DomainInvalidOperationException("The transition cannot be performed by the workshop.");
         }
     }
+
+    private WarrantStep? GetInitialStep() =>
+        Steps.FirstOrDefault(s => s.PreviousTransition is null);
 }

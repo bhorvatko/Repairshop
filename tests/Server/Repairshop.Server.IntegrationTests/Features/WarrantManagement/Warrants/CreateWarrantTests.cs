@@ -110,6 +110,9 @@ public class CreateWarrantTests
         // Act
         await _client.PostAsJsonAsync("Warrants", request);
 
+        // TO DO: Find an alternative way of waiting for the notification to be received
+        await Task.Delay(100);
+
         // Assert
         notification.Should().NotBeNull();
         notification!.Warrant.Should().NotBeNull();

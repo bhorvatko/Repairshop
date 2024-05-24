@@ -37,5 +37,11 @@ public class GetWarrantTests
                 && x.Deadline == warrant.Deadline
                 && x.Title == warrant.Title
                 && x.WarrantSteps.Count() == warrant.Steps.Count());
+
+        response
+            .WarrantSteps
+            .Select(x => x.Procedure.Id)
+            .Should()
+            .BeEquivalentTo(warrant.Steps.Select(x => x.ProcedureId), config => config.WithStrictOrdering());
     }
 }

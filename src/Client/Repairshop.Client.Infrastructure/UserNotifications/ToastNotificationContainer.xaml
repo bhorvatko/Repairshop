@@ -4,23 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Repairshop.Client.Infrastructure.UserNotifications"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance local:ToastNotificationContainerViewModel}">
 
-    <StackPanel Orientation="Horizontal"
-                Background="{Binding BackgroundBrush}"
-                Visibility="{Binding Visibility}">
-
-        <Label Content="{Binding Message}"
-                   FontSize="15" 
-                   Margin="20" />
-
-        <Button Content="X" 
-                Background="Transparent"
-                BorderThickness="0"
-                Margin="20"
-                Command="{Binding CloseButtonClickedCommand}"/>
+    <md:Card Background="{Binding BackgroundBrush}"
+             Visibility="{Binding Visibility}">
         
-    </StackPanel>
+        <StackPanel Orientation="Horizontal">
+
+            <Label Content="{Binding Message}"
+                   FontSize="15"
+                   Margin="20" 
+                   VerticalAlignment="Center"/>
+
+            <Button Margin="20"
+                    Command="{Binding CloseButtonClickedCommand}"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Foreground="Black">
+                <md:PackIcon Kind="Close" />
+            </Button>
+
+        </StackPanel>
+    </md:Card>
 </UserControl>

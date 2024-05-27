@@ -11,7 +11,6 @@ public partial class ProcedureLegendViewModel
     private readonly IProcedureService _procedureService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
 
-    [ObservableProperty]
     private IReadOnlyCollection<ProcedureSummaryViewModel> _procedures =
         new List<ProcedureSummaryViewModel>();
 
@@ -21,6 +20,12 @@ public partial class ProcedureLegendViewModel
     {
         _procedureService = procedureService;
         _loadingIndicatorService = loadingIndicatorService;
+    }
+
+    public IReadOnlyCollection<ProcedureSummaryViewModel> Procedures
+    {
+        get => _procedures.OrderBy(p => p.Priority).ToList();
+        set => SetProperty(ref _procedures, value);
     }
 
     [RelayCommand]

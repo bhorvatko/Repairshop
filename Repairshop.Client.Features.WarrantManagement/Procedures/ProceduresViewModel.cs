@@ -1,8 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using Repairshop.Client.Common.Extensions;
 using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
+using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Procedures;
 
@@ -13,7 +14,6 @@ public partial class ProceduresViewModel
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly IFormService _formService;
 
-    [ObservableProperty]
     private IReadOnlyCollection<ProcedureViewModel> _procedures = 
         new List<ProcedureViewModel>();
 
@@ -27,10 +27,35 @@ public partial class ProceduresViewModel
         _formService = formService;
     }
 
+    public IReadOnlyCollection<ProcedureViewModel> Procedures
+    {
+        get => _procedures.OrderBy(p => p.Priority).ToList();
+        set
+        {
+            SetProperty(ref _procedures, value.OrderBy(p => p.Priority).ToList());
+            OnPropertyChanged(nameof(RowViewModels));
+        }
+    }
+
+    public IEnumerable<ProcedureListRowViewModel> RowViewModels =>
+        Procedures.Select(p => new ProcedureListRowViewModel()
+        {
+            Procedure = p,
+            MoveDownButtonVisibility = (p != Procedures.Last()).ToVisibility(Visibility.Hidden),
+            MoveUpButtonVisibility = (p != Procedures.First()).ToVisibility(Visibility.Hidden)
+        });
+
     [RelayCommand]
     public async Task AddNewProcedure()
     {
-        await _formService.ShowFormAsDialog<CreateProcedureView>();
+        float greatestExistingPriority = 
+            Procedures.Select(p => p.Priority).Max();
+
+        await _formService
+            .ShowFormAsDialog<CreateProcedureView,CreateProcedureViewModel>(vm =>
+            {
+                vm.Priority = (float.MaxValue + greatestExistingPriority) / 2;
+            });
 
         await LoadProcedures();
     }
@@ -68,5 +93,60 @@ public partial class ProceduresViewModel
         {
             Procedures = await _procedureService.GetProcedures();
         });
+    }
+
+    [RelayCommand]
+    private async Task MoveProcedureUp(ProcedureViewModel procedure)
+    {
+        int procedureIndex = Procedures.ToList().IndexOf(procedure);
+
+        // Cannot move procedure up if it's already at the top
+        if (procedureIndex <= 0)
+        {
+            return;
+        }
+
+        float priorityOfPreviousElement =
+            Procedures.ElementAtOrDefault(procedureIndex - 2)?.Priority ?? (float.MinValue / 2);
+
+        float priorityOfNextElement =
+            Procedures.ElementAtOrDefault(procedureIndex - 1)?.Priority ?? (float.MaxValue / 2);
+
+        await SetProcedurePriority(priorityOfPreviousElement, priorityOfNextElement, procedure);
+    }
+
+    [RelayCommand]
+    private async Task MoveProcedureDown(ProcedureViewModel procedure)
+    {
+        int procedureIndex = Procedures.ToList().IndexOf(procedure);
+
+        // Cannot move procedure down if it's already at the bottom
+        if (procedureIndex == Procedures.Count - 1)
+        {
+            return;
+        }
+
+        float priorityOfPreviousElement =
+            Procedures.ElementAtOrDefault(procedureIndex + 1)?.Priority ?? (float.MinValue / 2);
+
+        float priorityOfNextElement =
+            Procedures.ElementAtOrDefault(procedureIndex + 2)?.Priority ?? (float.MaxValue / 2);
+
+        await SetProcedurePriority(priorityOfPreviousElement, priorityOfNextElement, procedure);
+    }
+
+    private async Task SetProcedurePriority(
+        float previousElememtPriority,
+        float nextElementPriority,
+        ProcedureViewModel procedure)
+    {
+
+        float newPriority = (nextElementPriority + previousElememtPriority) / 2;
+
+        procedure.SetPriority(newPriority);
+
+        OnPropertyChanged(nameof(RowViewModels));
+
+        await _procedureService.SetProcedurePriority(procedure.Id, newPriority);
     }
 }

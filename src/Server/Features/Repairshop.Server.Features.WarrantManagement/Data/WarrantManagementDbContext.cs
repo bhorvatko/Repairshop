@@ -25,5 +25,9 @@ public class WarrantManagementDbContext
         builder
             .Properties<ColorCode>()
             .HaveConversion<ColorCodeConverter>();
+
+        builder
+            .Properties<ProcedurePriority>()
+            .HaveConversion<ProcedurePriorityConverter>();  
     }
 }

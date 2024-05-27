@@ -11,9 +11,10 @@ public class ProcedureViewModel
         string name, 
         Color backgroundColor,
         Guid id,
+        float priority,
         IEnumerable<string>? usedByWarrants = null,
         IEnumerable<string>? usedByWarrantTemplates = null) 
-        : base(name, backgroundColor, id)
+        : base(name, backgroundColor, id, priority)
     {
         UsedByWarrants = usedByWarrants ?? Enumerable.Empty<string>();
         UsedByWarrantTemplates = usedByWarrantTemplates ?? Enumerable.Empty<string>();
@@ -52,6 +53,7 @@ public class ProcedureViewModel
         Guid id,
         string name,
         string color,
+        float priority,
         IEnumerable<string> usedByWarrants,
         IEnumerable<string> usedByWarrantTemplates)
     {
@@ -59,6 +61,7 @@ public class ProcedureViewModel
             name,
             (Color)ColorConverter.ConvertFromString("#" + color),
             id,
+            priority,
             usedByWarrants,
             usedByWarrantTemplates);
     }

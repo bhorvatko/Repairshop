@@ -9,7 +9,8 @@ public static class ProcedureHelper
         string color = "FFFFFF") =>
         Procedure.Create(
             name, 
-            ColorCode.FromHexCode(color));
+            ColorCode.FromHexCode(color),
+            ProcedurePriority.FromFloating(1));
 
     public static IEnumerable<Procedure> Create(int numberOfProcedures) =>
         Enumerable

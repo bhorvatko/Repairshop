@@ -24,6 +24,7 @@ internal class GetWarrantTempplateModelSpecification
                         Id = s.Procedure.Id,
                         Name = s.Procedure.Name,
                         Color = s.Procedure.Color,
+                        Priority = s.Procedure.Priority
                     }
                 })
             });

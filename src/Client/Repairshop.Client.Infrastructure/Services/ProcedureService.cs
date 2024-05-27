@@ -9,6 +9,7 @@ internal class ProcedureService
 {
     private const string ProceduresEndpoint = "Procedures";
     private const string ProcedureSummariesEndpoint = $"{ProceduresEndpoint}/Summaries";
+    private const string SetProcedurePriorityEndpoint = $"{ProceduresEndpoint}/Priority";
 
     private readonly ApiClient.ApiClient _apiClient;
 
@@ -17,7 +18,7 @@ internal class ProcedureService
         _apiClient = apiClient;
     }
 
-    public async Task<Guid> CreateProcedure(string name, string color)
+    public async Task<Guid> CreateProcedure(string name, string color, float priority)
     {
         CreateProcedureResponse response = 
             await _apiClient.Post<CreateProcedureRequest, CreateProcedureResponse>(
@@ -25,7 +26,8 @@ internal class ProcedureService
                 new CreateProcedureRequest()
                 {
                     Color = color,
-                    Name = name
+                    Name = name,
+                    Priority = priority,
                 });
 
         return response.Id;
@@ -69,4 +71,15 @@ internal class ProcedureService
 
     public Task DeleteProcedure(Guid id) => 
         _apiClient.Delete($"{ProceduresEndpoint}/{id}");
+
+    public async Task SetProcedurePriority(Guid id, float prioriy)
+    {
+        SetProcedurePriorityRequest request = new SetProcedurePriorityRequest()
+        {
+            ProcedureId = id,
+            Priority = prioriy
+        };
+
+        await _apiClient.Put<SetProcedurePriorityRequest, SetProcedurePriorityResponse>(SetProcedurePriorityEndpoint, request);
+    }
 }

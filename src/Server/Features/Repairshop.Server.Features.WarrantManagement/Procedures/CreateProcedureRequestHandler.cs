@@ -19,7 +19,8 @@ internal class CreateProcedureRequestHandler
     {
         Procedure procedure = Procedure.Create(
             request.Name, 
-            ColorCode.FromHexCode(request.Color));
+            ColorCode.FromHexCode(request.Color),
+            ProcedurePriority.FromFloating(request.Priority));
 
         await _procedures.AddAsync(procedure, cancellationToken);
 

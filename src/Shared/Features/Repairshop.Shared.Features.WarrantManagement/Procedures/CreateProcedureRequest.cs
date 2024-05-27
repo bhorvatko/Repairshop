@@ -5,6 +5,7 @@ namespace Repairshop.Shared.Features.WarrantManagement.Procedures;
 public class CreateProcedureRequest
     : IRequest<CreateProcedureResponse>
 {
-    public string Name { get; set; } = string.Empty;
-    public string Color { get; set; } = string.Empty;
+    public required string Name { get; set; }
+    public required string Color { get; set; }
+    public required float Priority { get; set; }
 }

@@ -27,7 +27,8 @@ public class ProcedureTests
         CreateProcedureRequest request = new()
         {
             Color = "FFFFFF",
-            Name = "Name"
+            Name = "Name",
+            Priority = 1
         };
 
         await _client.PostAsJsonAsync("Procedures", request);
@@ -142,5 +143,30 @@ public class ProcedureTests
         response.Procedures.Single()
             .UsedByWarrantTemplates
             .Should().BeEquivalentTo(new[] { warrantTemplate.Name });
+    }
+
+    [Fact]
+    public async Task Setting_procedure_priority()
+    {
+        // Arrange
+        Procedure procedure = ProcedureHelper.Create();
+
+        _dbContext.Add(procedure);
+        _dbContext.SaveChanges();
+
+        SetProcedurePriorityRequest request = new()
+        {
+            ProcedureId = procedure.Id,
+            Priority = 2
+        };
+
+        // Act
+        await _client.PutAsJsonAsync("Procedures/Priority", request);
+
+        // Assert
+        Procedure updatedProcedure = 
+            _dbContext.Set<Procedure>().AsNoTracking().Single();
+
+        updatedProcedure.Priority.Value.Should().Be(2);
     }
 }

@@ -46,7 +46,8 @@ internal class GetWarrantModelsSpecification
             {
                 Id = x.CurrentStep!.Procedure.Id,
                 Color = x.CurrentStep!.Procedure.Color,
-                Name = x.CurrentStep!.Procedure.Name
+                Name = x.CurrentStep!.Procedure.Name,
+                Priority = x.CurrentStep!.Procedure.Priority
             }
         });
     }

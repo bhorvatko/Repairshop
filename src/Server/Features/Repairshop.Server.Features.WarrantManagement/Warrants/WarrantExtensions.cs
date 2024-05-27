@@ -25,6 +25,7 @@ internal static class WarrantExtensions
                 Id = procedure.Id,
                 Color = procedure.Color,
                 Name = procedure.Name,
+                Priority = procedure.Priority
             },
             CanBeAdvancedByFrontOffice = nextTransition?.CanBePerformedByFrontOffice == true,
             CanBeAdvancedByWorkshop = nextTransition?.CanBePerformedByWorkshop == true,

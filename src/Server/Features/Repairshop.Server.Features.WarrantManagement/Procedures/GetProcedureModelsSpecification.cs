@@ -17,6 +17,7 @@ public class GetProcedureModelsSpecification
                 Id = x.Id,
                 Name = x.Name,
                 Color = x.Color,
+                Priority = x.Priority,
                 UsedByWarrants = x
                     .WarrantSteps
                     .Select(x => x.Warrant.Title),

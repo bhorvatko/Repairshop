@@ -9,6 +9,7 @@ internal static class ProcedureModelExtensions
             model.Id,
             model.Name,
             model.Color,
+            model.Priority,
             model.UsedByWarrants,
             model.UsedByWarrantTemplates);
 }

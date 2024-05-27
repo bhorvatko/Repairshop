@@ -5,4 +5,5 @@ public class ProcedureSummaryModel
     public required Guid Id { get; set; }
     public required string Name { get; set; }
     public required string Color { get; set; }
+    public required float Priority { get; set; }
 }

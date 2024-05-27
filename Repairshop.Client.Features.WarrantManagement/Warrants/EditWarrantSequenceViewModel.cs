@@ -33,7 +33,11 @@ public partial class EditWarrantSequenceViewModel
         Steps = new List<WarrantStep>(initialSteps);
     }
 
-    public IEnumerable<ProcedureSummaryViewModel> AvailableProcedures => AllProcedures.ExceptBy(Steps.Select(x => x.Procedure.Id), x => x.Id);
+    public IEnumerable<ProcedureSummaryViewModel> AvailableProcedures => 
+        AllProcedures
+            .OrderBy(p => p.Priority)
+            .ExceptBy(Steps.Select(x => x.Procedure.Id), x => x.Id);
+
     public ProcedureSummaryViewModel? SelectedProcedure { get => _selectedProcedure; set => SetProperty(ref _selectedProcedure, value); }
 
     [RelayCommand]

@@ -16,7 +16,8 @@ internal class GetProcedureSummaryModelsSpecification
             {
                 Id = x.Id,
                 Name = x.Name,
-                Color = x.Color
+                Color = x.Color,
+                Priority = x.Priority
             });
     }
 }

@@ -12,16 +12,19 @@ public class Procedure
     private Procedure(
         Guid id,
         string name,
-        ColorCode color)
+        ColorCode color,
+        ProcedurePriority priority)
     {
         Id = id;
         Color = color;
         Name = name;
+        Priority = priority;
     }
 
     public Guid Id { get; private set; }
     public ColorCode Color { get; private set; }
     public string Name { get; private set; }
+    public ProcedurePriority Priority { get; private set; }
 
     public IReadOnlyCollection<WarrantStep> WarrantSteps { get; private set; } =
         new List<WarrantStep>();
@@ -31,9 +34,10 @@ public class Procedure
 
     public static Procedure Create(
         string name,
-        ColorCode color)
+        ColorCode color,
+        ProcedurePriority priority)
     {
-        return new Procedure(Guid.NewGuid(), name, color);
+        return new Procedure(Guid.NewGuid(), name, color, priority);
     }
 
     public void Update(
@@ -43,4 +47,9 @@ public class Procedure
         Name = name;
         Color = color;
     }
+
+    public void SetPriority(ProcedurePriority priority)
+    {
+        Priority = priority;
+    }   
 }

@@ -3,13 +3,13 @@ using Repairshop.Server.Features.WarrantManagement.Procedures;
 
 namespace Repairshop.Server.Features.WarrantManagement.Data.Converters;
 
-internal class ColorCodeConverter
-    : ValueConverter<ColorCode, string>
+internal class ProcedurePriorityConverter
+    : ValueConverter<ProcedurePriority, float>
 {
-    public ColorCodeConverter() 
+    public ProcedurePriorityConverter()
         : base(
-             colorCode => colorCode.Value,
-             s => ColorCode.FromHexCode(s))
+            v => v.Value,
+            v => ProcedurePriority.FromFloating(v))
     {
     }
 }

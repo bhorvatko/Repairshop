@@ -48,6 +48,17 @@ public class ProcedureController
         return Ok(response);
     }
 
+    [HttpPut]
+    [Route("Priority")]
+    public async Task<IActionResult> SetPriority(
+        [FromBody] SetProcedurePriorityRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
+
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> DeleteProcedure(

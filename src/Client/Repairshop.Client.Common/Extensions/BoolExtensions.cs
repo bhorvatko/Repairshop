@@ -3,6 +3,8 @@
 namespace Repairshop.Client.Common.Extensions;
 public static class BoolExtensions
 {
-    public static Visibility ToVisibility(this bool b) =>
-        b ? Visibility.Visible : Visibility.Collapsed;
+    public static Visibility ToVisibility(
+        this bool b, 
+        Visibility falseVisibility = Visibility.Collapsed) =>
+        b ? Visibility.Visible : falseVisibility;
 }

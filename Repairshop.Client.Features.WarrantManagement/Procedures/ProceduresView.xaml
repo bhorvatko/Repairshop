@@ -24,7 +24,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding Procedures}"
+        <DataGrid ItemsSource="{Binding RowViewModels}"
                   IsReadOnly="True"
                   AutoGenerateColumns="False"
                   CanUserResizeColumns="False"
@@ -38,9 +38,9 @@
                                         Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <md:Card Background="{Binding BackgroundColorBrush}">
-                                <Label Content="{Binding Name}"
-                                       Foreground="{Binding ForegroundColorBrush}" 
+                            <md:Card Background="{Binding Procedure.BackgroundColorBrush}">
+                                <Label Content="{Binding Procedure.Name}"
+                                       Foreground="{Binding Procedure.ForegroundColorBrush}" 
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"/>
                             </md:Card>
@@ -50,12 +50,34 @@
 
                 <DataGridTextColumn Width="*"/>
 
+                <DataGridTemplateColumn Header="Redoslijed"
+                                        Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.MoveProcedureUpCommand}"
+                                        CommandParameter="{Binding Procedure}"
+                                        Visibility="{Binding MoveUpButtonVisibility}">
+                                    <md:PackIcon Kind="ChevronUp" />
+                                </Button>
+                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.MoveProcedureDownCommand}"
+                                        CommandParameter="{Binding Procedure}"
+                                        Visibility="{Binding MoveDownButtonVisibility}">
+                                    <md:PackIcon Kind="ChevronDown" />
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn Header="Uredi">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.UpdateProcedureCommand}"
-                                    CommandParameter="{Binding .}">
+                                    CommandParameter="{Binding Procedure}">
                                 <md:PackIcon Kind="Edit" />
                             </Button>
                         </DataTemplate>
@@ -67,13 +89,13 @@
                         <DataTemplate>
                             <Button Style="{DynamicResource MaterialDesignFlatButton}"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.DeleteProcedureCommand}"
-                                    CommandParameter="{Binding .}"
-                                    IsEnabled="{Binding CanBeDeleted}"
+                                    CommandParameter="{Binding Procedure}"
+                                    IsEnabled="{Binding Procedure.CanBeDeleted}"
                                     ToolTipService.ShowOnDisabled="True">
                                 
                                 <Button.ToolTip>
-                                    <ToolTip Content="{Binding CannotBeDeletedMessage}"
-                                             Visibility="{Binding CannotBeDeletedTooltipVisibility}" />
+                                    <ToolTip Content="{Binding Procedure.CannotBeDeletedMessage}"
+                                             Visibility="{Binding Procedure.CannotBeDeletedTooltipVisibility}" />
                                 </Button.ToolTip>
                                 
                                 <md:PackIcon Kind="Delete" />

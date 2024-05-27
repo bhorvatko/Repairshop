@@ -54,6 +54,7 @@ internal class GetWarrantRequestHandler
                         Id = s.ProcedureId,
                         Color = s.Procedure.Color,
                         Name = s.Procedure.Name,
+                        Priority = s.Procedure.Priority
                     }
                 })
         };

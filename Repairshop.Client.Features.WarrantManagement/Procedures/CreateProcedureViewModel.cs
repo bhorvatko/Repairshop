@@ -18,13 +18,16 @@ public partial class CreateProcedureViewModel
         EditProcedureViewModel = new EditProcedureViewModel();
     }
 
+    public float Priority { get; set; }
+
     public string GetSubmitText() => "KREIRAJ PROCEDURU";
 
     public async Task SubmitForm()
     {
         await _procedureService.CreateProcedure(
             EditProcedureViewModel.Name,
-            EditProcedureViewModel.GetColorAsRgb());
+            EditProcedureViewModel.GetColorAsRgb(),
+            Priority);
     }
 
     public bool ValidateForm() =>

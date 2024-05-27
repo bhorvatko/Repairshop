@@ -50,7 +50,8 @@ internal class GetTechnicianModelsSpecifcation
                 {
                     Id = w.CurrentStep!.Procedure.Id,
                     Color = w.CurrentStep!.Procedure.Color,
-                    Name = w.CurrentStep!.Procedure.Name
+                    Name = w.CurrentStep!.Procedure.Name,
+                    Priority = w.CurrentStep!.Procedure.Priority
                 }
             })
         });

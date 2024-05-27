@@ -12,14 +12,18 @@ public class ProcedureSummaryViewModel
     protected ProcedureSummaryViewModel(
         string name,
         Color backgroundColor,
-        Guid id)
+        Guid id,
+        float priority)
     {
         _name = name;
         _backgroundColor = backgroundColor;
         Id = id;
+        Priority = priority;
     }
 
+    public Guid Id { get; private set; }
     public string Name { get => _name; set => SetProperty(ref _name, value); }
+    public float Priority { get; private set; }
 
     public Color BackgroundColor
     { 
@@ -36,18 +40,22 @@ public class ProcedureSummaryViewModel
     public Color ForegroundColor => GetForegroundColor();
     public Brush BackgroundColorBrush => ConvertToBrush(BackgroundColor);
     public Brush ForegroundColorBrush => ConvertToBrush(GetForegroundColor());
-    public Guid Id { get; private set; }
 
     public static ProcedureSummaryViewModel Create(
         Guid id,
         string name,
-        string color)
+        string color,
+        float priority)
     {
         return new ProcedureSummaryViewModel(
             name, 
             (Color)ColorConverter.ConvertFromString("#" + color),
-            id);
+            id,
+            priority);
     }
+
+    public void SetPriority(float priority) =>
+        Priority = priority;
 
     private Color GetForegroundColor() =>
         new[] { (int)BackgroundColor.R, (int)BackgroundColor.G, (int)BackgroundColor.B }.Average() > 255 / 2

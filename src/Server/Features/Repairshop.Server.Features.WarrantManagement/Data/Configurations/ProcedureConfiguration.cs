@@ -20,5 +20,8 @@ internal class ProcedureConfiguration
 
         builder.Property(x => x.Color)
             .HasMaxLength(6);
+
+        builder.Property(x => x.Priority)
+            .HasDefaultValue(ProcedurePriority.FromFloating(0));
     }
 }

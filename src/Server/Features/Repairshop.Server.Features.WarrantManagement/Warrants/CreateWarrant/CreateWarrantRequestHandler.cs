@@ -43,6 +43,7 @@ internal class CreateWarrantRequestHandler
             request.Title,
             request.Deadline,
             request.IsUrgnet,
+            request.Number,
             stepSequence,
             warrant => _warrants.AddAsync(warrant, cancellationToken));
 

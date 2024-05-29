@@ -14,12 +14,14 @@ public class WarrantTests
         string title = "Title";
         DateTime deadline = new DateTime(2000, 1, 1);
         bool isUrgent = true;
+        int number = 1;
         IEnumerable<WarrantStep> steps = await WarrantStepHelper.CreateStepSequence(3);
 
         Warrant warrant = await Warrant.Create(
             title,
             deadline,
             isUrgent,
+            number,
             steps,
             _ => Task.CompletedTask);
 
@@ -27,6 +29,7 @@ public class WarrantTests
         warrant.Deadline.Should().Be(deadline);
         warrant.IsUrgent.Should().Be(isUrgent);
         warrant.Steps.Count().Should().Be(steps.Count());
+        warrant.Number.Should().Be(number);
     }
 
     [Fact]
@@ -85,6 +88,7 @@ public class WarrantTests
         string updatedTitle = "Updated title";
         DateTime updatedDeadline = warrant.Deadline.AddYears(1);
         bool updatedIsUrgent = !warrant.IsUrgent;
+        int updatedNumber = 2;
         IEnumerable<WarrantStep> updatedSteps = warrant.Steps.Take(2);
 
         // Act
@@ -92,6 +96,7 @@ public class WarrantTests
             updatedTitle,
             updatedDeadline,
             updatedIsUrgent,
+            updatedNumber,
             updatedSteps,
             null,
             () => Task.CompletedTask);
@@ -101,6 +106,7 @@ public class WarrantTests
             x.Title == updatedTitle
                 && x.Deadline == updatedDeadline
                 && x.IsUrgent == updatedIsUrgent
+                && x.Number == updatedNumber
                 && x.Steps.Count() == updatedSteps.Count());
     }
 

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Repairshop.Client.Common.ClientContext;
+using Repairshop.Client.Common.Extensions;
 using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
@@ -34,7 +35,7 @@ public partial class WarrantPreviewControlViewModel
         _navigationService = navigationService;
         _warrantService = warrantService;
         _clientContextProvider = clientContextProvider;
-        this._formService = formService;
+        _formService = formService;
         _animationClock.Tick += UpdateLabelContent;
     }
 
@@ -46,6 +47,10 @@ public partial class WarrantPreviewControlViewModel
 
     public string LabelContent => 
         _animationClock.State ? Warrant.Title : DeadlineDescription;
+
+    public Visibility WarrantNumberVisibility =>
+        (!_animationClock.State).ToVisibility();
+
 
     [RelayCommand]
     public async Task UpdateWarrant()
@@ -65,6 +70,7 @@ public partial class WarrantPreviewControlViewModel
             vm.EditWarrantViewModel.Subject = warrant.Title;
             vm.EditWarrantViewModel.Deadline = warrant.Deadline;
             vm.EditWarrantViewModel.IsUrgent = warrant.IsUrgent;
+            vm.EditWarrantViewModel.Number = warrant.Number.ToString();
             vm.EditWarrantViewModel.Steps = warrant.Steps;
         });
     }
@@ -123,6 +129,7 @@ public partial class WarrantPreviewControlViewModel
     private void UpdateLabelContent(object? sender, EventArgs eventArgs)
     {
         OnPropertyChanged(nameof(LabelContent));
+        OnPropertyChanged(nameof(WarrantNumberVisibility));
     }
 
     private class AnimationClock : DispatcherTimer

@@ -8,6 +8,7 @@ public class WarrantModel
     public required string Title { get; set; }
     public required DateTime Deadline { get; set; }
     public required bool IsUrgent { get; set; }
+    public required int Number { get; set; }
     public required Guid? TechnicianId { get; set; }
     public required ProcedureSummaryModel Procedure { get; set; }
     public required bool CanBeAdvancedByWorkshop { get; set; }

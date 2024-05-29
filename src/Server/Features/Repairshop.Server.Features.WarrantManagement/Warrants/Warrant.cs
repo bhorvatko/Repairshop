@@ -17,6 +17,7 @@ public class Warrant
     public string Title { get; private set; }
     public DateTime Deadline { get; private set; }
     public bool IsUrgent { get; private set; }
+    public int Number { get; private set; }
     public IEnumerable<WarrantStep> Steps { get; private set; }
     public Guid? CurrentStepId { get; private set; }
     public WarrantStep CurrentStep { get; private set; }
@@ -27,6 +28,7 @@ public class Warrant
         string title,
         DateTime deadline,
         bool isUrgent,
+        int number,
         IEnumerable<WarrantStep> steps,
         Func<Warrant, Task> beforeFinalising)
     {
@@ -36,7 +38,8 @@ public class Warrant
             Title = title,
             Deadline = deadline,
             IsUrgent = isUrgent,
-            Steps = steps
+            Steps = steps,
+            Number = number
         };
 
         await beforeFinalising(warrant);
@@ -93,6 +96,7 @@ public class Warrant
         string title,
         DateTime deadline,
         bool isUrgent,
+        int number,
         IEnumerable<WarrantStep> steps,
         Guid? currentStepProcedureId,
         Func<Task> beforeFinalising)
@@ -100,6 +104,7 @@ public class Warrant
         Title = title;
         Deadline = deadline;
         IsUrgent = isUrgent;
+        Number = number;
         Steps = steps;
         CurrentStep = null!;
 

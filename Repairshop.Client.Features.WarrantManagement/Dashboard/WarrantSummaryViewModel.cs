@@ -12,6 +12,7 @@ public class WarrantSummaryViewModel
         DateTime deadline,
         ProcedureSummaryViewModel procedure,
         string title,
+        int number,
         bool canBeRolledBack,
         bool canBeAdvanced,
         Guid? nextStepId,
@@ -23,6 +24,7 @@ public class WarrantSummaryViewModel
         Deadline = deadline;
         Procedure = procedure;
         Title = title;
+        Number = number;
         CanBeRolledBack = canBeRolledBack;
         CanBeAdvanced = canBeAdvanced;
         NextStepId = nextStepId;
@@ -35,6 +37,7 @@ public class WarrantSummaryViewModel
     public DateTime Deadline { get; private set; }
     public ProcedureSummaryViewModel Procedure { get; private set; }
     public string Title { get; private set; }
+    public int Number { get; private set; }
     public bool CanBeRolledBack { get; private set; }
     public bool CanBeAdvanced { get; private set; }
     public Guid? NextStepId { get; private set; }
@@ -47,12 +50,15 @@ public class WarrantSummaryViewModel
     public Visibility CanBeAdvancedVisibility => 
         (CanBeAdvanced && NextStepId is not null).ToVisibility();
 
+    public string NumberString => "RN" + Number.ToString();
+
     public static WarrantSummaryViewModel Create(
         Guid id,
         bool isUrgent,
         DateTime deadline,
         ProcedureSummaryViewModel procedure,
         string title,
+        int number,
         bool canBeRolledBack,
         bool canBeAdvanced,
         Guid? nextStepId,
@@ -64,6 +70,7 @@ public class WarrantSummaryViewModel
             deadline,
             procedure,
             title,
+            number,
             canBeRolledBack,
             canBeAdvanced,
             nextStepId,

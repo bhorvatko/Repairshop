@@ -35,6 +35,7 @@ public class CreateWarrantTests
             Deadline = new DateTime(2000, 1, 1),
             IsUrgnet = true,
             Title = "Title",
+            Number = 1,
             Steps = new[]
             {
                 new WarrantStepDto()
@@ -65,6 +66,7 @@ public class CreateWarrantTests
         createdEntity.Deadline.Should().Be(new DateTime(2000, 1, 1));
         createdEntity.IsUrgent.Should().BeTrue();
         createdEntity.Title.Should().Be("Title");
+        createdEntity.Number.Should().Be(1);
         createdEntity.Steps.Should().HaveCount(2);
         createdEntity.CurrentStep!.ProcedureId.Should().Be(firstProcedure.Id);
         createdEntity.Steps.OrderByDescending(x => x.NextTransition is not null).Should().SatisfyRespectively(

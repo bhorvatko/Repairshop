@@ -54,6 +54,7 @@ internal class UpdateWarrantRequestHandler
             request.Title,
             request.Deadline,
             request.IsUrgent,
+            request.Number,
             stepSequence,
             request.CurrentStepProcedureId,
             () => _warrants.SaveChangesAsync(cancellationToken));

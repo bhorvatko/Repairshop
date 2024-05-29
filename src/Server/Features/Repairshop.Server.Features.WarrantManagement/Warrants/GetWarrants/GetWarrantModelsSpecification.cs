@@ -18,6 +18,7 @@ internal class GetWarrantModelsSpecification
             IsUrgent = x.IsUrgent,
             TechnicianId = x.TechnicianId,
             Title = x.Title,
+            Number = x.Number,
             CanBeAdvancedByFrontOffice =
                 x.CurrentStep!.NextTransition != null
                     ? x.CurrentStep!.NextTransition.CanBePerformedByFrontOffice

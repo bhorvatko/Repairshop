@@ -9,6 +9,7 @@ public interface IWarrantService
         string title,
         DateTime deadline,
         bool isUrgent,
+        int number,
         IEnumerable<CreateWarrantStepDto> steps);
 
     Task UpdateWarrant(
@@ -16,6 +17,7 @@ public interface IWarrantService
         string title,
         DateTime deadline,
         bool isUrgent,
+        int number,
         IEnumerable<CreateWarrantStepDto> steps,
         Guid? currentStepProcedureId);
 

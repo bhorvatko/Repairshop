@@ -23,6 +23,7 @@ internal class WarrantSummaryViewModelFactory
             model.Deadline,
             model.Procedure.ToViewModel(),
             model.Title,
+            model.Number,
             CanBeTransitioned(model.CanBeRolledBackByFrontOffice, model.CanBeRolledBackByWorkshop),
             CanBeTransitioned(model.CanBeAdvancedByFrontOffice, model.CanBeAdvancedByWorkshop),
             model.NextStepId,

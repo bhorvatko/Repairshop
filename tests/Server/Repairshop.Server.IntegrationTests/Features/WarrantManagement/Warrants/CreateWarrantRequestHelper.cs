@@ -13,6 +13,7 @@ internal static class CreateWarrantRequestHelper
             Title = title,
             Deadline = deadline ?? DateTime.MaxValue,
             IsUrgnet = isUrgent,
+            Number = 1,
             Steps = steps
         };
 }

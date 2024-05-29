@@ -37,6 +37,7 @@ internal class GetWarrantRequestHandler
             Deadline = warrant.Deadline,
             IsUrgent = warrant.IsUrgent,
             Title = warrant.Title,
+            Number = warrant.Number,
             WarrantSteps = warrant
                 .GetStepsInSequence()
                 .Select(s => new WarrantStepModel()

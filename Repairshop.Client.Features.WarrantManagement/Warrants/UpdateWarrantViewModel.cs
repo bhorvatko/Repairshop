@@ -38,6 +38,7 @@ public partial class UpdateWarrantViewModel
                 EditWarrantViewModel.Subject,
                 EditWarrantViewModel.Deadline,
                 EditWarrantViewModel.IsUrgent,
+                int.Parse(EditWarrantViewModel.Number),
                 EditWarrantViewModel.Steps
                     .Select(x => new CreateWarrantStepDto()
                     {

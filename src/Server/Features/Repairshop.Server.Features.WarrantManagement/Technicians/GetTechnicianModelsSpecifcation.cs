@@ -20,6 +20,7 @@ internal class GetTechnicianModelsSpecifcation
                 Id = w.Id,
                 Deadline = w.Deadline,
                 IsUrgent = w.IsUrgent,
+                Number = w.Number,
                 TechnicianId = w.TechnicianId,
                 Title = w.Title,
                 CanBeAdvancedByFrontOffice =

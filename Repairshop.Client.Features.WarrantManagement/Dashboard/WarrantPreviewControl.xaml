@@ -29,10 +29,17 @@
 
     </UserControl.Resources>
 
-    <md:Card Background="{Binding Warrant.Procedure.BackgroundColorBrush}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDoubleClick">
+            <i:InvokeCommandAction Command="{Binding UpdateWarrantCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
-        <md:Card.Style>
-            <Style TargetType="{x:Type md:Card}">
+    <DockPanel HorizontalAlignment="Stretch"
+               LastChildFill="True">
+
+        <DockPanel.Style>
+            <Style TargetType="{x:Type DockPanel}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding PlayUpdateAnimation}"
                                  Value="True">
@@ -46,53 +53,66 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </md:Card.Style>
+        </DockPanel.Style>
 
-        <Grid>
+        <md:Card Background="{Binding Warrant.Procedure.BackgroundColorBrush}"
+                 Visibility="{Binding WarrantNumberVisibility}"
+                 DockPanel.Dock="Left"
+                 Margin="0, 0, 5, 0">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       Text="{Binding LabelContent}"
+            <TextBlock Text="{Binding Warrant.NumberString}" 
                        Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"
                        FontSize="20"
-                       Padding="10">
+                       Padding="10"
+                       VerticalAlignment="Center"/>
 
-                <TextBlock.InputBindings>
-                    <MouseBinding MouseAction="LeftDoubleClick"
-                                  Command="{Binding UpdateWarrantCommand}" />
-                </TextBlock.InputBindings>
+        </md:Card>
+        
+        <md:Card Background="{Binding Warrant.Procedure.BackgroundColorBrush}"
+                 DockPanel.Dock="Right">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="{Binding LabelContent}"
+                           Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"
+                           FontSize="20"
+                           Padding="10"
+                           VerticalAlignment="Center">
+
+                    <TextBlock.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick"
+                                      Command="{Binding UpdateWarrantCommand}" />
+                    </TextBlock.InputBindings>
             
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding UpdateWarrantCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            </TextBlock>
+                </TextBlock>
 
-            <Button Grid.Column="1"
-                    Visibility="{Binding Warrant.CanBeRolledBackVisibility}"
-                    Command="{Binding RollbackWarrantCommand}">
+                <Button Grid.Column="1"
+                        Visibility="{Binding Warrant.CanBeRolledBackVisibility}"
+                        Command="{Binding RollbackWarrantCommand}">
 
-                <md:PackIcon Kind="ChevronLeft"
-                             Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
+                    <md:PackIcon Kind="ChevronLeft"
+                                 Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
 
-            </Button>
+                </Button>
 
-            <Button Grid.Column="2"
-                    Visibility="{Binding Warrant.CanBeAdvancedVisibility}"
-                    Command="{Binding AdvanceWarrantCommand}">
+                <Button Grid.Column="2"
+                        Visibility="{Binding Warrant.CanBeAdvancedVisibility}"
+                        Command="{Binding AdvanceWarrantCommand}">
 
-                <md:PackIcon Kind="ChevronRight"
-                             Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
+                    <md:PackIcon Kind="ChevronRight"
+                                 Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}" />
 
-            </Button>
+                </Button>
 
-        </Grid>
-    </md:Card>
+            </Grid>
+        </md:Card>
+    </DockPanel>
     
 </UserControl>

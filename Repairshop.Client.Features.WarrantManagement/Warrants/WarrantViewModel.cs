@@ -1,20 +1,20 @@
-﻿using Repairshop.Client.Features.WarrantManagement.Procedures;
-
-namespace Repairshop.Client.Features.WarrantManagement.Warrants;
+﻿namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public class WarrantViewModel
 {
-    public WarrantViewModel(
+    private WarrantViewModel(
         Guid id, 
         bool isUrgent, 
         DateTime deadline,  
         string title, 
+        int number,
         IEnumerable<WarrantStep> steps)
     {
         Id = id;
         IsUrgent = isUrgent;
         Deadline = deadline;
         Title = title;
+        Number = number;
         Steps = steps;
     }
 
@@ -22,14 +22,15 @@ public class WarrantViewModel
     public bool IsUrgent { get; private set; }
     public DateTime Deadline { get; private set; }
     public string Title { get; private set; }
+    public int Number { get; private set; }
     public IEnumerable<WarrantStep> Steps { get; private set; }
 
     public static WarrantViewModel Create(
         Guid id,
         bool isUrgent,
         DateTime deadline,
-        ProcedureSummaryViewModel procedure,
         string title,
+        int number,
         IEnumerable<WarrantStep> steps)
     {
         return new WarrantViewModel(
@@ -37,6 +38,7 @@ public class WarrantViewModel
             isUrgent,
             deadline,
             title,
+            number,
             steps);
     }
 }

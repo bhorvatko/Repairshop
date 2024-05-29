@@ -19,6 +19,7 @@ internal static class WarrantExtensions
             Deadline = warrantEntity.Deadline,
             IsUrgent = warrantEntity.IsUrgent,
             Title = warrantEntity.Title,
+            Number = warrantEntity.Number,
             TechnicianId = warrantEntity.TechnicianId,
             Procedure = new ProcedureSummaryModel()
             {

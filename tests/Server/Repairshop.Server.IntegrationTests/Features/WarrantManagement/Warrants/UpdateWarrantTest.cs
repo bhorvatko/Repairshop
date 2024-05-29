@@ -34,6 +34,7 @@ internal class UpdateWarrantTest
             Id = warrant.Id,
             Title = warrant.Title + "aasdfasd",
             IsUrgent = !warrant.IsUrgent,
+            Number = warrant.Number + 1,
             Deadline = warrant.Deadline.AddYears(1),
             Steps = warrant.Steps.Take(2).Select(x => new WarrantStepDto()
             {
@@ -55,6 +56,7 @@ internal class UpdateWarrantTest
             x.Title == request.Title
                 && x.Id == request.Id
                 && x.IsUrgent == request.IsUrgent
+                && x.Number == request.Number
                 && x.Deadline == request.Deadline
                 && x.Steps.Count() == request.Steps.Count()
                 && x.CurrentStep!.ProcedureId == request.CurrentStepProcedureId);
@@ -76,6 +78,7 @@ internal class UpdateWarrantTest
             Title = warrant.Title,
             IsUrgent = warrant.IsUrgent,
             Deadline = warrant.Deadline,
+            Number = warrant.Number,
             Steps = warrant.Steps.Take(2).Select(x => new WarrantStepDto()
             {
                 ProcedureId = x.ProcedureId,

@@ -28,6 +28,7 @@ internal class WarrantService
         string title, 
         DateTime deadline, 
         bool isUrgent, 
+        int number,
         IEnumerable<CreateWarrantStepDto> steps)
     {
         CreateWarrantRequest request = new CreateWarrantRequest()
@@ -35,6 +36,7 @@ internal class WarrantService
             Title = title,
             Deadline = deadline,
             IsUrgnet = isUrgent,
+            Number = number,
             Steps = steps.Select(x => x.ToWarrantStepDto())
         };
 
@@ -61,6 +63,7 @@ internal class WarrantService
         string title, 
         DateTime deadline, 
         bool isUrgent, 
+        int number, 
         IEnumerable<CreateWarrantStepDto> steps,
         Guid? currentStepProcedureId)
     {
@@ -70,6 +73,7 @@ internal class WarrantService
             Title = title,
             Deadline = deadline,
             IsUrgent = isUrgent,
+            Number = number,
             Steps = steps.Select(x => x.ToWarrantStepDto()),
             CurrentStepProcedureId = currentStepProcedureId
         };
@@ -83,11 +87,12 @@ internal class WarrantService
         GetWarrantResponse response =
             await _apiClient.Get<GetWarrantResponse>($"{WarrantsEndpoint}/{id}");
 
-        return new WarrantViewModel(
+        return WarrantViewModel.Create(
             response.Id,
             response.IsUrgent,
             response.Deadline,
             response.Title,
+            response.Number,
             response.WarrantSteps.Select(x => x.ToViewModel()));
     }
 

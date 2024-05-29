@@ -45,6 +45,7 @@ public static class WarrantHelper
             title,
             deadline ?? new DateTime(2000, 1, 1),
             isUrgent,
+            1,
             steps ?? await WarrantStepHelper.CreateStepSequence(3),
             dbContext is null 
                 ? warrant => Task.CompletedTask

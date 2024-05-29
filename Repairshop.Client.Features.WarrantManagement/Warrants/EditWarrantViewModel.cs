@@ -29,6 +29,8 @@ public partial class EditWarrantViewModel
     [ObservableProperty]
     private DateTime _deadlineTime = DateTime.Now;
 
+    private string _number = 0.ToString();
+
     private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
 
     public EditWarrantViewModel(IDialogService dialogService)
@@ -62,6 +64,18 @@ public partial class EditWarrantViewModel
         {
             DeadlineDate = value.Date;
             DeadlineTime = new DateTime(value.TimeOfDay.Ticks);
+        }
+    }
+
+    public string Number
+    {
+        get => _number;
+        set
+        {
+            if (int.TryParse(value, out _))
+            {
+                SetProperty(ref _number, value);
+            }
         }
     }
 

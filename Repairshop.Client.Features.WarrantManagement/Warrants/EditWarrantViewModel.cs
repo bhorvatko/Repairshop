@@ -5,6 +5,7 @@ using Repairshop.Client.Common.Validation;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 using System.ComponentModel.DataAnnotations;
+using System.Windows;
 
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
@@ -29,9 +30,13 @@ public partial class EditWarrantViewModel
     [ObservableProperty]
     private DateTime _deadlineTime = DateTime.Now;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentStepVisibility))]
+    private bool _allowCurrentStepSelection;
+
     private string _number = 0.ToString();
 
-    private IEnumerable<WarrantStep> _steps = Enumerable.Empty<WarrantStep>();
+    private IReadOnlyCollection<WarrantStep> _steps = new List<WarrantStep>();
 
     public EditWarrantViewModel(IDialogService dialogService)
     {
@@ -41,7 +46,7 @@ public partial class EditWarrantViewModel
     [NotEmpty]
     public IEnumerable<ProcedureSummaryViewModel> SequenceProcedures => Steps.Select(x => x.Procedure);
 
-    public IEnumerable<WarrantStep> Steps
+    public IReadOnlyCollection<WarrantStep> Steps
     {
         get => _steps;
         set
@@ -78,6 +83,9 @@ public partial class EditWarrantViewModel
             }
         }
     }
+
+    public Visibility CurrentStepVisibility => 
+        AllowCurrentStepSelection ? Visibility.Visible : Visibility.Collapsed;
 
     [RelayCommand]
     public async Task EditWarrantSequence()

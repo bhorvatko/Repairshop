@@ -7,5 +7,6 @@ public class GetWarrantResponse
     public required DateTime Deadline { get; set; }
     public required bool IsUrgent { get; set; }
     public required int Number { get; set; }
+    public required Guid ProcedureId { get; set; }
     public required IEnumerable<WarrantStepModel> WarrantSteps { get; set; }
 }

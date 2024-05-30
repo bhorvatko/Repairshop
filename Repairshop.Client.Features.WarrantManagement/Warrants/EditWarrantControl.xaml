@@ -109,11 +109,24 @@
 
         <Label Grid.Row="5" Grid.Column="0" 
                Content="Trenutačni korak" 
-               Visibility="Collapsed"/>
+               VerticalAlignment="Center"
+               Visibility="{Binding ElementName=editWarrantControl, Path=ViewModel.CurrentStepVisibility}"/>
 
         <ComboBox Grid.Row="5" Grid.Column="1"  
                   HorizontalContentAlignment="Stretch"
-                  Visibility="Collapsed">
+                  ItemsSource="{Binding ElementName=editWarrantControl, Path=ViewModel.Steps}"
+                  SelectedItem="{Binding ElementName=editWarrantControl, Path=ViewModel.CurrentStep, Mode=TwoWay}"
+                  Visibility="{Binding ElementName=editWarrantControl, Path=ViewModel.CurrentStepVisibility}"
+                  Margin="5">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <md:Card Background="{Binding Procedure.BackgroundColorBrush}"
+                             Padding="5">
+                        <TextBlock Text="{Binding Procedure.Name}"
+                                   Foreground="{Binding Procedure.ForegroundColorBrush}" />
+                    </md:Card>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
         </ComboBox>
 
     </Grid>

@@ -4,7 +4,7 @@ using Repairshop.Client.Features.WarrantManagement.Procedures;
 namespace Repairshop.Client.Features.WarrantManagement.Warrants;
 
 public class WarrantStep
-    : ObservableObject
+    : ObservableObject, IEquatable<WarrantStep>
 {
     private bool _canBeTransitionedToByFrontDesk;
     private bool _canBeTransitionedToByWorkshop;
@@ -63,5 +63,12 @@ public class WarrantStep
             procedure, 
             canBeTransitionedToByFrontDesk, 
             canBeTransitionedToByWorkshop);
+    }
+
+    public bool Equals(WarrantStep? other)
+    {
+        if (other is null) return false;
+
+        return Procedure.Id == other.Procedure.Id;
     }
 }

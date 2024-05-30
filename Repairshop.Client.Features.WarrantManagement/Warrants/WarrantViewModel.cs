@@ -8,6 +8,7 @@ public class WarrantViewModel
         DateTime deadline,  
         string title, 
         int number,
+        Guid procedureId,
         IEnumerable<WarrantStep> steps)
     {
         Id = id;
@@ -15,6 +16,7 @@ public class WarrantViewModel
         Deadline = deadline;
         Title = title;
         Number = number;
+        ProcedureId = procedureId;
         Steps = steps;
     }
 
@@ -23,6 +25,7 @@ public class WarrantViewModel
     public DateTime Deadline { get; private set; }
     public string Title { get; private set; }
     public int Number { get; private set; }
+    public Guid ProcedureId { get; private set; }
     public IEnumerable<WarrantStep> Steps { get; private set; }
 
     public static WarrantViewModel Create(
@@ -31,6 +34,7 @@ public class WarrantViewModel
         DateTime deadline,
         string title,
         int number,
+        Guid procedureId,
         IEnumerable<WarrantStep> steps)
     {
         return new WarrantViewModel(
@@ -39,6 +43,7 @@ public class WarrantViewModel
             deadline,
             title,
             number,
+            procedureId,
             steps);
     }
 }

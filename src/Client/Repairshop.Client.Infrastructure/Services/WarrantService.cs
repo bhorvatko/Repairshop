@@ -93,6 +93,7 @@ internal class WarrantService
             response.Deadline,
             response.Title,
             response.Number,
+            response.ProcedureId,
             response.WarrantSteps.Select(x => x.ToViewModel()));
     }
 

@@ -71,7 +71,12 @@ public partial class WarrantPreviewControlViewModel
             vm.EditWarrantViewModel.Deadline = warrant.Deadline;
             vm.EditWarrantViewModel.IsUrgent = warrant.IsUrgent;
             vm.EditWarrantViewModel.Number = warrant.Number.ToString();
-            vm.EditWarrantViewModel.Steps = warrant.Steps;
+            vm.EditWarrantViewModel.Steps = warrant.Steps.ToList();
+
+            vm.EditWarrantViewModel.CurrentStep =
+                warrant.Steps.FirstOrDefault(x => x.Procedure.Id == warrant.ProcedureId);
+
+            vm.EditWarrantViewModel.AllowCurrentStepSelection = true;
         });
     }
 

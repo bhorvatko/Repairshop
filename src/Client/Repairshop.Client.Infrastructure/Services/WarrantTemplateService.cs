@@ -33,6 +33,23 @@ internal class WarrantTemplateService
             request);
     }
 
+    public async Task UpdateWarrantTemplate(
+        Guid warrantTemplateId,
+        string name,
+        IEnumerable<CreateWarrantStepDto> steps)
+    {
+        UpdateWarrantTemplateRequest request = new()
+        {
+            Id = warrantTemplateId,
+            Name = name,
+            Steps = steps.Select(x => x.ToWarrantStepDto()).ToList()
+        };
+
+        await _apiClient.Put<UpdateWarrantTemplateRequest, UpdateWarrantTemplateResponse>(
+            WarrantTemplatesEndpoint,
+            request);
+    }
+
     public async Task<IReadOnlyCollection<WarrantTemplateViewModel>> GetWarrantTemplates()
     {
         GetWarrantTemplatesResponse response = 

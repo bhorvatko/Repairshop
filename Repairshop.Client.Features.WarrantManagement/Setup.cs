@@ -3,6 +3,7 @@ using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Dashboard.WarrantFiltering;
 using Repairshop.Client.Features.WarrantManagement.Technicians;
 using Repairshop.Client.Features.WarrantManagement.Warrants;
+using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
 namespace Repairshop.Client.Features.WarrantManagement;
 
@@ -15,5 +16,6 @@ public static class Setup
             .AddTransient<ProcedureLegendViewModel>()
             .AddTransient<WarrantFilterSelectionViewModelFactory>()
             .AddTransient<EditWarrantViewModel>()
-            .AddTransient<EditTechnicianViewModel>();
+            .AddTransient<EditTechnicianViewModel>()
+            .AddTransient<EditWarrantTemplateViewModel>();
 }

@@ -43,9 +43,18 @@ public partial class WarrantTemplateMaintenanceViewModel
     }
 
     [RelayCommand]
-    private void EditWarrantTemplate(WarrantTemplateViewModel warrantTemplate)
+    private async Task EditWarrantTemplate(WarrantTemplateViewModel warrantTemplate)
     {
-        throw new NotImplementedException();
+        await _formService.ShowFormAsDialog<
+            UpdateWarrantTemplateView,
+            UpdateWarrantTemplateViewModel>(vm =>
+            {
+                vm.WarrantTemplateId = warrantTemplate.Id;
+                vm.EditWarrantTemplateViewModel.Name = warrantTemplate.Name;
+                vm.EditWarrantTemplateViewModel.Steps = warrantTemplate.Steps;
+            });
+
+        await _loadingIndicatorService.ShowLoadingIndicatorForAction(LoadWarrantTemplates);
     }
 
     [RelayCommand]

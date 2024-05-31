@@ -4,40 +4,40 @@ using Repairshop.Client.Features.WarrantManagement.Interfaces;
 
 namespace Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
-public partial class CreateWarrantTemplateViewModel
+public class UpdateWarrantTemplateViewModel
     : IFormViewModel
 {
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly IWarrantTemplateService _warrantTemplateService;
 
-    public CreateWarrantTemplateViewModel(
+    public UpdateWarrantTemplateViewModel(
         ILoadingIndicatorService loadingIndicatorService,
         IWarrantTemplateService warrantTemplateService,
         EditWarrantTemplateViewModel editWarrantTemplateViewModel)
     {
         _loadingIndicatorService = loadingIndicatorService;
         _warrantTemplateService = warrantTemplateService;
-
         EditWarrantTemplateViewModel = editWarrantTemplateViewModel;
     }
 
     public EditWarrantTemplateViewModel EditWarrantTemplateViewModel { get; private set; }
+    public Guid WarrantTemplateId { get; set; }
+
+    public string GetSubmitText() => "AŽURIRAJ PREDLOŽAK";
 
     public async Task SubmitForm()
     {
-        await _loadingIndicatorService.ShowLoadingIndicatorForAction(CreateWarrantTemplate);
+        await _loadingIndicatorService.ShowLoadingIndicatorForAction(UpdateWarrantTemplate);
     }
-
-    public string GetSubmitText() => "KREIRAJ PREDLOŽAK";
 
     public bool ValidateForm() => EditWarrantTemplateViewModel.Validate();
 
-    private async Task CreateWarrantTemplate()
+    private async Task UpdateWarrantTemplate()
     {
-        await _warrantTemplateService.CreateWarrantTemplate(
+        await _warrantTemplateService.UpdateWarrantTemplate(
+            WarrantTemplateId,
             EditWarrantTemplateViewModel.Name,
-            EditWarrantTemplateViewModel
-                .Steps
+            EditWarrantTemplateViewModel.Steps
                 .Select(x => new CreateWarrantStepDto()
                 {
                     CanBeTransitionedToByFrontDesk = x.CanBeTransitionedToByFrontDesk,

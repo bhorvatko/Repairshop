@@ -8,5 +8,10 @@ public interface IWarrantTemplateService
         string name,
         IEnumerable<CreateWarrantStepDto> steps);
 
+    Task UpdateWarrantTemplate(
+        Guid warrantTemplateId,
+        string name,
+        IEnumerable<CreateWarrantStepDto> steps);
+
     Task<IReadOnlyCollection<WarrantTemplateViewModel>> GetWarrantTemplates();
 }

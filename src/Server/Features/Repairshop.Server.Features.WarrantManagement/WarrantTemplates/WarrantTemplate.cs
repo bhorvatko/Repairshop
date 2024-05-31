@@ -24,4 +24,12 @@ public class WarrantTemplate
             Steps = steps.ToList()
         };
     }
+
+    public void Update(
+        string name,
+        IEnumerable<WarrantTemplateStep> steps)
+    {
+        Name = name;
+        Steps = steps.ToList();
+    }
 }

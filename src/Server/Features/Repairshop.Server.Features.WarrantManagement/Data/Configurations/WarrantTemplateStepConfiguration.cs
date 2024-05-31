@@ -20,5 +20,10 @@ internal class WarrantTemplateStepConfiguration
             .HasOne(x => x.Procedure)
             .WithMany(x => x.WarrantTemplateSteps)
             .HasForeignKey(x => x.ProcedureId);
+
+        builder
+            .HasOne(x => x.WarrantTemplate)
+            .WithMany(x => x.Steps)
+            .HasForeignKey(x => x.WarrantTemplateId);
     }
 }

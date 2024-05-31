@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace Repairshop.Server.IntegrationTests.Features.WarrantManagement.Warrants;
 
-internal class UpdateWarrantTest
+public class UpdateWarrantTest
     : IntegrationTestBase
 {
     public UpdateWarrantTest(
@@ -19,15 +19,13 @@ internal class UpdateWarrantTest
     {
     }
 
+    [Fact]
     public async Task Updating_a_warrant()
     {
         // Arrange
         Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
         int originalNumberOfSteps = warrant.Steps.Count();
-
-        _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
 
         UpdateWarrantRequest request = new()
         {
@@ -46,11 +44,16 @@ internal class UpdateWarrantTest
         };
 
         // Act
-        await _client.PostAsJsonAsync("Warrants", request);
+        await _client.PutAsJsonAsync("Warrants", request);
 
         // Assert
         Warrant updatedWarrant =
-            _dbContext.Set<Warrant>().AsNoTracking().Include(x => x.Steps).Single();
+            _dbContext
+                .Set<Warrant>()
+                .AsNoTracking()
+                .Include(x => x.Steps)
+                .Include(x => x.CurrentStep)
+                .Single();
 
         updatedWarrant.Should().Match<Warrant>(x =>
             x.Title == request.Title
@@ -62,15 +65,11 @@ internal class UpdateWarrantTest
                 && x.CurrentStep!.ProcedureId == request.CurrentStepProcedureId);
     }
 
+    [Fact]
     public async Task Updating_a_warrant_removes_the_previous_step_sequence()
     {
         // Arrange
         Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
-
-        int originalNumberOfSteps = warrant.Steps.Count();
-
-        _dbContext.Add(warrant);
-        _dbContext.SaveChanges();
 
         UpdateWarrantRequest request = new()
         {
@@ -79,7 +78,7 @@ internal class UpdateWarrantTest
             IsUrgent = warrant.IsUrgent,
             Deadline = warrant.Deadline,
             Number = warrant.Number,
-            Steps = warrant.Steps.Take(2).Select(x => new WarrantStepDto()
+            Steps = warrant.Steps.Take(warrant.Steps.Count() - 1).Select(x => new WarrantStepDto()
             {
                 ProcedureId = x.ProcedureId,
                 CanBeTransitionedToByFrontDesk = true,
@@ -88,7 +87,7 @@ internal class UpdateWarrantTest
         };
 
         // Act
-        await _client.PostAsJsonAsync("Warrants", request);
+        await _client.PutAsJsonAsync("Warrants", request);
 
         // Assert
         IEnumerable<WarrantStep> savedSteps =

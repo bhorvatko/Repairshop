@@ -25,4 +25,14 @@ public class WarrantTemplateController : ApiControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateWarrantTemplate(
+        [FromBody] UpdateWarrantTemplateRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

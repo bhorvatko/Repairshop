@@ -36,7 +36,16 @@ public partial class WarrantTemplateSelectorViewModel
     {
         if (SelectedWarrantTemplate is null) return;
 
-        FinishDialog(SelectedWarrantTemplate.Steps);
+        IEnumerable<WarrantStep> steps = 
+            SelectedWarrantTemplate
+                .Steps
+                .OrderBy(s => s.Index)
+                .Select(s => WarrantStep.Create(
+                    s.Procedure, 
+                    s.CanBeTransitionedToByFrontDesk, 
+                    s.CanBeTransitionedToByWorkshop));
+
+        FinishDialog(steps);
     }
 
     [RelayCommand]

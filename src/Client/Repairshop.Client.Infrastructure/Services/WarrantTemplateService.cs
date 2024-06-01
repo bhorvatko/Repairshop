@@ -63,7 +63,11 @@ internal class WarrantTemplateService
                     Id = x.Id,
                     Name = x.Name,
                     Steps = x.Steps
-                        .Select(x => x.ToViewModel())
+                        .Select(s => WarrantTemplateStep.Create(
+                            s.Procedure.ToViewModel(),
+                            s.CanBeTransitionedToByFrontOffice,
+                            s.CanBeTransitionedToByWorkshop,
+                            s.Index))
                         .ToList()
                 })
                 .ToList();

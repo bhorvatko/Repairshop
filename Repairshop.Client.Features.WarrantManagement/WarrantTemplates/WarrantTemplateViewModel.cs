@@ -1,5 +1,4 @@
 ﻿using Repairshop.Client.Features.WarrantManagement.Procedures;
-using Repairshop.Client.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
@@ -7,8 +6,8 @@ public class WarrantTemplateViewModel
 {
     public required Guid Id { get; set; }
     public required string Name { get; set; }
-    public required IReadOnlyCollection<WarrantStep> Steps { get; set; }
+    public required IReadOnlyCollection<WarrantTemplateStep> Steps { get; set; }
 
     public IReadOnlyCollection<ProcedureSummaryViewModel> Procedures => 
-        Steps.Select(x => x.Procedure).ToList();
+        Steps.OrderBy(x => x.Index).Select(x => x.Procedure).ToList();
 }

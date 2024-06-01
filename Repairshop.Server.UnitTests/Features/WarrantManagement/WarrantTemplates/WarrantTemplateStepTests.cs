@@ -113,4 +113,27 @@ public class WarrantTemplateStepTests
             .ThrowAsync<DomainArgumentException>()
             .Where(x => x.InvalidArgument == stepArgs);
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(100)]
+    public async Task Creating_a_warrant_template_step_sequence_should_asign_the_correct_index_to_steps(int numberOfSteps)
+    {
+        // Arrange
+        IEnumerable<Procedure> procedures = ProcedureHelper.Create(numberOfSteps);
+
+        IEnumerable<CreateWarrantStepArgs> stepArgs =
+            procedures.Select(x => new CreateWarrantStepArgs(x.Id, true, true));
+
+        GetProceduresByIdDelegate getProceduresById =
+            ids => Task.FromResult(procedures.Where(p => ids.Contains(p.Id)));
+
+        // Act
+        IEnumerable<WarrantTemplateStep> steps =
+            await WarrantTemplateStep.CreateStepSequence(stepArgs, getProceduresById);
+
+        // Assert
+        steps.Select(x => x.Index).Should().BeEquivalentTo(Enumerable.Range(0, numberOfSteps));
+    }
 }

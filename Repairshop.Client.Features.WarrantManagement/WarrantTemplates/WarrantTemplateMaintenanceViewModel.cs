@@ -4,6 +4,7 @@ using Repairshop.Client.Common.Forms;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Common.Navigation;
 using Repairshop.Client.Features.WarrantManagement.Interfaces;
+using Repairshop.Client.Features.WarrantManagement.Warrants;
 
 namespace Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 
@@ -51,7 +52,13 @@ public partial class WarrantTemplateMaintenanceViewModel
             {
                 vm.WarrantTemplateId = warrantTemplate.Id;
                 vm.EditWarrantTemplateViewModel.Name = warrantTemplate.Name;
-                vm.EditWarrantTemplateViewModel.Steps = warrantTemplate.Steps;
+                vm.EditWarrantTemplateViewModel.Steps = 
+                    warrantTemplate
+                        .Steps
+                        .Select(s => WarrantStep.Create(
+                            s.Procedure, 
+                            s.CanBeTransitionedToByFrontDesk, 
+                            s.CanBeTransitionedToByWorkshop));
             });
 
         await _loadingIndicatorService.ShowLoadingIndicatorForAction(LoadWarrantTemplates);

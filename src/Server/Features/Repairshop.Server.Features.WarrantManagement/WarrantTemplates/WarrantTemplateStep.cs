@@ -17,6 +17,7 @@ public class WarrantTemplateStep
     public Guid Id { get; private set; }
     public Guid ProcedureId { get; private set; }
     public Procedure Procedure { get; private set; }
+    public int Index { get; private set; }
     public bool CanBeTransitionedToByWorkshop { get; private set; }
     public bool CanBeTransitionedToByFrontOffice { get; private set; }
     public Guid WarrantTemplateId { get; private set; }
@@ -63,13 +64,14 @@ public class WarrantTemplateStep
             return procedure;
         };
 
-        var result = stepArgs.Select(x =>
+        var result = stepArgs.Select((x, index) =>
             new WarrantTemplateStep()
             {
                 Id = Guid.NewGuid(),
                 Procedure = getProcedure(x),
                 CanBeTransitionedToByWorkshop = x.CanBeTransitionedToByWorkshop,
-                CanBeTransitionedToByFrontOffice = x.CanBeTransitionedToByFrontDesk
+                CanBeTransitionedToByFrontOffice = x.CanBeTransitionedToByFrontDesk,
+                Index = index
             })
             .ToList();
 

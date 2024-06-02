@@ -72,4 +72,9 @@ internal class WarrantTemplateService
                 })
                 .ToList();
     }
+
+    public async Task DeleteWarrantTemplate(Guid id)
+    {
+        await _apiClient.Delete($"{WarrantTemplatesEndpoint}/{id}");
+    }
 }

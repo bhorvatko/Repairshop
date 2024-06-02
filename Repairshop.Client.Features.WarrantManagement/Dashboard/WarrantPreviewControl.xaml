@@ -68,6 +68,7 @@
             <TextBlock Text="{Binding Warrant.NumberString}"
                        Foreground="{Binding Warrant.Procedure.ForegroundColorBrush}"
                        Padding="5"
+                       FontSize="20"
                        VerticalAlignment="Center" />
 
         </md:Card>

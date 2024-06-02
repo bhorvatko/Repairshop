@@ -14,7 +14,7 @@ public partial class WarrantTemplateMaintenanceViewModel
     private readonly IWarrantTemplateService _warrantTemplateService;
     private readonly ILoadingIndicatorService _loadingIndicatorService;
     private readonly IFormService _formService;
-
+    private readonly IMessageDialogService _messageDialogService;
     [ObservableProperty]
     private IReadOnlyCollection<WarrantTemplateViewModel> _warrantTemplates =
         new List<WarrantTemplateViewModel>();
@@ -22,11 +22,13 @@ public partial class WarrantTemplateMaintenanceViewModel
     public WarrantTemplateMaintenanceViewModel(
         IWarrantTemplateService warrantTemplateService,
         ILoadingIndicatorService loadingIndicatorService,
-        IFormService formService)
+        IFormService formService,
+        IMessageDialogService messageDialogService)
     {
         _warrantTemplateService = warrantTemplateService;
         _loadingIndicatorService = loadingIndicatorService;
         _formService = formService;
+        _messageDialogService = messageDialogService;
     }
 
     [RelayCommand]
@@ -65,9 +67,20 @@ public partial class WarrantTemplateMaintenanceViewModel
     }
 
     [RelayCommand]
-    private void DeleteWarrantTemplate(WarrantTemplateViewModel warrantTemplate)
+    private async Task DeleteWarrantTemplate(WarrantTemplateViewModel warrantTemplate)
     {
-        throw new NotImplementedException();
+        string confirmationMessage = "Jeste li sigurni da želite obrisati predložak?";
+
+        if (!_messageDialogService.GetConfirmation(confirmationMessage))
+        {
+            return;
+        }
+
+        await _loadingIndicatorService.ShowLoadingIndicatorForAction(async () =>
+        {
+            await _warrantTemplateService.DeleteWarrantTemplate(warrantTemplate.Id);
+            await LoadWarrantTemplates();
+        });
     }
 
     private async Task LoadWarrantTemplates()

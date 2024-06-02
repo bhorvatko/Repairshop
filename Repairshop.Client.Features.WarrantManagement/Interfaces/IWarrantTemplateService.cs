@@ -14,4 +14,5 @@ public interface IWarrantTemplateService
         IEnumerable<CreateWarrantStepDto> steps);
 
     Task<IReadOnlyCollection<WarrantTemplateViewModel>> GetWarrantTemplates();
+    Task DeleteWarrantTemplate(Guid id);
 }

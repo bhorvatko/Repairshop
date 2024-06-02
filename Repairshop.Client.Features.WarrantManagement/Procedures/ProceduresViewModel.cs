@@ -48,13 +48,14 @@ public partial class ProceduresViewModel
     [RelayCommand]
     public async Task AddNewProcedure()
     {
-        float greatestExistingPriority = 
-            Procedures.Select(p => p.Priority).Max();
+        float greatestExistingPriority = Procedures.Any()
+            ? Procedures.Select(p => p.Priority).Max()
+            : 0;
 
         await _formService
             .ShowFormAsDialog<CreateProcedureView,CreateProcedureViewModel>(vm =>
             {
-                vm.Priority = (float.MaxValue + greatestExistingPriority) / 2;
+                vm.Priority = (float.MaxValue / 2 + greatestExistingPriority) / 2;
             });
 
         await LoadProcedures();

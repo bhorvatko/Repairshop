@@ -35,4 +35,15 @@ public class WarrantTemplateController : ApiControllerBase
 
         return Ok(response);
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteWarrantTemplate(
+        [FromRoute] DeleteWarrantTemplateRequest request,
+        CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(request, cancellationToken);
+
+        return Ok(response);
+    }
 }

@@ -12,6 +12,7 @@ internal static class Setup
             .AddTransient<ITechnicianService, TechnicianService>()
             .AddTransient<IWarrantService, WarrantService>()
             .AddTransient<IWarrantTemplateService, WarrantTemplateService>()
+            .AddTransient<IWarrantLogService, WarrantLogService>()
             .AddTransient<TechnicianViewModelFactory>()
             .AddTransient<WarrantSummaryViewModelFactory>();
 }

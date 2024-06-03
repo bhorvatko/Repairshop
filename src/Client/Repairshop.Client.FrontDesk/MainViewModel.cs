@@ -6,6 +6,7 @@ using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement.Dashboard;
 using Repairshop.Client.Features.WarrantManagement.Procedures;
 using Repairshop.Client.Features.WarrantManagement.Technicians;
+using Repairshop.Client.Features.WarrantManagement.WarrantLog;
 using Repairshop.Client.Features.WarrantManagement.WarrantTemplates;
 using Repairshop.Client.Infrastructure.Bootstrapping;
 using Repairshop.Client.Infrastructure.UserNotifications;
@@ -65,7 +66,8 @@ public partial class MainViewModel
         new NavigationItem("Nalozi", NavigateToDashboard),
         new NavigationItem("Procedure", NavigateToProceduresView),
         new NavigationItem("Tehničari", NavigateToTechnicianMaintenanceView),
-        new NavigationItem("Predlošci naloga", NavigateToCreateWarrantTemplateView)
+        new NavigationItem("Predlošci naloga", NavigateToCreateWarrantTemplateView),
+        new NavigationItem("Zapisnik", NavigateToWarrantLogView)
     };
 
     public NavigationItem SelectedNavigationItem
@@ -97,6 +99,11 @@ public partial class MainViewModel
     public void NavigateToTechnicianMaintenanceView()
     {
         _navigationService.NavigateToView<TechnicianMaintenanceView>();
+    }
+
+    private void NavigateToWarrantLogView()
+    {
+        _navigationService.NavigateToView<WarrantLogView>();
     }
 
     public void Dispose()

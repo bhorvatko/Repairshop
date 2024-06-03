@@ -23,14 +23,16 @@ public static class WarrantHelper
         string title = "Title",
         DateTime? deadline = null,
         bool isUrgent = false,
-        IEnumerable<WarrantStep>? steps = null)
+        IEnumerable<WarrantStep>? steps = null,
+        Func<DateTimeOffset>? getUtcNow = null)
     {
         Warrant warrant = await Create(
             dbContext,
             title,
             deadline,
             isUrgent,
-            steps);
+            steps,
+            getUtcNow);
 
         await dbContext.SaveChangesAsync();
 

@@ -5,6 +5,7 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
               xmlns:local="clr-namespace:Repairshop.Client.Features.WarrantManagement.WarrantLog"
               xmlns:nav="clr-namespace:Repairshop.Client.Common.Navigation;assembly=Repairshop.Client.Common"
               mc:Ignorable="d"
@@ -17,26 +18,60 @@
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+
+    <md:DrawerHost OpenMode="Modal"
+                   IsRightDrawerOpen="{Binding IsFilterVisible}">
+
+        <md:DrawerHost.RightDrawerContent>
+            <StackPanel MinWidth="256">
+                
+                <TextBox md:HintAssist.Hint="Broj Naloga"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Margin="10"
+                         Text="{Binding WarrantNumberFilter, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBox md:HintAssist.Hint="Ime Tehničara"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Margin="10"
+                         Text="{Binding TechnicianNameFilter}"/>
+                
+            </StackPanel>
+        </md:DrawerHost.RightDrawerContent>
+
+        <DockPanel LastChildFill="True">
+
+            <Button Command="{Binding ShowFiltersCommand}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Right">
+                <md:PackIcon Kind="Filter" />
+            </Button>
+
+            <DataGrid ItemsSource="{Binding LogEntries}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      DockPanel.Dock="Left">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="Vrijeme"
+                                        Binding="{Binding FormattedEventTime}" />
+
+                    <DataGridTextColumn Header="Broj Naloga"
+                                        Binding="{Binding WarrantNumber}" />
+
+                    <DataGridTextColumn Header="Ime Tehničara"
+                                        Binding="{Binding TechnicianName}" />
+
+                    <DataGridTextColumn Header="Događaj"
+                                        Binding="{Binding EventDescription}" />
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </DockPanel>
+
+    </md:DrawerHost>
     
-    <DataGrid ItemsSource="{Binding LogEntries}"
-              IsReadOnly="True"
-              AutoGenerateColumns="False">
-
-        <DataGrid.Columns>
-
-            <DataGridTextColumn Header="Vrijeme"
-                                Binding="{Binding FormattedEventTime}" />
-
-            <DataGridTextColumn Header="Broj Naloga"
-                                Binding="{Binding WarrantNumber}" />
-
-            <DataGridTextColumn Header="Ime Tehničara"
-                                Binding="{Binding TechnicianName}" />
-
-            <DataGridTextColumn Header="Događaj"
-                                Binding="{Binding EventDescription}" />
-            
-        </DataGrid.Columns>
-
-    </DataGrid>
 </nav:ViewBase>

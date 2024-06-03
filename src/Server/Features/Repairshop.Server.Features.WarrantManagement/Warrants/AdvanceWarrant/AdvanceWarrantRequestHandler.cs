@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Repairshop.Server.Common.ClientContext;
+using Repairshop.Server.Common.DateTime;
 using Repairshop.Server.Common.Exceptions;
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
@@ -11,13 +12,16 @@ internal class AdvanceWarrantRequestHandler
 {
     private readonly IRepository<Warrant> _warrants;
     private readonly IClientContextProvider _clientContextProvider;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public AdvanceWarrantRequestHandler(
         IRepository<Warrant> warrants,
-        IClientContextProvider clientContextProvider)
+        IClientContextProvider clientContextProvider,
+        IDateTimeProvider dateTimeProvider)
     {
         _warrants = warrants;
         _clientContextProvider = clientContextProvider;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public async Task<AdvanceWarrantResponse> Handle(
@@ -36,7 +40,8 @@ internal class AdvanceWarrantRequestHandler
 
         warrant.AdvanceToStep(
             request.StepId, 
-            _clientContextProvider.GetClientContext());
+            _clientContextProvider.GetClientContext(),
+            _dateTimeProvider.GetUtcNow);
 
         await _warrants.SaveChangesAsync(cancellationToken);
 

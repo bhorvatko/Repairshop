@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Repairshop.Server.Common.DateTime;
 using Repairshop.Server.Common.Persistence;
 using Repairshop.Server.Features.WarrantManagement.Procedures;
 using Repairshop.Shared.Features.WarrantManagement.Warrants;
@@ -11,13 +12,16 @@ internal class CreateWarrantRequestHandler
 {
     private readonly IRepository<Warrant> _warrants;
     private readonly IRepository<Procedure> _procedures;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public CreateWarrantRequestHandler(
         IRepository<Warrant> warrants,
-        IRepository<Procedure> procedures)
+        IRepository<Procedure> procedures,
+        IDateTimeProvider dateTimeProvider)
     {
         _warrants = warrants;
         _procedures = procedures;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public async Task<CreateWarrantResponse> Handle(
@@ -45,6 +49,7 @@ internal class CreateWarrantRequestHandler
             request.IsUrgnet,
             request.Number,
             stepSequence,
+            _dateTimeProvider.GetUtcNow,
             warrant => _warrants.AddAsync(warrant, cancellationToken));
 
         await _warrants.SaveChangesAsync(cancellationToken);

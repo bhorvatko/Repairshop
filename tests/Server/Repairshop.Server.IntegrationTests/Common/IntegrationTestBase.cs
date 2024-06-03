@@ -66,6 +66,7 @@ public class IntegrationTestBase
 
     private void ClearDatabase()
     {
+        _dbContext.Set<WarrantLogEntry>().ExecuteDelete();
         _dbContext.Set<WarrantStepTransition>().ExecuteDelete();
         _dbContext.Set<Warrant>().ExecuteDelete();
         _dbContext.Set<WarrantStep>().ExecuteDelete();

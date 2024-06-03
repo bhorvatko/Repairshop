@@ -8,13 +8,15 @@ public static class WarrantHelper
         string title = "Title",
         DateTime? deadline = null,
         bool isUrgent = false,
-        IEnumerable<WarrantStep>? steps = null) =>
+        IEnumerable<WarrantStep>? steps = null,
+        Func<DateTimeOffset>? getUtcNow = null) =>
         await Create(
             null,
             title,
             deadline,
             isUrgent,
-            steps);
+            steps,
+            getUtcNow);
 
     public async static Task<Warrant> CreateAndAddWarrantToDbContext(
         WarrantManagementDbContext dbContext,
@@ -40,13 +42,15 @@ public static class WarrantHelper
         string title = "Title",
         DateTime? deadline = null,
         bool isUrgent = false,
-        IEnumerable<WarrantStep>? steps = null) =>
+        IEnumerable<WarrantStep>? steps = null,
+        Func<DateTimeOffset>? getUtcNow = null) =>
         await Warrant.Create(
             title,
             deadline ?? new DateTime(2000, 1, 1),
             isUrgent,
             1,
             steps ?? await WarrantStepHelper.CreateStepSequence(3),
+            getUtcNow ?? (() => DateTimeOffset.UtcNow),
             dbContext is null 
                 ? warrant => Task.CompletedTask
                 : async warrant =>

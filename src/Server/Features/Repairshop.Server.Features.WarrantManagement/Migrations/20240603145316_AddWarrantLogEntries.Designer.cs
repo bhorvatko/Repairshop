@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repairshop.Server.Features.WarrantManagement.Data;
 
@@ -11,9 +12,11 @@ using Repairshop.Server.Features.WarrantManagement.Data;
 namespace Repairshop.Server.Features.WarrantManagement.Migrations
 {
     [DbContext(typeof(WarrantManagementDbContext))]
-    partial class WarrantManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240603145316_AddWarrantLogEntries")]
+    partial class AddWarrantLogEntries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

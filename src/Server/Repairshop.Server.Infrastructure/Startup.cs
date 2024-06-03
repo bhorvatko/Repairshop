@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repairshop.Server.Infrastructure.Authorization;
 using Repairshop.Server.Infrastructure.ClientContext;
+using Repairshop.Server.Infrastructure.DateTime;
 using Repairshop.Server.Infrastructure.ErrorHandling;
 using Repairshop.Server.Infrastructure.HealthChecks;
 using Repairshop.Server.Infrastructure.Mediator;
@@ -30,7 +31,8 @@ public static class Startup
             .AddNotifications()
             .AddPersistence()
             .AddClientContext()
-            .AddApiHealthChecks();
+            .AddApiHealthChecks()
+            .AddDateTime();
 
         return services;
     }

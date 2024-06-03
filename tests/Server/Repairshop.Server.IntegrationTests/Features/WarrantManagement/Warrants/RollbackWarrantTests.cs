@@ -26,7 +26,10 @@ public class RollbackWarrantTests
         // Arrange
         Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
-        warrant.AdvanceToStep(warrant.Steps.ElementAt(1).Id, RepairshopClientContext.FrontOffice);
+        warrant.AdvanceToStep(
+            warrant.Steps.ElementAt(1).Id, 
+            RepairshopClientContext.FrontOffice,
+            GetUtcNow);
 
         _dbContext.SaveChanges();
 
@@ -55,7 +58,10 @@ public class RollbackWarrantTests
         // Arrange
         Warrant warrant = await WarrantHelper.CreateAndAddWarrantToDbContext(_dbContext);
 
-        warrant.AdvanceToStep(warrant.Steps.ElementAt(1).Id, RepairshopClientContext.FrontOffice);
+        warrant.AdvanceToStep(
+            warrant.Steps.ElementAt(1).Id, 
+            RepairshopClientContext.FrontOffice,
+            GetUtcNow);
 
         _dbContext.SaveChanges();
 
@@ -77,4 +83,7 @@ public class RollbackWarrantTests
         notification.Should().NotBeNull();
         notification!.Warrant.Id.Should().Be(warrant.Id);
     }
+
+    private DateTimeOffset GetUtcNow() =>
+        DateTimeOffset.UtcNow;
 }

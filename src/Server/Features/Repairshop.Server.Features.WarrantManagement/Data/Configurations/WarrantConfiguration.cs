@@ -29,5 +29,9 @@ internal class WarrantConfiguration
             .WithOne()
             .HasForeignKey<Warrant>(x => x.CurrentStepId)
             .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder
+            .HasMany(x => x.LogEntries)
+            .WithOne();
     }
 }

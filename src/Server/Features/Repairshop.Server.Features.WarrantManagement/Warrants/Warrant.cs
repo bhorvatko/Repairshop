@@ -23,6 +23,7 @@ public class Warrant
     public WarrantStep CurrentStep { get; private set; }
     public Guid? TechnicianId { get; private set; }
     public Technician? Technician { get; private set; }
+    public IReadOnlyCollection<WarrantLogEntry> LogEntries { get; private set; }
 
     public static async Task<Warrant> Create(
         string title,
@@ -30,8 +31,14 @@ public class Warrant
         bool isUrgent,
         int number,
         IEnumerable<WarrantStep> steps,
+        Func<DateTimeOffset> getUtcNow,
         Func<Warrant, Task> beforeFinalising)
     {
+        WarrantLogEntry logEntry = WarrantLogEntry.CreateCreatedLogEntry(
+            number,
+            steps.First().Procedure.Name,
+            getUtcNow);
+
         Warrant warrant = new Warrant()
         {
             Id = Guid.NewGuid(),
@@ -39,12 +46,14 @@ public class Warrant
             Deadline = deadline,
             IsUrgent = isUrgent,
             Steps = steps,
-            Number = number
+            Number = number,
+            LogEntries = [logEntry]
         };
 
         await beforeFinalising(warrant);
 
         warrant.SetInitialStep();
+
         warrant.AddEvent(WarrantCreatedEvent.Create(warrant));
 
         return warrant;
@@ -52,7 +61,8 @@ public class Warrant
 
     public void AdvanceToStep(
         Guid nextStepId,
-        string clientContext)
+        string clientContext,
+        Func<DateTimeOffset> getUtcNow)
     {
         if (CurrentStep is null)
         {
@@ -68,12 +78,18 @@ public class Warrant
 
         EnsureCanBeTransitioned(clientContext, CurrentStep.NextTransition!);
 
+        string previousStepProcedureName =
+            CurrentStep.Procedure.Name;
+
         SetCurrentStep(CurrentStep.NextStep);
+
+        AddUpdatedLogEntry(previousStepProcedureName, getUtcNow);
     }
 
     public void RollbackToStep(
         Guid previousStepId,
-        string clientContext)
+        string clientContext,
+        Func<DateTimeOffset> getUtcNow)
     {
         if (CurrentStep is null)
         {
@@ -87,9 +103,14 @@ public class Warrant
                 "Cannot rollback to the specified step.");
         }
 
+        string previousStepProcedureName =
+            CurrentStep.Procedure.Name;
+
         EnsureCanBeTransitioned(clientContext, CurrentStep.PreviousTransition!);
 
         SetCurrentStep(CurrentStep.PreviousStep);
+
+        AddUpdatedLogEntry(previousStepProcedureName, getUtcNow);
     }
 
     public async Task Update(
@@ -206,4 +227,18 @@ public class Warrant
 
     private WarrantStep? GetInitialStep() =>
         Steps.FirstOrDefault(s => s.PreviousTransition is null);
+
+    private void AddUpdatedLogEntry(
+        string previousState,
+        Func<DateTimeOffset> getUtcNow)
+    {
+        WarrantLogEntry logEntry = WarrantLogEntry.CreateUpdatedLogEntry(
+            Number,
+            previousState,
+            CurrentStep.Procedure.Name,
+            Technician?.Name ?? string.Empty,
+            getUtcNow);
+
+        LogEntries = LogEntries.Append(logEntry).ToList();
+    }
 }

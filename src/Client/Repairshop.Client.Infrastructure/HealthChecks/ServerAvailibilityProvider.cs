@@ -12,7 +12,7 @@ internal class ServerAvailibilityProvider
     public ServerAvailibilityProvider(ApiClient.ApiClient apiClient)
     {
         _serverAvailableObservable = Observable
-            .Interval(TimeSpan.FromSeconds(5))
+            .Interval(TimeSpan.FromSeconds(30))
             .SelectMany(_ => CheckServerAvailability());
 
         _apiClient = apiClient;

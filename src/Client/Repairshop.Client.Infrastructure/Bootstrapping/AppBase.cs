@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Repairshop.Client.Common.Interfaces;
 using Repairshop.Client.Features.WarrantManagement;
 using Repairshop.Client.Infrastructure.ApiClient;
 using Repairshop.Client.Infrastructure.Navigation;
 using System.Windows;
-using MaterialDesignThemes.Wpf;
-using MaterialDesignColors;
 
 namespace Repairshop.Client.Infrastructure.Bootstrapping;
 
@@ -15,36 +15,52 @@ public abstract class AppBase<TMainView, TMainViewModel>
     where TMainView : MainView
     where TMainViewModel : class, IMainViewModel
 {
-    private IServiceProvider _serviceProvider;
+    private readonly string _clientContext;
+    private readonly IHost _host;
+    private readonly IServiceProvider _serviceProvider;
 
     public AppBase(string clientContext)
     {
         AppDomain.CurrentDomain.UnhandledException += HandleUnhandledExceptions;
 
-        ServiceCollection services = new ServiceCollection();
+        _clientContext = clientContext;
 
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-        .Build();
+        _host = Host.CreateDefaultBuilder()
+            .ConfigureServices(ConfigureServices)
+            .Build();
 
-        services
-            .Configure<ApiOptions>(config.GetSection(ApiOptions.SectionName));
-
-        services
-            .AddSingleton<TMainViewModel>()
-            .AddSingleton<TMainView>()
-            .AddInfrastructure<TMainViewModel, TMainView>(config, clientContext)
-            .AddWarrantManagement();
-
-        _serviceProvider = services.BuildServiceProvider();
+        _serviceProvider = _host.Services;
 
         SetupMaterialUi();
     }
 
-    protected override void OnStartup(StartupEventArgs e)
+    private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
+        services.AddOptions();
+
+        services
+            .Configure<ApiOptions>(context.Configuration.GetSection(ApiOptions.SectionName));
+
+        services
+            .AddSingleton<TMainViewModel>()
+            .AddSingleton<TMainView>()
+            .AddInfrastructure<TMainViewModel, TMainView>(context.Configuration, _clientContext)
+            .AddWarrantManagement();
+    }
+
+    protected override async void OnStartup(StartupEventArgs e)
+    {
+        await _host.StartAsync();
+
         TMainView mainWindow = _serviceProvider.GetRequiredService<TMainView>();
         mainWindow.Show();
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        await _host.StopAsync();
+
+        base.OnExit(e);
     }
 
     private void HandleUnhandledExceptions(object sender, UnhandledExceptionEventArgs e)

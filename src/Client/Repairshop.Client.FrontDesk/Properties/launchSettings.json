@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Repairshop.Client.FrontDesk.Development": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    },
+    "Repairshop.Client.FrontDesk.Local": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Local"
+      }
+    }
+  }
+}

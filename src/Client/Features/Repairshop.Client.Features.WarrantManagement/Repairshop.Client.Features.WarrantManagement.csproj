@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Client\Repairshop.Client.Common\Repairshop.Client.Common.csproj" />
-    <ProjectReference Include="..\src\Shared\Features\Repairshop.Shared.Features.WarrantManagement\Repairshop.Shared.Features.WarrantManagement.csproj" />
+    <ProjectReference Include="..\..\Repairshop.Client.Common\Repairshop.Client.Common.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Features\Repairshop.Shared.Features.WarrantManagement\Repairshop.Shared.Features.WarrantManagement.csproj" />
   </ItemGroup>
 
 </Project>

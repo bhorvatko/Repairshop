@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Server\Features\Repairshop.Server.Features.WarrantManagement\Repairshop.Server.Features.WarrantManagement.csproj" />
-    <ProjectReference Include="..\tests\Server\Repairshop.Server.Tests.Shared\Repairshop.Server.Tests.Shared.csproj" />
+    <ProjectReference Include="..\..\..\src\Shared\Features\Repairshop.Shared.Features.WarrantManagement\Repairshop.Shared.Features.WarrantManagement.csproj" />
+    <ProjectReference Include="..\Repairshop.Server.Tests.Shared\Repairshop.Server.Tests.Shared.csproj" />
   </ItemGroup>
 
 </Project>

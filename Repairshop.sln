@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{685BA24C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{EB31FC94-C5FF-4A2D-BC06-01FAA1731359}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Server.UnitTests", "Repairshop.Server.UnitTests\Repairshop.Server.UnitTests.csproj", "{FC524336-BDDF-445C-816A-6FD6B6850B98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Server.UnitTests", "tests\Server\Repairshop.Server.UnitTests\Repairshop.Server.UnitTests.csproj", "{FC524336-BDDF-445C-816A-6FD6B6850B98}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Server.IntegrationTests", "tests\Server\Repairshop.Server.IntegrationTests\Repairshop.Server.IntegrationTests.csproj", "{34DA699F-D997-430E-94EE-DCAD8A63DC1D}"
 EndProject
@@ -42,9 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Client.FrontDesk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Client.Common", "src\Client\Repairshop.Client.Common\Repairshop.Client.Common.csproj", "{58008480-A4FE-4D4E-8BB6-588680CB5E2B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Featuees", "Featuees", "{3BBA3417-BD7C-4754-A0CB-85E5652A257E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{3BBA3417-BD7C-4754-A0CB-85E5652A257E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Client.Features.WarrantManagement", "Repairshop.Client.Features.WarrantManagement\Repairshop.Client.Features.WarrantManagement.csproj", "{71148E9A-0834-4E20-B55E-6A48C5D57784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Client.Features.WarrantManagement", "src\Client\Features\Repairshop.Client.Features.WarrantManagement\Repairshop.Client.Features.WarrantManagement.csproj", "{71148E9A-0834-4E20-B55E-6A48C5D57784}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Server.Tests.Shared", "tests\Server\Repairshop.Server.Tests.Shared\Repairshop.Server.Tests.Shared.csproj", "{888D92CA-7B76-491F-89C6-375A3900E035}"
 EndProject
@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Client.Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Shared.Common", "src\Shared\Repairshop.Shared.Common\Repairshop.Shared.Common.csproj", "{5297DC84-14F3-4E16-AAE7-E04BDC9171C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repairshop.Client.WorkshopTerminal", "src\Client\Repairshop.Client.WorkshopTerminal\Repairshop.Client.WorkshopTerminal.csproj", "{58A04B74-3E6D-4E9E-A1CB-6A4D485401C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repairshop.Client.WorkshopTerminal", "src\Client\Repairshop.Client.WorkshopTerminal\Repairshop.Client.WorkshopTerminal.csproj", "{58A04B74-3E6D-4E9E-A1CB-6A4D485401C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

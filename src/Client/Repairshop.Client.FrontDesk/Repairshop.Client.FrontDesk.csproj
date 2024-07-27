@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Repairshop.Client.Features.WarrantManagement\Repairshop.Client.Features.WarrantManagement.csproj" />
+    <ProjectReference Include="..\Features\Repairshop.Client.Features.WarrantManagement\Repairshop.Client.Features.WarrantManagement.csproj" />
     <ProjectReference Include="..\Repairshop.Client.Common\Repairshop.Client.Common.csproj" />
     <ProjectReference Include="..\Repairshop.Client.Infrastructure\Repairshop.Client.Infrastructure.csproj" />
   </ItemGroup>
